@@ -17,7 +17,7 @@ const blank: Form = {
   sku: "",
   stock: 0,
   status: "draft",
-  image: "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg",
+  image: "/images/home/images (23).jpg",
 };
 
 const categories = [

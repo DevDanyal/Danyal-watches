@@ -18,7 +18,7 @@ const categories = [
   {
     name: "Men",
     href: "/collections/men",
-    image: "/images/men.jpg",
+    image: "/images/home/images (8).jpg",
     subcategories: [
       { name: "Luxury Watches", href: "/collections/men-luxury" },
       { name: "Strap Watches", href: "/collections/men-strap" },
@@ -28,7 +28,7 @@ const categories = [
   {
     name: "Women",
     href: "/collections/women",
-    image: "/images/women.jpg",
+    image: "/images/home/images (9).jpg",
     subcategories: [
       { name: "Luxury Watches", href: "/collections/women-luxury" },
       { name: "Chain Watches", href: "/collections/women-chain" },
@@ -37,7 +37,7 @@ const categories = [
   {
     name: "Couple",
     href: "/collections/couple",
-    image: "/images/couple.jpg",
+    image: "/images/home/images (10).jpg",
     subcategories: [{ name: "Chain Watches", href: "/collections/couple-chain" }],
   },
 ];

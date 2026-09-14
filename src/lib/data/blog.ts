@@ -16,8 +16,7 @@ export const blogPosts: BlogPost[] = [
     title: "How to Choose the Perfect Watch",
     excerpt:
       "From case size to strap material, here's everything you need to consider before buying your next timepiece.",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg",
+    image: "/images/home/images (19).jpg",
     category: "Buying Guide",
     date: "Sep 2, 2026",
     readTime: "5 min read",
@@ -46,8 +45,7 @@ export const blogPosts: BlogPost[] = [
     title: "Caring for Your Stainless Steel Watch",
     excerpt:
       "Keep your chain watch looking brand new with these simple cleaning and maintenance tips.",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_891c0745-b140-4d7f-aa52-1eb0ab96b5c3.jpg",
+    image: "/images/home/images (20).jpg",
     category: "Watch Care",
     date: "Aug 20, 2026",
     readTime: "4 min read",
@@ -76,8 +74,7 @@ export const blogPosts: BlogPost[] = [
     title: "Outfit Ideas to Match Your Watch",
     excerpt:
       "Whether it's a golden luxury piece or a sporty strap watch, here's how to style it effortlessly.",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_7e40cc81-e924-412b-a755-034ae056a929.jpg",
+    image: "/images/home/images (21).jpg",
     category: "Style Guide",
     date: "Aug 5, 2026",
     readTime: "6 min read",

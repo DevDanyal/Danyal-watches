@@ -2,12 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const posts = [
-  "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_891c0745-b140-4d7f-aa52-1eb0ab96b5c3.jpg",
-  "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_65cb6b91-4818-4f1d-b5b7-8995ba6fd6ac.jpg",
-  "https://crysmawatches.com/cdn/shop/files/FULL_GOLDEN_3.jpg",
-  "https://crysmawatches.com/cdn/shop/files/1766405696222.jpg",
-  "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d23c90e3-40ff-4c89-ab22-09a9ebfdf5a8.jpg",
-  "https://crysmawatches.com/cdn/shop/files/1764749568395.jpg",
+  "/images/home/images (13).jpg",
+  "/images/home/images (14).jpg",
+  "/images/home/images (15).jpg",
+  "/images/home/images (16).jpg",
+  "/images/home/images (17).jpg",
+  "/images/home/images (18).jpg",
 ];
 
 function InstagramIcon({ className }: { className?: string }) {

@@ -74,7 +74,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 gap-4">
             <div className="overflow-hidden rounded-xl">
               <Image
-                src="https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg"
+                src="/images/home/images (12).jpg"
                 alt="CRYSMA luxury watch"
                 width={400}
                 height={400}
@@ -83,7 +83,7 @@ export default function AboutPage() {
             </div>
             <div className="mt-8 overflow-hidden rounded-xl">
               <Image
-                src="https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_7e40cc81-e924-412b-a755-034ae056a929.jpg"
+                src="/images/home/images (22).jpg"
                 alt="CRYSMA craftsmanship"
                 width={400}
                 height={400}

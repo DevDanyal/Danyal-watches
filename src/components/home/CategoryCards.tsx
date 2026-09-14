@@ -9,36 +9,31 @@ const categories = [
   {
     name: "Men",
     href: "/collections/men",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_891c0745-b140-4d7f-aa52-1eb0ab96b5c3.jpg",
+    image: "/images/home/images (3).jpg",
     span: "lg:col-span-2 lg:row-span-2",
   },
   {
     name: "Women",
     href: "/collections/women",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d23c90e3-40ff-4c89-ab22-09a9ebfdf5a8.jpg",
+    image: "/images/home/images (4).jpg",
     span: "",
   },
   {
     name: "Couples",
     href: "/collections/couple",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_37335af0-d1e6-440e-be4a-ecdcf33daf06.jpg",
+    image: "/images/home/images (5).jpg",
     span: "",
   },
   {
     name: "Strap Watches",
     href: "/collections/men-strap",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_60c2b66b-65c1-47ca-beab-17b961db7761.jpg",
+    image: "/images/home/images (6).jpg",
     span: "",
   },
   {
     name: "Luxury Series",
     href: "/collections/men-luxury",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_7e40cc81-e924-412b-a755-034ae056a929.jpg",
+    image: "/images/home/images (7).jpg",
     span: "lg:col-span-2",
   },
 ];

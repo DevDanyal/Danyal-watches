@@ -15,8 +15,7 @@ const slides = [
       "Precision timepieces for men, women & couples. Swiss-inspired design. Exceptional value.",
     cta: "Shop Men",
     href: "/collections/men",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_2940b79d-6b95-478d-9ad3-913212ced9c4.jpg",
+    image: "/images/home/images.jpg",
   },
   {
     id: 2,
@@ -26,8 +25,7 @@ const slides = [
       "Limited time offer on premium timepieces. Free nationwide shipping on all orders.",
     cta: "Shop Sale",
     href: "/collections/sale",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_7e40cc81-e924-412b-a755-034ae056a929.jpg",
+    image: "/images/home/images (1).jpg",
   },
   {
     id: 3,
@@ -37,8 +35,7 @@ const slides = [
       "Refined women's luxury watches — bracelets, chains and statement pieces.",
     cta: "Shop Women",
     href: "/collections/women",
-    image:
-      "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d23c90e3-40ff-4c89-ab22-09a9ebfdf5a8.jpg",
+    image: "/images/home/images (2).jpg",
   },
 ];
 

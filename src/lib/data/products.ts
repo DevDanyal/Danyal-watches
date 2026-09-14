@@ -15,8 +15,6 @@ export type Product = {
   images: string[];
 };
 
-const img = (path: string) => path;
-
 export const products: Product[] = [
   {
     id: "1",
@@ -35,14 +33,7 @@ export const products: Product[] = [
       { name: "Two Tone/White", hex: "#D9D9D9" },
       { name: "Two Tone/Black", hex: "#1A1A1A" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_891c0745-b140-4d7f-aa52-1eb0ab96b5c3.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_dccd0b12-7b78-4c7e-bc2a-a56ce27dddfb.jpg"
-      ),
-    ],
+    images: ["/images/products/images.jpg", "/images/products/images (17).jpg"],
   },
   {
     id: "2",
@@ -62,12 +53,7 @@ export const products: Product[] = [
       { name: "Full Blue", hex: "#1B3C6B" },
       { name: "Tiffany", hex: "#6BC5B8" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_65cb6b91-4818-4f1d-b5b7-8995ba6fd6ac.jpg"
-      ),
-      img("https://crysmawatches.com/cdn/shop/files/1764749568395.jpg"),
-    ],
+    images: ["/images/products/images (1).jpg", "/images/products/images (18).jpg"],
   },
   {
     id: "3",
@@ -85,14 +71,7 @@ export const products: Product[] = [
       { name: "Brown Gold", hex: "#8B5E3C" },
       { name: "Full Grey", hex: "#808080" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_adaae383-6e2e-43c4-9edc-c4fe8bb26a3a.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_213ec8f0-b81d-4f6c-bb3c-b672dc4838ef.jpg"
-      ),
-    ],
+    images: ["/images/products/images (2).jpg", "/images/products/images (19).jpg"],
   },
   {
     id: "4",
@@ -112,14 +91,7 @@ export const products: Product[] = [
       { name: "Full Golden", hex: "#D4AF37" },
       { name: "Silver/Black", hex: "#A0A0A0" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d54b5815-7a90-4576-be48-b39f2f4c1995.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_535093ad-5bab-4498-882c-797dc1defabf.jpg"
-      ),
-    ],
+    images: ["/images/products/images (3).jpg", "/images/products/images (16).jpg"],
   },
   {
     id: "5",
@@ -137,14 +109,7 @@ export const products: Product[] = [
       { name: "Golden/White", hex: "#F2E6CE" },
       { name: "Golden/Black", hex: "#1A1A1A" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_2940b79d-6b95-478d-9ad3-913212ced9c4.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_dce03804-032b-46b5-a07d-8c1f6c8a37fe.jpg"
-      ),
-    ],
+    images: ["/images/products/images (4).jpg"],
   },
   {
     id: "6",
@@ -163,14 +128,7 @@ export const products: Product[] = [
       { name: "Tiffany", hex: "#6BC5B8" },
       { name: "Golden/Golden/Black", hex: "#D4AF37" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_7e40cc81-e924-412b-a755-034ae056a929.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_027f1629-5892-4b95-867e-6fbc582521cb.jpg"
-      ),
-    ],
+    images: ["/images/products/images (5).jpg"],
   },
   {
     id: "7",
@@ -187,14 +145,7 @@ export const products: Product[] = [
       { name: "Black/Silver/Black", hex: "#3F3F46" },
       { name: "Black/Rose Gold/Black", hex: "#B76E79" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_533e6417-96f4-4e2d-8cc1-de7aa21acbec.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_92de0ae0-c2dc-42fb-b5ab-79a73d4d9b96.jpg"
-      ),
-    ],
+    images: ["/images/products/images (6).jpg"],
   },
   {
     id: "8",
@@ -212,14 +163,7 @@ export const products: Product[] = [
       { name: "Full Black", hex: "#0A0A0A" },
       { name: "Silver Blue", hex: "#6C9CD4" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_f339748e-f026-4a70-bc81-6f15c27971f0.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_524a4ac7-0aa5-4383-b254-51285cf42c32.jpg"
-      ),
-    ],
+    images: ["/images/products/images (7).jpg"],
   },
   {
     id: "9",
@@ -237,14 +181,7 @@ export const products: Product[] = [
       { name: "Golden/Black", hex: "#1A1A1A" },
       { name: "Two Tone/Black", hex: "#1A1A1A" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_1cb9b84f-36dd-4d51-b996-ac7268bef8c4.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_9b51795a-5aae-4a20-a9a-5eab90d6cf6a.jpg"
-      ),
-    ],
+    images: ["/images/products/images (8).jpg"],
   },
   {
     id: "10",
@@ -263,14 +200,7 @@ export const products: Product[] = [
       { name: "Silver Black", hex: "#6E6E6E" },
       { name: "Gun Metal/Black", hex: "#2B2B33" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d23c90e3-40ff-4c89-ab22-09a9ebfdf5a8.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_85ec45fc-7e69-4e0b-9c6d-20a5bcd68d3a.jpg"
-      ),
-    ],
+    images: ["/images/products/images (9).jpg"],
   },
   {
     id: "11",
@@ -288,14 +218,7 @@ export const products: Product[] = [
       { name: "Full Red", hex: "#8B1E2D" },
       { name: "Full Grey", hex: "#808080" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_60c2b66b-65c1-47ca-beab-17b961db7761.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_79d6d39f-7a58-496b-9852-5f226248fac6.jpg"
-      ),
-    ],
+    images: ["/images/products/images (10).jpg"],
   },
   {
     id: "12",
@@ -313,12 +236,7 @@ export const products: Product[] = [
       { name: "Full Black", hex: "#0A0A0A" },
       { name: "Full Golden", hex: "#D4AF37" },
     ],
-    images: [
-      img("https://crysmawatches.com/cdn/shop/files/FULL_GOLDEN_3.jpg"),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_36c9f13f-3f90-47d6-b734-048aa89ad119.jpg"
-      ),
-    ],
+    images: ["/images/products/images (11).jpg"],
   },
   {
     id: "13",
@@ -336,14 +254,7 @@ export const products: Product[] = [
       { name: "Golden/Golden", hex: "#D4AF37" },
       { name: "Silver/Black", hex: "#3F3F46" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_d382e12b-8a0f-47bf-848e-ff560d61319e.jpg"
-      ),
-    ],
+    images: ["/images/products/images (12).jpg"],
   },
   {
     id: "14",
@@ -360,14 +271,7 @@ export const products: Product[] = [
       { name: "Silver/Blue", hex: "#6C9CD4" },
       { name: "Golden/Black", hex: "#1A1A1A" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_b601d9a1-3a13-416c-8928-d67e43e4ecd7.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_cf1b4cbd-421b-4d72-988c-a87b6502eb40.jpg"
-      ),
-    ],
+    images: ["/images/products/images (13).jpg"],
   },
   {
     id: "15",
@@ -385,14 +289,7 @@ export const products: Product[] = [
       { name: "Full Blue", hex: "#1B3C6B" },
       { name: "Black/Blue", hex: "#1B3C6B" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_37335af0-d1e6-440e-be4a-ecdcf33daf06.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_4f1abab8-85ea-4076-8d45-d303c6e22011.jpg"
-      ),
-    ],
+    images: ["/images/products/images (14).jpg"],
   },
   {
     id: "16",
@@ -410,14 +307,7 @@ export const products: Product[] = [
       { name: "Golden/Black", hex: "#1A1A1A" },
       { name: "Silver/Grey", hex: "#6E6E6E" },
     ],
-    images: [
-      img(
-        "https://crysmawatches.com/cdn/shop/files/1766405696222.jpg"
-      ),
-      img(
-        "https://crysmawatches.com/cdn/shop/files/1766405696259.jpg"
-      ),
-    ],
+    images: ["/images/products/images (15).jpg"],
   },
 ];
 

@@ -15,7 +15,7 @@ type BlogForm = {
   body: string;
 };
 
-const blank: BlogForm = { title: "", excerpt: "", category: "", date: "Sep 14, 2026", readTime: "5 min read", image: "https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg", body: "" };
+const blank: BlogForm = { title: "", excerpt: "", category: "", date: "Sep 14, 2026", readTime: "5 min read", image: "/images/home/images (24).jpg", body: "" };
 
 export default function AdminBlogs() {
   const [posts, setPosts] = useState<BlogPost[]>(blogPosts);

@@ -8,7 +8,7 @@ export default function BrandStory() {
         <div className="relative">
           <div className="overflow-hidden rounded-xl">
             <Image
-              src="https://crysmawatches.com/cdn/shop/files/rn-image_picker_lib_temp_00b8b87e-35e7-49dd-9ecf-112dd6c9490d.jpg"
+              src="/images/home/images (11).jpg"
               alt="CRYSMA watch craftsmanship"
               width={640}
               height={640}
