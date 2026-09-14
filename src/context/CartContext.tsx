@@ -1,0 +1,135 @@
+"use client";
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+export type CartItem = {
+  id: string;
+  slug: string;
+  name: string;
+  subtitle: string;
+  price: number;
+  regularPrice: number;
+  image: string;
+  color?: string;
+  quantity: number;
+};
+
+type CartContextType = {
+  items: CartItem[];
+  count: number;
+  subtotal: number;
+  isOpen: boolean;
+  addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
+  removeItem: (id: string, color?: string) => void;
+  updateQuantity: (id: string, color: string | undefined, delta: number) => void;
+  clearCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
+};
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+function itemKey(id: string, color?: string) {
+  return `${id}::${color ?? "default"}`;
+}
+
+export function CartProvider({ children }: { children: React.ReactNode }) {
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("crysma-cart");
+      if (saved) setItems(JSON.parse(saved));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("crysma-cart", JSON.stringify(items));
+    } catch {
+      /* ignore */
+    }
+  }, [items]);
+
+  const addItem = useCallback(
+    (item: Omit<CartItem, "quantity">, quantity = 1) => {
+      setItems((prev) => {
+        const key = itemKey(item.id, item.color);
+        const existing = prev.find((i) => itemKey(i.id, i.color) === key);
+        if (existing) {
+          return prev.map((i) =>
+            itemKey(i.id, i.color) === key
+              ? { ...i, quantity: i.quantity + quantity }
+              : i
+          );
+        }
+        return [...prev, { ...item, quantity }];
+      });
+      setIsOpen(true);
+    },
+    []
+  );
+
+  const removeItem = useCallback((id: string, color?: string) => {
+    setItems((prev) =>
+      prev.filter((i) => itemKey(i.id, i.color) !== itemKey(id, color))
+    );
+  }, []);
+
+  const updateQuantity = useCallback(
+    (id: string, color: string | undefined, delta: number) => {
+      setItems((prev) =>
+        prev.map((i) =>
+          itemKey(i.id, i.color) === itemKey(id, color)
+            ? { ...i, quantity: Math.max(1, i.quantity + delta) }
+            : i
+        )
+      );
+    },
+    []
+  );
+
+  const clearCart = useCallback(() => setItems([]), []);
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
+
+  const count = useMemo(() => items.reduce((n, i) => n + i.quantity, 0), [items]);
+  const subtotal = useMemo(
+    () => items.reduce((n, i) => n + i.price * i.quantity, 0),
+    [items]
+  );
+
+  const value = useMemo(
+    () => ({
+      items,
+      count,
+      subtotal,
+      isOpen,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      openCart,
+      closeCart,
+    }),
+    [items, count, subtotal, isOpen, addItem, removeItem, updateQuantity, clearCart, openCart, closeCart]
+  );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+}
+
+export function useCart() {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error("useCart must be used within CartProvider");
+  return ctx;
+}
