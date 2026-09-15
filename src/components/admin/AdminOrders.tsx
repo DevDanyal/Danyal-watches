@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Filter, Truck } from "lucide-react";
 import { useAdmin, type AdminOrder } from "@/context/AdminContext";
 import { formatPrice } from "@/lib/data/products";
 import { SectionTitle, Card, Badge, Select } from "@/components/admin/ui";
@@ -19,7 +17,6 @@ const statusTone: Record<string, "gold" | "success" | "muted" | "error"> = {
 export default function AdminOrders() {
   const { orders, setOrderStatus } = useAdmin();
   const [filter, setFilter] = useState<AdminOrder["status"] | "all">("all");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const filtered = orders.filter((o) => filter === "all" || o.status === filter);
 

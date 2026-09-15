@@ -13,12 +13,13 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-background-secondary">
+    <section className="relative overflow-hidden border-t border-border bg-background-secondary">
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, transparent 0 40px, #c9a96e 40px 42px)",
+          background:
+            "radial-gradient(50% 100% at 50% 0%, rgba(198,161,91,0.07) 0%, transparent 70%)",
         }}
       />
       <div className="relative mx-auto max-w-2xl px-4 py-16 text-center sm:px-6">

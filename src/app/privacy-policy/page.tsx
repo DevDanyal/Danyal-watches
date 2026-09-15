@@ -39,7 +39,7 @@ const sections = [
   {
     heading: "Your Rights",
     body: [
-      "You can request a copy of the personal data we hold about you, or ask us to correct or delete your information at any time by contacting us at info@crysmawatches.com.",
+      "You can request a copy of the personal data we hold about you, or ask us to correct or delete your information at any time by contacting us at aidevdanyal@gmail.com.",
     ],
   },
   {

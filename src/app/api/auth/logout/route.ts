@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { ok } from "@/lib/api";
 
 export async function POST() {
   const res = NextResponse.json({ ok: true, data: { loggedOut: true } });

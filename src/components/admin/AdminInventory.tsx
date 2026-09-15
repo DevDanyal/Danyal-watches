@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { AlertTriangle, Search } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
-import { SectionTitle, Card, Badge, Input, GhostBtn } from "@/components/admin/ui";
+import { SectionTitle, Card, Badge, GhostBtn } from "@/components/admin/ui";
 
 export default function AdminInventory() {
   const { products, updateProduct } = useAdmin();

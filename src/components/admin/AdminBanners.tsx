@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Plus, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
-import { useAdmin, type Banner } from "@/context/AdminContext";
+import { useAdmin } from "@/context/AdminContext";
 import { SectionTitle, Card, Input, PrimaryBtn } from "@/components/admin/ui";
 
 export default function AdminBanners() {

@@ -31,7 +31,15 @@ const statusStyles: Record<string, string> = {
 export default function AccountDashboard() {
   const { user, logout, updateProfile } = useAuth();
   const [tab, setTab] = useState<Tab>("dashboard");
-  const [orders, setOrders] = useState<SavedOrder[]>([]);
+  const [orders, setOrders] = useState<SavedOrder[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("crysma_orders") ?? "[]");
+      return stored.filter((o: SavedOrder) => o.shipping.email === user?.email);
+    } catch {
+      return [];
+    }
+  });
   const [form, setForm] = useState({
     name: user?.name ?? "",
     email: user?.email ?? "",
@@ -41,16 +49,21 @@ export default function AccountDashboard() {
   });
 
   useEffect(() => {
-    try {
-      const stored = JSON.parse(window.localStorage.getItem("crysma_orders") ?? "[]");
-      setOrders(stored.filter((o: SavedOrder) => o.shipping.email === user?.email));
-    } catch {
-      // ignore
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const firstName = user?.name?.split(" ")[0] ?? "there";
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      try {
+        const stored = JSON.parse(window.localStorage.getItem("crysma_orders") ?? "[]");
+        const filtered = stored.filter((o: SavedOrder) => o.shipping.email === user?.email);
+        if (!cancelled) setOrders(filtered);
+      } catch {
+        /* ignore */
+      }
+    }, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [user?.email]);
 
   const handleSaveProfile = () => {
     updateProfile(form);
@@ -177,7 +190,7 @@ function Dashboard({ orderCount }: { orderCount: number }) {
             href="/collections/men"
             className="rounded-xl border border-background-secondary px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-accent-gold/40 hover:text-accent-gold"
           >
-            Shop Men's Watches →
+            Shop Men&apos;s Watches →
           </Link>
           <Link href="/track-order" className="rounded-xl border border-background-secondary px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-accent-gold/40 hover:text-accent-gold">
             Track an Order →

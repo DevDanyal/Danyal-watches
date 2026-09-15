@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useAdmin, type ManagedProduct } from "@/context/AdminContext";
 import { formatPrice } from "@/lib/data/products";
-import { SectionTitle, Card, Badge, Input, Select, PrimaryBtn, DangerBtn } from "@/components/admin/ui";
+import { SectionTitle, Card, Badge, Input, Select, PrimaryBtn } from "@/components/admin/ui";
 
 type Form = Omit<ManagedProduct, "id">;
 

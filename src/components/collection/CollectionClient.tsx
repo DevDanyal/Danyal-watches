@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, ChevronDown, X } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
-import { products, type Product } from "@/lib/data/products";
+import { products, getProductStock, type Product } from "@/lib/data/products";
 import { getCollection } from "@/lib/data/collections";
 import { cn } from "@/lib/utils";
 
@@ -72,6 +72,12 @@ export default function CollectionClient({
       );
     }
 
+    if (collection?.keyword) {
+      list = list.filter((p) =>
+        p.subtitle.toLowerCase().includes(collection.keyword!.toLowerCase())
+      );
+    }
+
     return list;
   }, [slug, collection]);
 
@@ -97,7 +103,7 @@ export default function CollectionClient({
     }
 
     if (inStockOnly) {
-      list = list.filter(() => true);
+      list = list.filter((p) => getProductStock(p) > 0);
     }
 
     switch (sort) {

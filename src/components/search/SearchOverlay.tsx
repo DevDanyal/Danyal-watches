@@ -105,7 +105,7 @@ export default function SearchOverlay() {
                 </div>
               ) : debounced.length === 0 ? (
                 <p className="py-6 text-center text-sm text-text-secondary">
-                  No products found for "<span className="text-text-primary">{query}</span>"
+                  No products found for &quot;<span className="text-text-primary">{query}</span>&quot;
                 </p>
               ) : (
                 <div className="flex max-h-[50vh] flex-col gap-1 overflow-y-auto pr-1">

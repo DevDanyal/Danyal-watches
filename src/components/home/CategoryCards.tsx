@@ -9,13 +9,13 @@ const categories = [
   {
     name: "Men",
     href: "/collections/men",
-    image: "/images/home/images (3).jpg",
+    image: "/images/home/images (7).jpg",
     span: "lg:col-span-2 lg:row-span-2",
   },
   {
     name: "Women",
     href: "/collections/women",
-    image: "/images/home/images (4).jpg",
+    image: "/images/home/images (8).jpg",
     span: "",
   },
   {
@@ -33,7 +33,7 @@ const categories = [
   {
     name: "Luxury Series",
     href: "/collections/men-luxury",
-    image: "/images/home/images (7).jpg",
+    image: "/images/home/images (27).jpg",
     span: "lg:col-span-2",
   },
 ];
@@ -63,15 +63,15 @@ export default function CategoryCards() {
           >
             <Link
               href={cat.href}
-              className="group relative block h-full w-full overflow-hidden rounded-xl"
+              className="group relative block h-full w-full overflow-hidden rounded-xl border border-border"
             >
               <div className={cn("relative overflow-hidden", i === 0 ? "h-full min-h-[320px]" : "aspect-[4/3]")}>
                 <Image
                   src={cat.image}
                   alt={`${cat.name} watches`}
                   fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 40vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">

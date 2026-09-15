@@ -41,21 +41,22 @@ export default function FlashSaleTimer() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-accent-gold to-accent-gold-light">
+    <section className="relative overflow-hidden border-y border-border bg-card-background">
       <div
-        className="pointer-events-none absolute inset-0 opacity-10"
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, transparent 0 32px, #000 32px 34px)",
+          background:
+            "radial-gradient(60% 120% at 10% 50%, rgba(198,161,91,0.08) 0%, transparent 60%)",
         }}
       />
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-10 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-12 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
-          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-black/70">
+          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent-gold">
             <Flame className="h-4 w-4" />
             Limited Time Offer
           </span>
-          <h2 className="font-serif text-2xl font-bold text-black sm:text-3xl">
+          <h2 className="font-serif text-2xl font-bold text-text-primary sm:text-3xl">
             FLASH SALE — Up to 30% OFF
           </h2>
         </div>
@@ -64,9 +65,9 @@ export default function FlashSaleTimer() {
           {units.map((unit) => (
             <div
               key={unit.label}
-              className="flex h-20 w-16 flex-col items-center justify-center rounded-xl bg-black text-white shadow-lg sm:h-24 sm:w-20"
+              className="flex h-20 w-16 flex-col items-center justify-center gap-1 rounded-xl border border-border bg-background shadow-lg shadow-black/30 sm:h-24 sm:w-20"
             >
-              <span className="text-2xl font-bold tabular-nums sm:text-3xl">
+              <span className="font-montserrat text-2xl font-bold tabular-nums text-accent-gold sm:text-3xl">
                 {pad(unit.value)}
               </span>
               <span className="text-[10px] font-medium uppercase tracking-wider text-text-secondary">
@@ -78,7 +79,7 @@ export default function FlashSaleTimer() {
 
         <Link
           href="/collections/sale"
-          className="inline-flex items-center justify-center rounded-full bg-black px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-accent-gold transition-all duration-300 hover:scale-105"
+          className="inline-flex items-center justify-center rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:bg-accent-gold-light hover:scale-[1.03]"
         >
           Shop Now
         </Link>

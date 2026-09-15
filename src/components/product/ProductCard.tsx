@@ -4,17 +4,41 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { ShoppingBag, Star, Heart } from "lucide-react";
-import { formatPrice, getDiscountPercent, type Product } from "@/lib/data/products";
+import {
+  formatPrice,
+  getDiscountPercent,
+  getProductStock,
+  type Product,
+} from "@/lib/data/products";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { cn } from "@/lib/utils";
 
 export default function ProductCard({ product }: { product: Product }) {
   const [hovering, setHovering] = useState(false);
+  const { addItem } = useCart();
+  const { isWishlisted, toggle } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
+  const stock = getProductStock(product);
+  const outOfStock = stock === 0;
 
   const discount = getDiscountPercent(product);
 
+  const handleAdd = () =>
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      subtitle: product.subtitle,
+      price: product.price,
+      regularPrice: product.regularPrice,
+      image: product.images[0],
+      color: product.colors[0]?.name,
+    });
+
   return (
     <div
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-background-secondary bg-card-background transition-all duration-300 hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-xl hover:shadow-black/50"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card-background transition-all duration-300 hover:-translate-y-1 hover:border-accent-gold/50 hover:shadow-2xl hover:shadow-black/30"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
@@ -61,17 +85,40 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
+        {outOfStock && (
+          <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-xs font-bold uppercase tracking-[0.25em] text-white backdrop-blur-[1px]">
+            Out of Stock
+          </span>
+        )}
+
         <button
-          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-sale-badge group-hover:opacity-100"
-          aria-label="Add to wishlist"
+          onClick={(e) => {
+            e.preventDefault();
+            toggle(product.id);
+          }}
+          aria-label="Toggle wishlist"
+          className={cn(
+            "absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 hover:scale-110",
+            wishlisted
+              ? "bg-sale-badge text-white"
+              : "bg-black/50 text-white backdrop-blur-sm hover:bg-sale-badge",
+            "opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+          )}
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={cn("h-4 w-4", wishlisted && "fill-current")} />
         </button>
 
-        <div className="absolute inset-x-0 bottom-0 translate-y-full bg-accent-gold p-3 transition-all duration-300 group-hover:translate-y-0">
-          <button className="flex w-full items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-black">
+        <div className="absolute inset-x-0 bottom-0 hidden translate-y-full border-t border-border bg-black/90 p-3 backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 lg:block">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleAdd();
+            }}
+            disabled={outOfStock}
+            className="flex w-full items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-gold disabled:cursor-not-allowed disabled:opacity-40"
+          >
             <ShoppingBag className="h-3.5 w-3.5" />
-            Add to Cart
+            {outOfStock ? "Out of Stock" : "Add to Cart"}
           </button>
         </div>
       </Link>
@@ -105,6 +152,14 @@ export default function ProductCard({ product }: { product: Product }) {
               </span>
             )}
           </div>
+          <button
+            onClick={handleAdd}
+            disabled={outOfStock}
+            aria-label="Add to cart"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-gold text-black transition-all active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 lg:hidden"
+          >
+            <ShoppingBag className="h-4 w-4" />
+          </button>
         </div>
 
         {product.colors.length > 0 && (

@@ -4,7 +4,7 @@ import { OrderModel } from "@/lib/models";
 import { getSession, requireAdmin } from "@/lib/auth";
 import { ok, err } from "@/lib/api";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const conn = await connectToDb();
   if (!conn) return err("Database not configured.", 503);
 

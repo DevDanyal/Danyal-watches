@@ -15,7 +15,8 @@ const slides = [
       "Precision timepieces for men, women & couples. Swiss-inspired design. Exceptional value.",
     cta: "Shop Men",
     href: "/collections/men",
-    image: "/images/home/images.jpg",
+    image: "/images/home/images (8).jpg",
+    alt: "CRYSMA men's luxury watch",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const slides = [
     cta: "Shop Sale",
     href: "/collections/sale",
     image: "/images/home/images (1).jpg",
+    alt: "CRYSMA watch on sale",
   },
   {
     id: 3,
@@ -35,7 +37,8 @@ const slides = [
       "Refined women's luxury watches — bracelets, chains and statement pieces.",
     cta: "Shop Women",
     href: "/collections/women",
-    image: "/images/home/images (2).jpg",
+    image: "/images/home/images (6).jpg",
+    alt: "CRYSMA women's luxury watch",
   },
 ];
 
@@ -49,99 +52,147 @@ export default function Hero() {
   );
 
   useEffect(() => {
-    const timer = setInterval(next, 6000);
+    const timer = setInterval(next, 7000);
     return () => clearInterval(timer);
   }, [next]);
 
+  const slide = slides[current];
+
   return (
-    <section className="relative min-h-[70vh] overflow-hidden bg-background sm:min-h-[85vh]" aria-roledescription="carousel" aria-label="Featured collections">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={slides[current].image}
-            alt={slides[current].title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+    <section
+      className="relative overflow-hidden bg-background"
+      aria-roledescription="carousel"
+      aria-label="Featured collections"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 -top-40 h-[42rem] w-[42rem] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(198,161,91,0.10) 0%, transparent 65%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-64 -left-40 h-[36rem] w-[36rem] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(198,161,91,0.06) 0%, transparent 60%)",
+        }}
+      />
 
-      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-7xl flex-col justify-center px-4 py-20 sm:min-h-[85vh] sm:px-6 lg:px-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-xl"
-          >
-            <span className="inline-block rounded-full border border-accent-gold/40 bg-accent-gold/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent-gold">
-              {slides[current].kicker}
-            </span>
-            <h1 className="mt-6 whitespace-pre-line font-serif text-4xl font-bold leading-tight text-text-primary sm:text-5xl lg:text-6xl">
-              {slides[current].title}
-            </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg">
-              {slides[current].subtitle}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href={slides[current].href}
-                className="inline-flex items-center justify-center rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:scale-105 hover:bg-accent-gold-light"
-              >
-                {slides[current].cta}
-              </Link>
-              <Link
-                href="/collections/couple"
-                className="inline-flex items-center justify-center rounded-full border border-text-secondary/40 px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-text-primary transition-all duration-300 hover:border-accent-gold hover:text-accent-gold"
-              >
-                Shop Couple
-              </Link>
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+        <div className="relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <span className="inline-flex items-center gap-2 rounded-full border border-accent-gold/30 bg-accent-gold-soft px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent-gold">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-gold" />
+                {slide.kicker}
+              </span>
+              <h1 className="mt-6 whitespace-pre-line font-serif text-4xl font-bold leading-tight text-text-primary sm:text-5xl lg:text-6xl">
+                {slide.title}
+              </h1>
+              <p className="mt-6 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg">
+                {slide.subtitle}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href={slide.href}
+                  className="inline-flex items-center justify-center rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:bg-accent-gold-light hover:scale-[1.03]"
+                >
+                  {slide.cta}
+                </Link>
+                <Link
+                  href="/collections/couple"
+                  className="inline-flex items-center justify-center rounded-full border border-text-secondary/30 px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-text-primary transition-all duration-300 hover:border-accent-gold hover:text-accent-gold"
+                >
+                  Shop Couple
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="relative hidden sm:block">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 scale-90 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(198,161,91,0.14) 0%, transparent 62%)",
+            }}
+          />
+          <div className="relative mx-auto max-w-[420px]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-card-background">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={current}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={slide.image}
+                    alt={slide.alt}
+                    fill
+                    priority={current === 0}
+                    sizes="(max-width: 1024px) 0vw, 420px"
+                    className="object-cover"
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
-          </motion.div>
-        </AnimatePresence>
+            <div className="absolute -left-6 bottom-8 hidden rounded-xl border border-border bg-card-background/90 px-5 py-3 shadow-2xl shadow-black/40 backdrop-blur-md lg:block">
+              <p className="font-serif text-lg font-bold text-accent-gold">
+                {slide.kicker}
+              </p>
+              <p className="text-[11px] uppercase tracking-wider text-text-secondary">
+                CRYSMA Collection
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="absolute bottom-16 right-4 z-10 flex items-center gap-3 sm:bottom-20 sm:right-8">
-        <button
-          onClick={prev}
-          aria-label="Previous slide"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-text-secondary/30 text-text-primary backdrop-blur-sm transition-all hover:border-accent-gold hover:text-accent-gold"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-        <button
-          onClick={next}
-          aria-label="Next slide"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-text-secondary/30 text-text-primary backdrop-blur-sm transition-all hover:border-accent-gold hover:text-accent-gold"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2">
-        {slides.map((slide, i) => (
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2">
+          {slides.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-8 bg-accent-gold"
+                  : "w-3 bg-text-secondary/30 hover:bg-text-secondary/50"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-3">
           <button
-            key={slide.id}
-            onClick={() => setCurrent(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === current ? "w-10 bg-accent-gold" : "w-4 bg-text-secondary/40"
-            }`}
-          />
-        ))}
+            onClick={prev}
+            aria-label="Previous slide"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card-background text-text-primary transition-all hover:border-accent-gold hover:text-accent-gold"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={next}
+            aria-label="Next slide"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card-background text-text-primary transition-all hover:border-accent-gold hover:text-accent-gold"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </section>
   );

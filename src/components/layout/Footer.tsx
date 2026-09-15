@@ -26,34 +26,13 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function YoutubeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-      <path d="m10 15 5-3-5-3z" />
-    </svg>
-  );
-}
-
 const socialIcons = [
-  { icon: FacebookIcon, href: "https://facebook.com", label: "Facebook" },
-  { icon: InstagramIcon, href: "https://instagram.com", label: "Instagram" },
-  { icon: YoutubeIcon, href: "https://youtube.com", label: "YouTube" },
+  { icon: FacebookIcon, href: "https://www.facebook.com/profile.php?id=61588412626664", label: "Facebook" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-background-secondary bg-background-secondary">
+    <footer className="mt-auto border-t border-border bg-background-secondary">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 pb-10 lg:pb-8">
           <div>
@@ -116,19 +95,19 @@ export default function Footer() {
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0 text-accent-gold" />
                 <a
-                  href="mailto:info@crysmawatches.com"
+                  href="mailto:aidevdanyal@gmail.com"
                   className="transition-colors hover:text-accent-gold"
                 >
-                  info@crysmawatches.com
+                  aidevdanyal@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0 text-accent-gold" />
                 <a
-                  href="tel:+923000279762"
+                  href="tel:+923464141007"
                   className="transition-colors hover:text-accent-gold"
                 >
-                  +92 300 0279762
+                  +92 346 4141007
                 </a>
               </li>
             </ul>
@@ -149,7 +128,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-background-secondary pt-6 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-xs text-text-secondary">
             © {new Date().getFullYear()} CRYSMA Watches. All rights reserved.
           </p>

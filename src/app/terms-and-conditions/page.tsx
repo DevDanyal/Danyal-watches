@@ -56,7 +56,7 @@ const sections = [
   {
     heading: "Contact",
     body: [
-      "For questions about these Terms & Conditions, contact us at info@crysmawatches.com or +92 300 0279762.",
+      "For questions about these Terms & Conditions, contact us at aidevdanyal@gmail.com or +92 346 4141007.",
     ],
   },
 ];

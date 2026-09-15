@@ -12,8 +12,10 @@ export function generateStaticParams() {
     "men-strap",
     "men-chain",
     "women",
+    "women-luxury",
     "women-chain",
     "couple",
+    "couple-chain",
     "sale",
     "featured",
     "best-sellers",
@@ -29,6 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${collection.name} | CRYSMA Watches`,
     description: collection.description,
+    openGraph: {
+      title: `${collection.name} | CRYSMA Watches`,
+      description: collection.description,
+      type: "website",
+      images: ["/images/home/images (8).jpg"],
+    },
   };
 }
 

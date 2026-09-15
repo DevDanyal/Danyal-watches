@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { StatCard, Card, Badge } from "@/components/admin/ui";
-import { cn } from "@/lib/utils";
 
 const revenueSeries = [18, 32, 28, 45, 38, 52, 60, 55, 72, 68, 85, 98];
 const orderSeries = [6, 9, 8, 12, 11, 14, 16, 15, 19, 18, 22, 27];

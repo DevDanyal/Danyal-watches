@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Upload, Trash2, ExternalLink } from "lucide-react";
+import { Upload, ExternalLink } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { SectionTitle, Card, PrimaryBtn } from "@/components/admin/ui";
 

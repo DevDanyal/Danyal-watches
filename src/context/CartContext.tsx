@@ -41,17 +41,16 @@ function itemKey(id: string, color?: string) {
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const saved = localStorage.getItem("crysma-cart");
-      if (saved) setItems(JSON.parse(saved));
+      return saved ? (JSON.parse(saved) as CartItem[]) : [];
     } catch {
-      /* ignore */
+      return [];
     }
-  }, []);
+  });
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     try {

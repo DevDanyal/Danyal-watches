@@ -6,13 +6,14 @@ export default function BrandStory() {
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="relative">
-          <div className="overflow-hidden rounded-xl">
+          <div className="overflow-hidden rounded-2xl border border-border">
             <Image
-              src="/images/home/images (11).jpg"
+              src="/images/home/pro.jpg"
               alt="CRYSMA watch craftsmanship"
-              width={640}
-              height={640}
+              width={1074}
+              height={1354}
               className="aspect-[4/5] object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
           <div className="absolute -bottom-4 -right-4 hidden rounded-xl border border-accent-gold/30 bg-card-background px-6 py-4 shadow-xl sm:block">

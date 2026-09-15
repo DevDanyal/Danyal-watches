@@ -117,6 +117,8 @@ export default function CheckoutClient() {
     province: "",
   });
   const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [card, setCard] = useState({ number: "", expiry: "", cvv: "", name: "" });
+  const [formError, setFormError] = useState("");
   const [orderId] = useState(() =>
     `CRYSMA-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
   );
@@ -124,8 +126,68 @@ export default function CheckoutClient() {
   const shippingCost = subtotal > 0 ? 0 : 0;
   const total = subtotal + shippingCost;
 
-  const updateShipping = (field: string, value: string) =>
+  const updateShipping = (field: string, value: string) => {
     setShipping((prev) => ({ ...prev, [field]: value }));
+    setFormError("");
+  };
+
+  const validateShipping = (): boolean => {
+    if (!shipping.firstName.trim() || !shipping.lastName.trim()) {
+      setFormError("Please enter your full name.");
+      return false;
+    }
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shipping.email.trim());
+    if (!emailOk) {
+      setFormError("Please enter a valid email address.");
+      return false;
+    }
+    const phoneOk = shipping.phone.replace(/\D/g, "").length >= 10;
+    if (!phoneOk) {
+      setFormError("Please enter a valid phone number.");
+      return false;
+    }
+    if (!shipping.address.trim() || !shipping.city.trim() || !shipping.province) {
+      setFormError("Please complete your shipping address.");
+      return false;
+    }
+    return true;
+  };
+
+  const validatePayment = (): boolean => {
+    if (paymentMethod !== "card") return true;
+    const digits = card.number.replace(/\s/g, "");
+    if (digits.length < 12) {
+      setFormError("Please enter a valid card number.");
+      return false;
+    }
+    if (!/^\d{2}\/\d{2}$/.test(card.expiry.trim())) {
+      setFormError("Please enter the card expiry as MM/YY.");
+      return false;
+    }
+    if (!/^\d{3,4}$/.test(card.cvv.trim())) {
+      setFormError("Please enter a valid CVV.");
+      return false;
+    }
+    if (!card.name.trim()) {
+      setFormError("Please enter the cardholder name.");
+      return false;
+    }
+    return true;
+  };
+
+  const placeOrder = () => {
+    if (!validatePayment()) return;
+    saveOrder({
+      orderId,
+      items,
+      total,
+      shipping,
+      paymentMethod,
+      date: new Date().toISOString(),
+    });
+    clearCart();
+    setStep("confirmation");
+  };
 
   if (items.length === 0 && step !== "confirmation") {
     return (
@@ -264,8 +326,15 @@ export default function CheckoutClient() {
                     </select>
                   </div>
                 </div>
+                {formError && step !== "confirmation" && (
+                  <p className="mt-4 rounded-lg border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+                    {formError}
+                  </p>
+                )}
                 <button
-                  onClick={() => setStep("payment")}
+                  onClick={() => {
+                    if (validateShipping()) setStep("payment");
+                  }}
                   className="mt-6 w-full rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light"
                 >
                   Continue to Payment
@@ -334,10 +403,31 @@ export default function CheckoutClient() {
 
                 {paymentMethod === "card" && (
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <Input label="Card Number" placeholder="1234 5678 9012 3456" className="sm:col-span-2" />
-                    <Input label="Expiry" placeholder="MM/YY" />
-                    <Input label="CVV" placeholder="123" />
-                    <Input label="Cardholder Name" className="sm:col-span-2" />
+                    <Input
+                      label="Card Number"
+                      placeholder="1234 5678 9012 3456"
+                      className="sm:col-span-2"
+                      value={card.number}
+                      onChange={(v) => setCard((c) => ({ ...c, number: v }))}
+                    />
+                    <Input
+                      label="Expiry"
+                      placeholder="MM/YY"
+                      value={card.expiry}
+                      onChange={(v) => setCard((c) => ({ ...c, expiry: v }))}
+                    />
+                    <Input
+                      label="CVV"
+                      placeholder="123"
+                      value={card.cvv}
+                      onChange={(v) => setCard((c) => ({ ...c, cvv: v }))}
+                    />
+                    <Input
+                      label="Cardholder Name"
+                      className="sm:col-span-2"
+                      value={card.name}
+                      onChange={(v) => setCard((c) => ({ ...c, name: v }))}
+                    />
                   </div>
                 )}
 
@@ -349,18 +439,7 @@ export default function CheckoutClient() {
                     Back
                   </button>
                   <button
-                    onClick={() => {
-                      saveOrder({
-                        orderId,
-                        items,
-                        total,
-                        shipping,
-                        paymentMethod,
-                        date: new Date().toISOString(),
-                      });
-                      clearCart();
-                      setStep("confirmation");
-                    }}
+                    onClick={placeOrder}
                     className="flex flex-1 items-center justify-center gap-2 rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light"
                   >
                     <ShieldCheck className="h-4 w-4" />

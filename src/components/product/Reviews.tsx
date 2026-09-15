@@ -1,49 +1,51 @@
-import { Star } from "lucide-react";
+"use client";
+
+import { useMemo, useState } from "react";
+import { Star, X } from "lucide-react";
+import type { Product } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
 
 type Review = {
+  id: string;
   name: string;
   rating: number;
   date: string;
   comment: string;
-  verified?: boolean;
+  verified: boolean;
 };
 
-const sampleReviews: Review[] = [
-  {
-    name: "Ahmed R.",
-    rating: 5,
-    date: "Aug 28, 2026",
-    comment:
-      "Excellent quality watch. The gold finish looks premium and the strap is very comfortable. Shipped in 3 days!",
-    verified: true,
-  },
-  {
-    name: "Fatima K.",
-    rating: 4,
-    date: "Aug 15, 2026",
-    comment:
-      "Beautiful timepiece, matches the photos perfectly. Slight delay in delivery but worth the wait.",
-    verified: true,
-  },
-  {
-    name: "Bilal S.",
-    rating: 5,
-    date: "Jul 30, 2026",
-    comment:
-      "Bought this for my father's birthday. He absolutely loves it. Great customer service too.",
-    verified: true,
-  },
+const pool: Review[] = [
+  { id: "seed-1", name: "Ahmed R.", rating: 5, date: "Aug 28, 2026", comment: "Excellent quality watch. The gold finish looks premium and the strap is very comfortable. Shipped in 3 days!", verified: true },
+  { id: "seed-2", name: "Fatima K.", rating: 4, date: "Aug 15, 2026", comment: "Beautiful timepiece, matches the photos perfectly. Slight delay in delivery but worth the wait.", verified: true },
+  { id: "seed-3", name: "Bilal S.", rating: 5, date: "Jul 30, 2026", comment: "Bought this for my father's birthday. He absolutely loves it. Great customer service too.", verified: true },
+  { id: "seed-4", name: "Ayesha M.", rating: 5, date: "Jul 12, 2026", comment: "Looks even better in person. Very satisfied with the purchase and packaging.", verified: true },
+  { id: "seed-5", name: "Usman T.", rating: 4, date: "Jun 26, 2026", comment: "Solid build quality for the price. The dial is stunning in natural light.", verified: true },
+  { id: "seed-6", name: "Mariam F.", rating: 3, date: "Jun 9, 2026", comment: "Nice watch overall, delivery took a little longer than expected but the product is good.", verified: true },
 ];
 
-function Stars({ rating }: { rating: number }) {
+function hashId(product: Product): number {
+  let h = 0;
+  for (const ch of product.id + product.slug) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return Math.abs(h);
+}
+
+function loadUserReviews(productId: string): Review[] {
+  try {
+    const raw = window.localStorage.getItem(`crysma_reviews_${productId}`);
+    return raw ? (JSON.parse(raw) as Review[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function Stars({ rating, size = "md" }: { rating: number; size?: "md" | "sm" }) {
   return (
     <span className="flex items-center gap-0.5 text-accent-gold">
       {[1, 2, 3, 4, 5].map((s) => (
         <Star
           key={s}
           className={cn(
-            "h-4 w-4",
+            size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4",
             s <= rating ? "fill-current" : "fill-current opacity-25"
           )}
         />
@@ -52,14 +54,78 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-export default function Reviews({ rating, count }: { rating: number; count: number }) {
-  const breakdown = [
-    { stars: 5, pct: 78 },
-    { stars: 4, pct: 16 },
-    { stars: 3, pct: 4 },
-    { stars: 2, pct: 1 },
-    { stars: 1, pct: 1 },
-  ];
+export default function Reviews({ product }: { product: Product }) {
+  const seedCount = Math.max(3, product.reviews % pool.length || 3);
+  const offset = hashId(product) % pool.length;
+
+  const seedReviews = useMemo(() => {
+    const ordered: Review[] = [];
+    for (let i = 0; i < seedCount; i++) {
+      ordered.push(pool[(offset + i) % pool.length]);
+    }
+    return ordered;
+  }, [offset, seedCount]);
+
+  const [userReviews, setUserReviews] = useState<Review[]>(() =>
+    loadUserReviews(product.id)
+  );
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
+  const [thanks, setThanks] = useState(false);
+
+  const allReviews = useMemo(
+    () => [...userReviews, ...seedReviews],
+    [userReviews, seedReviews]
+  );
+
+  const breakdown = useMemo(() => {
+    const buckets = [0, 0, 0, 0, 0];
+    allReviews.forEach((r) => {
+      const idx = Math.min(5, Math.max(1, Math.round(r.rating))) - 1;
+      buckets[idx] += 1;
+    });
+    const total = allReviews.length || 1;
+    return [5, 4, 3, 2, 1].map((stars, i) => ({
+      stars,
+      pct: Math.round((buckets[i] / total) * 100),
+    }));
+  }, [allReviews]);
+
+  const avg = useMemo(
+    () =>
+      allReviews.length
+        ? Math.round((allReviews.reduce((a, r) => a + r.rating, 0) / allReviews.length) * 10) / 10
+        : product.rating,
+    [allReviews, product.rating]
+  );
+
+  const submitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.comment.trim()) return;
+    const next: Review = {
+      id: `user-${Date.now()}`,
+      name: form.name.trim(),
+      rating: form.rating,
+      date: new Date().toLocaleDateString("en-PK", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      comment: form.comment.trim(),
+      verified: false,
+    };
+    const updated = [next, ...userReviews];
+    setUserReviews(updated);
+    try {
+      window.localStorage.setItem(`crysma_reviews_${product.id}`, JSON.stringify(updated));
+    } catch {
+      /* ignore */
+    }
+    setForm({ name: "", rating: 5, comment: "" });
+    setShowForm(false);
+    setThanks(true);
+    window.setTimeout(() => setThanks(false), 4000);
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -72,17 +138,21 @@ export default function Reviews({ rating, count }: { rating: number; count: numb
         </h2>
       </div>
 
+      {thanks && (
+        <div className="mx-auto mb-6 max-w-lg rounded-xl border border-success/40 bg-success/10 px-5 py-4 text-center text-sm font-medium text-success">
+          Thank you! Your review has been published below.
+        </div>
+      )}
+
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="rounded-xl border border-background-secondary bg-card-background p-6 lg:col-span-1">
           <div className="text-center">
-            <span className="font-serif text-5xl font-bold text-text-primary">
-              {rating}
-            </span>
+            <span className="font-serif text-5xl font-bold text-text-primary">{avg}</span>
             <div className="mt-3 flex justify-center">
-              <Stars rating={Math.round(rating)} />
+              <Stars rating={Math.round(avg)} />
             </div>
             <p className="mt-2 text-sm text-text-secondary">
-              Based on {count} reviews
+              Based on {allReviews.length} reviews
             </p>
           </div>
 
@@ -98,22 +168,89 @@ export default function Reviews({ rating, count }: { rating: number; count: numb
                     style={{ width: `${b.pct}%` }}
                   />
                 </div>
-                <span className="w-8 text-right text-xs text-text-secondary">
-                  {b.pct}%
-                </span>
+                <span className="w-8 text-right text-xs text-text-secondary">{b.pct}%</span>
               </div>
             ))}
           </div>
 
-          <button className="mt-6 w-full rounded-full bg-accent-gold py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light">
+          <button
+            onClick={() => setShowForm(true)}
+            className="mt-6 w-full rounded-full bg-accent-gold py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light"
+          >
             Write a Review
           </button>
         </div>
 
-        <div className="lg:col-span-2 space-y-4">
-          {sampleReviews.map((review) => (
+        <div className="space-y-4 lg:col-span-2">
+          {showForm && (
+            <form
+              onSubmit={submitReview}
+              className="rounded-xl border border-accent-gold/30 bg-card-background p-6"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-serif text-lg font-bold text-text-primary">
+                  Share your experience
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  aria-label="Close review form"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-background-secondary text-text-secondary hover:text-text-primary"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Your name"
+                  required
+                  className="h-12 rounded-xl border border-background-secondary bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                />
+                <div className="flex items-center gap-3 rounded-xl border border-background-secondary bg-background px-4">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                    Rating
+                  </span>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <button
+                        type="button"
+                        key={s}
+                        onClick={() => setForm({ ...form, rating: s })}
+                        aria-label={`${s} stars`}
+                      >
+                        <Star
+                          className={cn(
+                            "h-5 w-5 transition-colors",
+                            s <= form.rating ? "fill-current text-accent-gold" : "text-text-secondary"
+                          )}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <textarea
+                  value={form.comment}
+                  onChange={(e) => setForm({ ...form, comment: e.target.value })}
+                  placeholder="Tell us about your experience…"
+                  required
+                  rows={3}
+                  className="w-full rounded-xl border border-background-secondary bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold sm:col-span-2"
+                />
+              </div>
+              <button
+                type="submit"
+                className="mt-4 rounded-full bg-accent-gold px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-accent-gold-light"
+              >
+                Submit Review
+              </button>
+            </form>
+          )}
+
+          {allReviews.map((review) => (
             <div
-              key={review.name}
+              key={review.id}
               className="rounded-xl border border-background-secondary bg-card-background p-6"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -127,6 +264,11 @@ export default function Reviews({ rating, count }: { rating: number; count: numb
                       {review.verified && (
                         <span className="rounded bg-success/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-success">
                           Verified
+                        </span>
+                      )}
+                      {!review.verified && (
+                        <span className="rounded bg-accent-gold/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-accent-gold">
+                          New
                         </span>
                       )}
                     </p>

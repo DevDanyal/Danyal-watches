@@ -21,14 +21,15 @@ export default function AnnouncementBar() {
   }, []);
 
   return (
-    <div className="overflow-hidden bg-accent-gold text-black">
-      <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-1.5">
+    <div className="overflow-hidden border-b border-border bg-background-secondary text-text-primary">
+      <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2">
+        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent-gold" />
         <motion.p
           key={index}
           initial={{ y: 12, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="text-center text-xs font-medium tracking-wide sm:text-sm"
+          className="text-center text-xs font-medium tracking-wide text-accent-gold sm:text-sm"
         >
           {messages[index]}
         </motion.p>

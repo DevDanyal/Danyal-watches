@@ -4,12 +4,11 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   useCallback,
   useMemo,
   ReactNode,
 } from "react";
-import { products as seedProducts } from "@/lib/data/products";
+import { products as seedProducts, getProductStock } from "@/lib/data/products";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 
 export type ManagedProduct = {
@@ -63,6 +62,14 @@ export type Banner = {
   active: boolean;
 };
 
+export type ManagedCategory = {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  active: boolean;
+};
+
 export type Settings = {
   storeName: string;
   announcement: string;
@@ -87,6 +94,10 @@ type AdminStore = {
   addBanner: (b: Omit<Banner, "id">) => void;
   toggleBanner: (id: string) => void;
   deleteBanner: (id: string) => void;
+  categories: ManagedCategory[];
+  addCategory: (c: Omit<ManagedCategory, "id">) => void;
+  updateCategory: (id: string, c: Partial<ManagedCategory>) => void;
+  deleteCategory: (id: string) => void;
   settings: Settings;
   saveSettings: (s: Partial<Settings>) => void;
 };
@@ -139,53 +150,64 @@ const seedCustomers: () => CustomerRow[] = () =>
     spent: o.total,
   }));
 
-export function AdminProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<ManagedProduct[]>([]);
-  const [orders, setOrders] = useState<AdminOrder[]>([]);
-  const [customers, setCustomers] = useState<CustomerRow[]>([]);
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [settings, setSettings] = useState<Settings>({
-    storeName: "CRYSMA Watches",
-    announcement: "Free Shipping on orders over Rs.10,000 | 1 Year Warranty on all watches",
-    shippingFreeThreshold: 10000,
-    email: "info@crysmawatches.com",
-    phone: "+92 300 0279762",
-  });
-  const [ready, setReady] = useState(false);
+const seedCategories: () => ManagedCategory[] = () => [
+  { id: "cat-men", name: "Men", slug: "men", image: "/images/home/images (7).jpg", active: true },
+  { id: "cat-men-luxury", name: "Men's Luxury", slug: "men-luxury", image: "/images/home/images (27).jpg", active: true },
+  { id: "cat-men-strap", name: "Men's Strap", slug: "men-strap", image: "/images/home/images (6).jpg", active: true },
+  { id: "cat-men-chain", name: "Men's Chain", slug: "men-chain", image: "/images/home/images (8).jpg", active: true },
+  { id: "cat-women", name: "Women", slug: "women", image: "/images/home/images (8).jpg", active: true },
+  { id: "cat-women-luxury", name: "Women's Luxury", slug: "women-luxury", image: "/images/home/images (27).jpg", active: true },
+  { id: "cat-women-chain", name: "Women's Chain", slug: "women-chain", image: "/images/home/images (5).jpg", active: true },
+  { id: "cat-couple", name: "Couples", slug: "couple", image: "/images/home/images (5).jpg", active: true },
+  { id: "cat-couple-chain", name: "Couple's Chain", slug: "couple-chain", image: "/images/home/images (5).jpg", active: true },
+  { id: "cat-sale", name: "Sale", slug: "sale", image: "/images/home/images (1).jpg", active: true },
+];
 
-  useEffect(() => {
-    setProducts(
-      load<ManagedProduct[] | null>("products", null) ??
-        seedProducts.map((p, i) => ({
-          id: p.id,
-          name: p.name,
-          category: p.subtitle,
-          price: p.price,
-          sku: `CRL-${1000 + i}`,
-          stock: [12, 8, 3, 0, 15, 6, 2, 9][i % 8],
-          status: "published",
-          image: p.images[0],
-        }))
-    );
-    setOrders(load<AdminOrder[]>("all_orders", seedOrders()));
-    setCustomers(load<CustomerRow[]>("customers", seedCustomers()));
-    setCoupons(
-      load<Coupon[]>("coupons", [
-        { code: "CRYSMA10", type: "percentage", value: 10, minOrder: 5000, expires: "Dec 31, 2026", limit: 100, used: 12, active: true },
-        { code: "FLAT500", type: "flat", value: 500, minOrder: 3000, expires: "Nov 30, 2026", limit: 50, used: 3, active: true },
-      ])
-    );
-    setBanners(
-      load<Banner[]>("banners", [
-        { id: "b1", title: "Luxury Defined", subtitle: "New Season Collection — Up to 30% Off", cta: "Shop Now", image: seedProducts[0].images[0], active: true },
-        { id: "b2", title: "Couple Watches", subtitle: "Matching timepieces for two hearts", cta: "Explore", image: seedProducts[8].images[0], active: true },
-      ])
-    );
-    setSettings(load<Settings>("settings", settings));
-    setReady(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+export function AdminProvider({ children }: { children: ReactNode }) {
+  const [products, setProducts] = useState<ManagedProduct[]>(() =>
+    load<ManagedProduct[] | null>("products", null) ??
+      seedProducts.map((p, i) => ({
+        id: p.id,
+        name: p.name,
+        category: p.subtitle,
+        price: p.price,
+        sku: `CRL-${1000 + i}`,
+        stock: getProductStock(p),
+        status: "published",
+        image: p.images[0],
+      }))
+  );
+  const [orders, setOrders] = useState<AdminOrder[]>(() =>
+    load<AdminOrder[]>("all_orders", seedOrders())
+  );
+  const [customers] = useState<CustomerRow[]>(() =>
+    load<CustomerRow[]>("customers", seedCustomers())
+  );
+  const [coupons, setCoupons] = useState<Coupon[]>(() =>
+    load<Coupon[]>("coupons", [
+      { code: "CRYSMA10", type: "percentage", value: 10, minOrder: 5000, expires: "Dec 31, 2026", limit: 100, used: 12, active: true },
+      { code: "FLAT500", type: "flat", value: 500, minOrder: 3000, expires: "Nov 30, 2026", limit: 50, used: 3, active: true },
+    ])
+  );
+  const [banners, setBanners] = useState<Banner[]>(() =>
+    load<Banner[]>("banners", [
+      { id: "b1", title: "Luxury Defined", subtitle: "New Season Collection — Up to 30% Off", cta: "Shop Now", image: seedProducts[0].images[0], active: true },
+      { id: "b2", title: "Couple Watches", subtitle: "Matching timepieces for two hearts", cta: "Explore", image: seedProducts[8].images[0], active: true },
+    ])
+  );
+  const [categories, setCategories] = useState<ManagedCategory[]>(() =>
+    load<ManagedCategory[]>("categories", seedCategories())
+  );
+  const [settings, setSettings] = useState<Settings>(() =>
+    load<Settings>("settings", {
+      storeName: "CRYSMA Watches",
+      announcement: "Free Shipping on orders over Rs.10,000 | 1 Year Warranty on all watches",
+      shippingFreeThreshold: 10000,
+      email: "aidevdanyal@gmail.com",
+      phone: "+92 346 4141007",
+    })
+  );
+  const [ready] = useState(true);
 
   const persist = useCallback((key: string, value: unknown) => {
     if (typeof window !== "undefined")
@@ -293,6 +315,36 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     [persist]
   );
 
+  const addCategory = useCallback(
+    (c: Omit<ManagedCategory, "id">) =>
+      setCategories((prev) => {
+        const next = [...prev, { ...c, id: `cat-${Date.now()}` }];
+        persist("categories", next);
+        return next;
+      }),
+    [persist]
+  );
+
+  const updateCategory = useCallback(
+    (id: string, c: Partial<ManagedCategory>) =>
+      setCategories((prev) => {
+        const next = prev.map((x) => (x.id === id ? { ...x, ...c } : x));
+        persist("categories", next);
+        return next;
+      }),
+    [persist]
+  );
+
+  const deleteCategory = useCallback(
+    (id: string) =>
+      setCategories((prev) => {
+        const next = prev.filter((x) => x.id !== id);
+        persist("categories", next);
+        return next;
+      }),
+    [persist]
+  );
+
   const saveSettings = useCallback(
     (s: Partial<Settings>) =>
       setSettings((prev) => {
@@ -320,11 +372,15 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       addBanner,
       toggleBanner,
       deleteBanner,
+      categories,
+      addCategory,
+      updateCategory,
+      deleteCategory,
       settings,
       saveSettings,
       ready,
     }),
-    [products, addProduct, updateProduct, deleteProduct, orders, setOrderStatus, customers, coupons, addCoupon, toggleCoupon, deleteCoupon, banners, addBanner, toggleBanner, deleteBanner, settings, saveSettings, ready]
+    [products, addProduct, updateProduct, deleteProduct, orders, setOrderStatus, customers, coupons, addCoupon, toggleCoupon, deleteCoupon, banners, addBanner, toggleBanner, deleteBanner, categories, addCategory, updateCategory, deleteCategory, settings, saveSettings, ready]
   );
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;

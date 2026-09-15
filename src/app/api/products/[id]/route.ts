@@ -15,6 +15,9 @@ export async function PATCH(
   const { id } = await params;
   const body = await request.json();
   const { _id, createdAt, updatedAt, ...patch } = body;
+  void _id;
+  void createdAt;
+  void updatedAt;
 
   const product = await ProductModel.findByIdAndUpdate(id, patch, { new: true }).lean();
   if (!product) return err("Product not found.", 404);

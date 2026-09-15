@@ -73,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const found = readUsers().find((u) => u.email === email);
           if (found) {
             const { password: _pw, ...rest } = found;
+            void _pw;
             setUser(rest);
           }
         }
@@ -113,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (found.password !== password)
         return { ok: false, error: "Incorrect password. Please try again." };
       const { password: _pw, ...rest } = found;
+      void _pw;
       persistSession(rest);
       return { ok: true };
     },
@@ -144,6 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const newUser: StoredUser = { name, email, password, phone: "", city: "", address: "" };
     window.localStorage.setItem(USERS_KEY, JSON.stringify([...users, newUser]));
     const { password: _pw, ...rest } = newUser;
+    void _pw;
     persistSession(rest);
     return { ok: true };
   }, []);

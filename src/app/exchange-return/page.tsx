@@ -18,7 +18,7 @@ const sections = [
   {
     heading: "How to Initiate a Return",
     body: [
-      "Contact our support team via WhatsApp (+92 300 0279762) or email (info@crysmawatches.com) within 7 days of receiving your order.",
+      "Contact our support team via WhatsApp (+92 346 4141007) or email (aidevdanyal@gmail.com) within 7 days of receiving your order.",
       "Provide your order ID, the reason for return, and clear photos of the product in its current condition.",
       "Once approved, our team will guide you through the return process. For pickups in Lahore, returns can be processed at any of our store locations.",
     ],

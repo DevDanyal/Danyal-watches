@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 import { useAdmin, type Coupon } from "@/context/AdminContext";
-import { SectionTitle, Card, Badge, Input, Select, PrimaryBtn, DangerBtn } from "@/components/admin/ui";
+import { SectionTitle, Card, Badge, Input, Select, PrimaryBtn } from "@/components/admin/ui";
 
 export default function AdminCoupons() {
   const { coupons, addCoupon, toggleCoupon, deleteCoupon } = useAdmin();

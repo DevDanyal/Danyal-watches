@@ -1,19 +1,55 @@
 "use client";
 
 import { useState } from "react";
-import { Save } from "lucide-react";
+import { Save, KeyRound } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { SectionTitle, Card, Input, PrimaryBtn } from "@/components/admin/ui";
+
+const ACCOUNT_KEY = "crysma_admin_account";
 
 export default function AdminSettings() {
   const { settings, saveSettings } = useAdmin();
   const [form, setForm] = useState({ ...settings });
   const [saved, setSaved] = useState(false);
+  const [passForm, setPassForm] = useState({ current: "", next: "", next2: "" });
+  const [passMsg, setPassMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   const handleSave = () => {
     saveSettings(form);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handlePasswordChange = () => {
+    type Account = { email: string; password: string };
+    const read = (): Account | null => {
+      try {
+        const raw = window.localStorage.getItem(ACCOUNT_KEY);
+        return raw ? (JSON.parse(raw) as Account) : null;
+      } catch {
+        return null;
+      }
+    };
+    const account = read();
+    if (!account) {
+      setPassMsg({ ok: false, text: "Admin account not initialized." });
+      return;
+    }
+    if (passForm.current !== account.password) {
+      setPassMsg({ ok: false, text: "Current password is incorrect." });
+      return;
+    }
+    if (passForm.next.length < 6) {
+      setPassMsg({ ok: false, text: "New password must be at least 6 characters." });
+      return;
+    }
+    if (passForm.next !== passForm.next2) {
+      setPassMsg({ ok: false, text: "New passwords do not match." });
+      return;
+    }
+    window.localStorage.setItem(ACCOUNT_KEY, JSON.stringify({ ...account, password: passForm.next }));
+    setPassForm({ current: "", next: "", next2: "" });
+    setPassMsg({ ok: true, text: "Password updated successfully." });
   };
 
   return (
@@ -71,13 +107,41 @@ export default function AdminSettings() {
       </Card>
 
       <Card className="mt-6">
-        <h2 className="font-serif text-lg font-bold text-text-primary">Admin Password</h2>
+        <h2 className="flex items-center gap-2 font-serif text-lg font-bold text-text-primary">
+          <KeyRound className="h-5 w-5 text-accent-gold" /> Admin Password
+        </h2>
         <p className="mt-2 text-sm text-text-secondary">
-          Current admin password: <code className="rounded bg-background-secondary px-2 py-0.5 text-accent-gold">admin123</code>
+          Change the password used to sign in to this dashboard (applies to the
+          local admin account).
         </p>
-        <p className="mt-2 text-xs text-text-secondary">
-          For production, change this in <code>AdminShell.tsx</code> or add a real auth system.
-        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <Input
+            label="Current Password"
+            type="password"
+            value={passForm.current}
+            onChange={(e) => setPassForm({ ...passForm, current: e.target.value })}
+          />
+          <Input
+            label="New Password"
+            type="password"
+            value={passForm.next}
+            onChange={(e) => setPassForm({ ...passForm, next: e.target.value })}
+          />
+          <Input
+            label="Confirm New"
+            type="password"
+            value={passForm.next2}
+            onChange={(e) => setPassForm({ ...passForm, next2: e.target.value })}
+          />
+        </div>
+        {passMsg && (
+          <p className={passMsg.ok ? "mt-3 text-sm text-success" : "mt-3 text-sm text-error"}>
+            {passMsg.text}
+          </p>
+        )}
+        <div className="mt-4">
+          <PrimaryBtn onClick={handlePasswordChange}>Update Password</PrimaryBtn>
+        </div>
       </Card>
     </div>
   );

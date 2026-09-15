@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { formatPrice } from "@/lib/data/products";
-import { SectionTitle, Card, Badge } from "@/components/admin/ui";
+import { SectionTitle, Card } from "@/components/admin/ui";
 
 export default function AdminCustomers() {
   const { customers } = useAdmin();

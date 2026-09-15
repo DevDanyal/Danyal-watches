@@ -1,24 +1,190 @@
 "use client";
 
 import { useState } from "react";
-import { PackageSearch, Truck, CheckCircle2, Package, Search } from "lucide-react";
-import { motion } from "framer-motion";
+import Image from "next/image";
+import {
+  PackageSearch,
+  Truck,
+  CheckCircle2,
+  Package,
+  Search,
+  XCircle,
+  Loader2,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { formatPrice } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
+import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 
-const statuses = [
-  { label: "Order Placed", icon: Package },
-  { label: "Processing", icon: PackageSearch },
-  { label: "Shipped", icon: Truck },
-  { label: "Delivered", icon: CheckCircle2 },
-];
+const statusSteps = ["pending", "processing", "shipped", "delivered", "cancelled"];
+
+const statusMeta: Record<string, { label: string; color: string; icon: typeof Package }> = {
+  pending: { label: "Order Placed", color: "bg-accent-gold/15 text-accent-gold", icon: Package },
+  processing: { label: "Processing", color: "bg-accent-gold/15 text-accent-gold", icon: PackageSearch },
+  shipped: { label: "Shipped", color: "bg-success/15 text-success", icon: Truck },
+  delivered: { label: "Delivered", color: "bg-success/15 text-success", icon: CheckCircle2 },
+  cancelled: { label: "Cancelled", color: "bg-sale-badge/15 text-sale-badge", icon: XCircle },
+};
+
+type LookedUp = {
+  order: SavedOrder;
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+};
+
+function readLocalOrders(): LookedUp[] {
+  try {
+    const raw = window.localStorage.getItem("crysma_orders") ?? "[]";
+    const orders = JSON.parse(raw) as SavedOrder[];
+    return orders.map((o, i) => ({
+      order: o,
+      status: (i === 0 ? "processing" : "pending") as LookedUp["status"],
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function TrackResult({ result }: { result: LookedUp }) {
+  const { order, status } = result;
+  const cancelled = status === "cancelled";
+  const currentIndex = statusSteps.indexOf(status);
+  const visibleSteps = cancelled ? statusSteps : statusSteps.slice(0, 4);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mt-10 overflow-hidden rounded-xl border border-background-secondary bg-card-background"
+    >
+      <div className="border-b border-background-secondary px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-text-secondary">Order ID</p>
+            <p className="font-montserrat text-lg font-bold text-accent-gold">{order.orderId}</p>
+          </div>
+          <span className={cn("rounded-full px-3 py-1 text-xs font-bold uppercase", statusMeta[status].color)}>
+            {statusMeta[status].label}
+          </span>
+        </div>
+        <p className="mt-2 text-xs text-text-secondary">
+          Placed {new Date(order.date).toLocaleDateString("en-PK", { day: "numeric", month: "long", year: "numeric" })}
+        </p>
+      </div>
+
+      <div className="px-6 py-8">
+        {cancelled ? (
+          <div className="flex items-center gap-3 text-sale-badge">
+            <XCircle className="h-6 w-6" />
+            <p className="text-sm font-medium">This order was cancelled.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            {visibleSteps.map((s, i) => {
+              const Icon = statusMeta[s].icon;
+              const done = i < currentIndex;
+              const current = i === currentIndex;
+              const line = i < visibleSteps.length - 1;
+              return (
+                <div key={s} className="flex items-center gap-4 sm:flex-1 sm:flex-col sm:items-center sm:gap-3">
+                  <div className="flex items-center gap-4 sm:flex-col sm:items-center">
+                    <span
+                      className={cn(
+                        "flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-colors",
+                        done
+                          ? "bg-success text-white"
+                          : current
+                            ? "bg-accent-gold text-black"
+                            : "bg-background-secondary text-text-secondary"
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    {line && (
+                      <div className={cn("h-px w-10 sm:h-1 sm:w-full", done ? "bg-success" : "bg-background-secondary")} />
+                    )}
+                  </div>
+                  <div className="sm:mt-2 sm:text-center">
+                    <p
+                      className={cn(
+                        "text-sm font-semibold",
+                        current ? "text-accent-gold" : done ? "text-text-primary" : "text-text-secondary"
+                      )}
+                    >
+                      {statusMeta[s].label}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <div className="border-t border-background-secondary px-6 py-4">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Items ({order.items.length})
+        </p>
+        <div className="space-y-3">
+          {order.items.map((item, i) => (
+            <div key={`${item.id}-${i}`} className="flex items-center gap-3">
+              <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-background-secondary">
+                <Image src={item.image} alt={item.name} fill sizes="48px" className="object-cover" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-1 text-sm text-text-primary">{item.name}</p>
+                <p className="text-xs text-text-secondary">
+                  {item.quantity} × {formatPrice(item.price)}
+                </p>
+              </div>
+              <span className="font-montserrat text-sm font-bold text-text-primary">
+                {formatPrice(item.price * item.quantity)}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex items-center justify-between border-t border-background-secondary pt-4">
+          <span className="text-sm text-text-secondary">
+            {order.paymentMethod.toUpperCase()} · {order.shipping.city || "—"}
+          </span>
+          <span className="font-montserrat text-base font-bold text-text-primary">
+            {formatPrice(order.total)}
+          </span>
+        </div>
+      </div>
+
+      {!cancelled && status !== "delivered" && (
+        <div className="border-t border-background-secondary bg-background-secondary px-6 py-4 text-sm text-text-secondary">
+          Estimated delivery: <span className="text-text-primary">3-5 business days</span>
+        </div>
+      )}
+    </motion.div>
+  );
+}
 
 export default function TrackOrder() {
   const [orderId, setOrderId] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState<LookedUp[] | null>(null);
+  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (orderId.trim()) setSubmitted(true);
+    const q = orderId.trim().toUpperCase();
+    if (!q) return;
+    setLoading(true);
+    setNotFound(false);
+    setResult(null);
+    window.setTimeout(() => {
+      const matches = readLocalOrders().filter(
+        (r) => r.order.orderId.toUpperCase() === q
+      );
+      if (matches.length > 0) {
+        setResult(matches);
+      } else {
+        setNotFound(true);
+      }
+      setLoading(false);
+    }, 450);
   };
 
   return (
@@ -31,7 +197,8 @@ export default function TrackOrder() {
           Where is my order?
         </h1>
         <p className="mt-4 text-sm text-text-secondary">
-          Enter your order ID (e.g. CRYSMA-XXXXXX) to see the latest status.
+          Enter the order ID you received on the confirmation page to see its
+          live status.
         </p>
       </div>
 
@@ -47,100 +214,49 @@ export default function TrackOrder() {
         />
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light"
+          disabled={loading}
+          className="flex items-center justify-center gap-2 rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light disabled:opacity-60"
         >
-          <Search className="h-4 w-4" />
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
           Track
         </button>
       </form>
 
-      {submitted && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-10 overflow-hidden rounded-xl border border-background-secondary bg-card-background"
-        >
-          <div className="border-b border-background-secondary px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-wider text-text-secondary">
-                  Order ID
-                </p>
-                <p className="font-montserrat text-lg font-bold text-accent-gold">
-                  {orderId.toUpperCase()}
-                </p>
-              </div>
-              <span className="rounded-full bg-accent-gold/15 px-3 py-1 text-xs font-bold uppercase text-accent-gold">
-                In Transit
-              </span>
-            </div>
-          </div>
+      <AnimatePresence mode="wait">
+        {loading && (
+          <motion.p
+            key="loader"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="mt-8 text-center text-sm text-text-secondary"
+          >
+            Looking up your order…
+          </motion.p>
+        )}
 
-          <div className="px-6 py-8">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-              {statuses.map((s, i) => {
-                const Icon = s.icon;
-                const done = i < 2;
-                const current = i === 2;
-                const line = i < statuses.length - 1;
-                return (
-                  <div key={s.label} className="flex items-center gap-4 sm:flex-1 sm:flex-col sm:items-center sm:gap-3">
-                    <div className="flex items-center gap-4 sm:flex-col sm:items-center">
-                      <span
-                        className={cn(
-                          "flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-colors",
-                          done
-                            ? "bg-success text-white"
-                            : current
-                              ? "bg-accent-gold text-black"
-                              : "bg-background-secondary text-text-secondary"
-                        )}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      {line && (
-                        <div
-                          className={cn(
-                            "h-px w-10 sm:h-1 sm:w-full",
-                            done ? "bg-success" : "bg-background-secondary"
-                          )}
-                        />
-                      )}
-                    </div>
-                    <div className="sm:mt-2 sm:text-center">
-                      <p
-                        className={cn(
-                          "text-sm font-semibold",
-                          current ? "text-accent-gold" : done ? "text-text-primary" : "text-text-secondary"
-                        )}
-                      >
-                        {s.label}
-                      </p>
-                      {i < 2 && (
-                        <p className="mt-0.5 text-xs text-text-secondary">
-                          {new Date(Date.now() - (3 - i) * 86400000).toLocaleDateString("en-PK", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
-                      )}
-                      {current && (
-                        <p className="mt-0.5 text-xs text-accent-gold">Today</p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+        {notFound && (
+          <motion.div
+            key="notfound"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="mt-10 rounded-xl border border-background-secondary bg-card-background px-6 py-10 text-center"
+          >
+            <p className="font-serif text-xl text-text-primary">Order not found</p>
+            <p className="mt-2 text-sm text-text-secondary">
+              We couldn&apos;t find an order with ID{" "}
+              <span className="text-accent-gold">{orderId.toUpperCase()}</span>. Please double-check
+              the ID from your confirmation page.
+            </p>
+          </motion.div>
+        )}
 
-          <div className="border-t border-background-secondary bg-background-secondary px-6 py-4 text-sm text-text-secondary">
-            Estimated delivery: <span className="text-text-primary">3-5 business days</span>
-          </div>
-        </motion.div>
-      )}
+        {result &&
+          result.map((r) => <TrackResult key={r.order.orderId} result={r} />)}
+      </AnimatePresence>
 
-      {!submitted && (
+      {!result && !notFound && !loading && (
         <p className="mt-6 text-center text-xs text-text-secondary">
           Order ID was shared with you on the confirmation page after purchase.
         </p>

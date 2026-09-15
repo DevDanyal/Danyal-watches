@@ -28,7 +28,7 @@ export default function SearchResults() {
         <div className="flex flex-col items-center gap-3 py-20 text-center">
           <Search className="h-10 w-10 text-text-secondary" />
           <p className="text-sm text-text-secondary">
-            Try searching for "chain", "luxury", or "strap".
+            Try searching for &quot;chain&quot;, &quot;luxury&quot;, or &quot;strap&quot;.
           </p>
         </div>
       ) : results.length === 0 ? (
@@ -38,7 +38,7 @@ export default function SearchResults() {
             No products found
           </h2>
           <p className="max-w-sm text-sm text-text-secondary">
-            We couldn't find anything matching "{q}". Try a different keyword
+            We couldn&apos;t find anything matching &quot;{q}&quot;. Try a different keyword
             or browse our collections.
           </p>
         </div>

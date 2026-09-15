@@ -63,22 +63,22 @@ export default function ContactPage() {
             </h2>
             <div className="mt-6 space-y-4 text-sm">
               <a
-                href="mailto:info@crysmawatches.com"
+                href="mailto:aidevdanyal@gmail.com"
                 className="flex items-center gap-3 text-text-secondary hover:text-accent-gold"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
                   <Mail className="h-4 w-4" />
                 </span>
-                info@crysmawatches.com
+                aidevdanyal@gmail.com
               </a>
               <a
-                href="tel:+923000279762"
+                href="tel:+923464141007"
                 className="flex items-center gap-3 text-text-secondary hover:text-accent-gold"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
                   <Phone className="h-4 w-4" />
                 </span>
-                +92 300 0279762
+                +92 346 4141007
               </a>
               <div className="flex items-center gap-3 text-text-secondary">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">

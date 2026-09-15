@@ -18,7 +18,8 @@ import {
 import ProductGallery from "@/components/product/ProductGallery";
 import Accordion from "@/components/product/Accordion";
 import { useCart } from "@/context/CartContext";
-import { formatPrice, type Product } from "@/lib/data/products";
+import { useWishlist } from "@/context/WishlistContext";
+import { formatPrice, getProductStock, type Product } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
 
 export default function ProductDetail({
@@ -29,16 +30,21 @@ export default function ProductDetail({
   related: Product[];
 }) {
   const { addItem } = useCart();
+  const { isWishlisted, toggle } = useWishlist();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name);
   const [quantity, setQuantity] = useState(1);
-  const [wishlisted, setWishlisted] = useState(false);
+  const [wishlisted, setWishlisted] = useState(isWishlisted(product.id));
   const [added, setAdded] = useState(false);
+
+  const stock = getProductStock(product);
+  const outOfStock = stock === 0;
 
   const discount = Math.round(
     ((product.regularPrice - product.price) / product.regularPrice) * 100
   );
 
   const handleAddToCart = () => {
+    if (outOfStock) return;
     addItem(
       {
         id: product.id,
@@ -55,6 +61,30 @@ export default function ProductDetail({
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
+
+  const handleWishlist = () => {
+    const next = !wishlisted;
+    toggle(product.id);
+    setWishlisted(next);
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const data = { title: `${product.name} | CRYSMA`, text: product.name, url };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      /* ignore share cancellation or errors */
+    }
+  };
+
+  const [copied, setCopied] = useState(false);
 
   const specs = [
     { name: "Brand", value: "CRYSMA" },
@@ -144,6 +174,25 @@ export default function ProductDetail({
             You save {formatPrice(product.regularPrice - product.price)}
           </p>
 
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {outOfStock ? (
+              <span className="rounded-full border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
+                Out of Stock
+              </span>
+            ) : stock <= 5 ? (
+              <span className="rounded-full border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
+                Hurry — only {stock} left
+              </span>
+            ) : (
+              <span className="rounded-full border border-success/40 bg-success/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-success">
+                In Stock
+              </span>
+            )}
+            <span className="text-xs text-text-secondary">
+              SKU: {product.slug.toUpperCase()}
+            </span>
+          </div>
+
           {product.colors.length > 0 && (
             <div className="mt-7">
               <div className="mb-3 flex items-center justify-between">
@@ -202,11 +251,13 @@ export default function ProductDetail({
 
             <button
               onClick={handleAddToCart}
+              disabled={outOfStock}
               className={cn(
                 "flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold uppercase tracking-wider transition-all duration-300 sm:flex-none sm:px-10",
                 added
                   ? "bg-success text-white"
-                  : "bg-accent-gold text-black hover:scale-105 hover:bg-accent-gold-light"
+                  : "bg-accent-gold text-black hover:scale-105 hover:bg-accent-gold-light",
+                outOfStock && "cursor-not-allowed opacity-50"
               )}
             >
               {added ? (
@@ -223,8 +274,8 @@ export default function ProductDetail({
             </button>
 
             <button
-              onClick={() => setWishlisted(!wishlisted)}
-              aria-label="Add to wishlist"
+              onClick={handleWishlist}
+              aria-label="Toggle wishlist"
               className={cn(
                 "flex h-12 w-12 items-center justify-center rounded-full border transition-all",
                 wishlisted
@@ -236,10 +287,11 @@ export default function ProductDetail({
             </button>
 
             <button
+              onClick={handleShare}
               aria-label="Share product"
               className="flex h-12 w-12 items-center justify-center rounded-full border border-background-secondary text-text-primary transition-all hover:border-accent-gold hover:text-accent-gold"
             >
-              <Share2 className="h-5 w-5" />
+              {copied ? <Check className="h-5 w-5 text-success" /> : <Share2 className="h-5 w-5" />}
             </button>
           </div>
 

@@ -9,9 +9,11 @@ import {
   User,
   X,
   ChevronDown,
+  Heart,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { useSearch } from "@/context/SearchContext";
 
 const categories = [
@@ -46,10 +48,11 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMegaMenu, setOpenMegaMenu] = useState<string | null>(null);
   const { count, openCart } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const { openSearch } = useSearch();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-background-secondary bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <button
           className="text-text-primary lg:hidden"
@@ -75,7 +78,7 @@ export default function Navbar() {
             >
               <Link
                 href={cat.href}
-                className="flex items-center gap-1 text-sm font-medium text-text-primary transition-colors hover:text-accent-gold"
+                className="relative flex items-center gap-1 text-sm font-medium text-text-primary transition-colors hover:text-accent-gold after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent-gold after:transition-transform after:duration-300 hover:after:scale-x-100"
               >
                 {cat.name}
                 <ChevronDown className="h-3.5 w-3.5" />
@@ -88,7 +91,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute left-1/2 top-full w-64 -translate-x-1/2 rounded-b-xl border border-background-secondary bg-card-background p-4 shadow-2xl shadow-black/50"
+                    className="absolute left-1/2 top-full w-64 -translate-x-1/2 rounded-xl border border-border bg-card-background p-4 shadow-2xl shadow-black/40"
                   >
                     <div className="flex flex-col gap-2">
                       {cat.subcategories.map((sub) => (
@@ -122,6 +125,26 @@ export default function Navbar() {
           >
             <Search className="h-5 w-5" />
           </button>
+          <Link
+            href="/wishlist"
+            className="relative text-text-primary transition-colors hover:text-accent-gold sm:block"
+            aria-label="Wishlist"
+          >
+            <Heart className="h-5 w-5" />
+            <AnimatePresence>
+              {wishlistCount > 0 && (
+                <motion.span
+                  key={wishlistCount}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  className="absolute -right-2 -top-2 hidden h-4 w-4 items-center justify-center rounded-full bg-sale-badge text-[10px] font-bold text-white sm:flex"
+                >
+                  {wishlistCount}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Link>
           <Link
             href="/account"
             className="hidden text-text-primary transition-colors hover:text-accent-gold sm:block"
@@ -159,7 +182,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden border-t border-background-secondary bg-background lg:hidden"
+            className="overflow-hidden border-t border-border bg-background lg:hidden"
           >
             <nav className="flex flex-col gap-1 px-4 py-4">
               {categories.map((cat) => (
@@ -191,6 +214,19 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 SALE
+              </Link>
+              <Link
+                href="/wishlist"
+                className="flex items-center gap-2 rounded-lg px-3 py-3 font-medium text-text-primary hover:bg-background-secondary"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Heart className="h-5 w-5" />
+                Wishlist
+                {wishlistCount > 0 && (
+                  <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-sale-badge text-[10px] font-bold text-white">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
               <Link
                 href="/account"
