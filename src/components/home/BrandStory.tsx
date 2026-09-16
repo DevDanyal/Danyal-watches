@@ -8,8 +8,8 @@ export default function BrandStory() {
         <div className="relative">
           <div className="overflow-hidden rounded-2xl border border-border">
             <Image
-              src="/images/home/pro.jpg"
-              alt="CRYSMA watch craftsmanship"
+              src="/images/products/images.jpg"
+              alt="CRYSMA luxury watch"
               width={1074}
               height={1354}
               className="aspect-[4/5] object-cover"
