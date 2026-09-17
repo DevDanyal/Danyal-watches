@@ -30,7 +30,7 @@ export default function AdminOrders() {
             key={s}
             onClick={() => setFilter(s)}
             className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
-              filter === s ? "bg-accent-gold text-black" : "border border-background-secondary text-text-secondary hover:text-text-primary"
+              filter === s ? "bg-accent-gold text-white" : "border border-background-secondary text-text-secondary hover:text-text-primary"
             }`}
           >
             {s} {s !== "all" && `(${orders.filter((o) => o.status === s).length})`}

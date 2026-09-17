@@ -18,17 +18,12 @@ type SortOption =
 const sortOptions: { value: SortOption; label: string }[] = [
   { value: "featured", label: "Featured" },
   { value: "best-selling", label: "Best Selling" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
+  { value: "price-asc", label: "Price, low to high" },
+  { value: "price-desc", label: "Price, high to low" },
   { value: "newest", label: "Newest" },
 ];
 
-const productTypes = [
-  "Luxury",
-  "Strap",
-  "Chain",
-  "Automatic",
-];
+const productTypes = ["Luxury", "Strap", "Chain", "Automatic"];
 
 const priceRanges = [
   { label: "Under Rs. 7,500", min: 0, max: 7500 },
@@ -37,11 +32,7 @@ const priceRanges = [
   { label: "Rs. 30,000+", min: 30000, max: Infinity },
 ];
 
-export default function CollectionClient({
-  slug,
-}: {
-  slug: string;
-}) {
+export default function CollectionClient({ slug }: { slug: string }) {
   const collection = getCollection(slug);
 
   const baseProducts = useMemo(() => {
@@ -144,12 +135,12 @@ export default function CollectionClient({
     selectedTypes.length > 0 || priceRange !== null || inStockOnly;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mb-8">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-sale-badge">
           Collection
         </p>
-        <h1 className="mt-2 font-serif text-3xl font-bold text-text-primary sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-text-primary sm:text-4xl">
           {collection?.name ?? "All Watches"}
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text-secondary">
@@ -157,25 +148,25 @@ export default function CollectionClient({
         </p>
       </div>
 
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-y border-background-secondary py-3">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-y border-border py-3.5">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowMobileFilters(true)}
-            className="flex items-center gap-2 rounded-full border border-background-secondary bg-card-background px-4 py-2 text-sm font-medium text-text-primary lg:hidden"
+            className="flex items-center gap-2 rounded-md border border-border bg-card-background px-4 py-2 text-sm font-medium text-text-primary lg:hidden"
           >
             <SlidersHorizontal className="h-4 w-4" />
             Filters
             {hasActiveFilters && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent-gold text-[10px] font-bold text-black">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-sale-badge text-[10px] font-bold text-white">
                 {selectedTypes.length + (priceRange ? 1 : 0) + (inStockOnly ? 1 : 0)}
               </span>
             )}
           </button>
 
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <button
               onClick={() => setSortOpen(!sortOpen)}
-              className="flex items-center gap-2 rounded-full border border-background-secondary bg-card-background px-4 py-2 text-sm font-medium text-text-primary"
+              className="flex items-center gap-2 rounded-md border border-border bg-card-background px-4 py-2 text-sm font-medium text-text-primary"
             >
               Sort: {sortOptions.find((o) => o.value === sort)?.label}
               <ChevronDown className={cn("h-4 w-4 transition-transform", sortOpen && "rotate-180")} />
@@ -186,7 +177,7 @@ export default function CollectionClient({
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute left-0 top-full z-20 mt-2 w-56 rounded-xl border border-background-secondary bg-card-background p-2 shadow-2xl shadow-black/50"
+                  className="absolute left-0 top-full z-20 mt-2 w-60 rounded-lg border border-border bg-card-background p-2 shadow-xl shadow-black/10"
                 >
                   {sortOptions.map((opt) => (
                     <button
@@ -196,10 +187,10 @@ export default function CollectionClient({
                         setSortOpen(false);
                       }}
                       className={cn(
-                        "block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors",
+                        "block w-full rounded-md px-3 py-2 text-left text-sm transition-colors",
                         sort === opt.value
-                          ? "bg-accent-gold/10 text-accent-gold"
-                          : "text-text-primary hover:bg-background-secondary"
+                          ? "bg-background-secondary font-semibold text-text-primary"
+                          : "text-text-secondary hover:bg-background-secondary hover:text-text-primary"
                       )}
                     >
                       {opt.label}
@@ -216,8 +207,8 @@ export default function CollectionClient({
         </span>
       </div>
 
-      <div className="flex gap-8">
-        <aside className="hidden w-64 shrink-0 lg:block">
+      <div className="flex gap-10">
+        <aside className="hidden w-60 shrink-0 lg:block">
           <FilterPanel
             selectedTypes={selectedTypes}
             onToggleType={toggleType}
@@ -234,20 +225,20 @@ export default function CollectionClient({
 
         <div className="min-w-0 flex-1">
           {visibleProducts.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 xl:grid-cols-3 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4">
               {visibleProducts.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <p className="font-serif text-xl text-text-primary">No products found</p>
+              <p className="text-xl font-bold text-text-primary">No products found</p>
               <p className="mt-2 text-sm text-text-secondary">
                 Try adjusting your filters or removing some categories.
               </p>
               <button
                 onClick={resetFilters}
-                className="mt-6 rounded-full bg-accent-gold px-6 py-2.5 text-sm font-bold text-black transition-all hover:scale-105"
+                className="mt-6 bg-text-primary px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-sale-badge"
               >
                 Clear Filters
               </button>
@@ -258,7 +249,7 @@ export default function CollectionClient({
             <div className="mt-10 text-center">
               <button
                 onClick={() => setVisibleCount((c) => c + 8)}
-                className="inline-flex items-center justify-center rounded-full border border-accent-gold/50 px-10 py-3 text-sm font-bold uppercase tracking-wider text-accent-gold transition-all hover:bg-accent-gold hover:text-black"
+                className="inline-flex items-center justify-center border border-border px-10 py-3 text-sm font-bold uppercase tracking-wider text-text-primary transition-all hover:border-text-primary"
               >
                 Load More
               </button>
@@ -273,7 +264,7 @@ export default function CollectionClient({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden"
             onClick={() => setShowMobileFilters(false)}
           >
             <motion.div
@@ -282,10 +273,10 @@ export default function CollectionClient({
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t border-background-secondary bg-background p-5"
+              className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t border-border bg-background p-5"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-serif text-xl font-bold text-text-primary">Filters</h2>
+                <h2 className="text-xl font-bold text-text-primary">Filters</h2>
                 <button
                   onClick={() => setShowMobileFilters(false)}
                   aria-label="Close filters"
@@ -308,7 +299,7 @@ export default function CollectionClient({
               />
               <button
                 onClick={() => setShowMobileFilters(false)}
-                className="mt-6 w-full rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-black"
+                className="mt-6 w-full bg-text-primary py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-sale-badge"
               >
                 View {filtered.length} Results
               </button>
@@ -316,6 +307,26 @@ export default function CollectionClient({
           </motion.div>
         )}
       </AnimatePresence>
+
+      <section className="mt-16 border-t border-border pt-8">
+        <h2 className="text-lg font-bold text-text-primary">
+          Buy {collection?.name ?? "Watches"} Online in Pakistan
+        </h2>
+        <div className="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            {collection?.description} Explore the full CRYSMA range of premium
+            timepieces for men, women and couples — all at affordable prices in
+            Pakistan. Every watch is covered by a 1-year international warranty
+            and delivered free anywhere in the country.
+          </p>
+          <p>
+            Enjoy hassle-free Cash on Delivery nationwide, with payment options
+            including JazzCash, EasyPaisa and bank transfer. Order now and get
+            your watch delivered to Karachi, Lahore, Islamabad, Rawalpindi,
+            Faisalabad and all across Pakistan within 3-5 working days.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
@@ -343,8 +354,9 @@ function FilterPanel({
   sort: SortOption;
   onSortChange: (v: SortOption) => void;
 }) {
+  const inputCls = "h-4 w-4 cursor-pointer accent-text-primary";
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-7">
       {hasActiveFilters && (
         <button
           onClick={onReset}
@@ -358,14 +370,14 @@ function FilterPanel({
         <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-text-primary">
           Product Type
         </h3>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {productTypes.map((type) => (
             <label key={type} className="flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
                 checked={selectedTypes.includes(type)}
                 onChange={() => onToggleType(type)}
-                className="h-4 w-4 cursor-pointer rounded accent-accent-gold"
+                className={inputCls}
               />
               <span className="text-sm text-text-secondary">{type}</span>
             </label>
@@ -377,7 +389,7 @@ function FilterPanel({
         <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-text-primary">
           Price
         </h3>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {priceRanges.map((range) => (
             <label key={range.label} className="flex cursor-pointer items-center gap-3">
               <input
@@ -393,7 +405,7 @@ function FilterPanel({
                       : { min: range.min, max: range.max }
                   )
                 }
-                className="h-4 w-4 cursor-pointer accent-accent-gold"
+                className={inputCls}
               />
               <span className="text-sm text-text-secondary">{range.label}</span>
             </label>
@@ -410,7 +422,7 @@ function FilterPanel({
             type="checkbox"
             checked={inStockOnly}
             onChange={() => onSetInStockOnly(!inStockOnly)}
-            className="h-4 w-4 cursor-pointer rounded accent-accent-gold"
+            className={inputCls}
           />
           <span className="text-sm text-text-secondary">In stock only</span>
         </label>
@@ -418,7 +430,7 @@ function FilterPanel({
 
       <div className="lg:hidden">
         <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-text-primary">Sort</h3>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {sortOptions.map((opt) => (
             <label key={opt.value} className="flex cursor-pointer items-center gap-3">
               <input
@@ -426,7 +438,7 @@ function FilterPanel({
                 name="mobile-sort"
                 checked={sort === opt.value}
                 onChange={() => onSortChange(opt.value)}
-                className="h-4 w-4 cursor-pointer accent-accent-gold"
+                className={inputCls}
               />
               <span className="text-sm text-text-secondary">{opt.label}</span>
             </label>

@@ -1,45 +1,43 @@
-import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
+import { Truck, RotateCcw, ShieldCheck, BadgeCheck } from "lucide-react";
 
 const badges = [
   {
     icon: Truck,
-    title: "Free Shipping",
-    subtitle: "On all orders nationwide",
+    title: "Free Delivery",
+    subtitle: "Nationwide across Pakistan",
   },
   {
     icon: RotateCcw,
-    title: "7-Day Returns",
-    subtitle: "Hassle-free exchange",
+    title: "30-Day Returns",
+    subtitle: "Hassle-free exchange & refund",
   },
   {
     icon: ShieldCheck,
-    title: "1 Year Warranty",
-    subtitle: "On every timepiece",
+    title: "1-Year Warranty",
+    subtitle: "International warranty included",
   },
   {
-    icon: Lock,
-    title: "Secure Payment",
-    subtitle: "COD · JazzCash · EasyPaisa",
+    icon: BadgeCheck,
+    title: "Cash on Delivery",
+    subtitle: "COD, JazzCash, EasyPaisa, Bank",
   },
 ];
 
 export default function TrustBadges() {
   return (
-    <section className="border-y border-background-secondary bg-background-secondary">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+    <section className="border-y border-border bg-background">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
         {badges.map(({ icon: Icon, title, subtitle }) => (
           <div
             key={title}
-            className="flex flex-col items-center gap-3 text-center"
+            className="flex items-center gap-3.5"
           >
-            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-accent-gold/30 bg-accent-gold/10 text-accent-gold">
-              <Icon className="h-6 w-6" />
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-background-secondary text-sale-badge">
+              <Icon className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-text-primary">
-                {title}
-              </h3>
-              <p className="mt-1 text-xs text-text-secondary">{subtitle}</p>
+              <h3 className="text-sm font-bold text-text-primary">{title}</h3>
+              <p className="mt-0.5 text-xs text-text-secondary">{subtitle}</p>
             </div>
           </div>
         ))}

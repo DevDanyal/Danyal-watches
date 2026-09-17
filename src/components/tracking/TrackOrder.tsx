@@ -19,8 +19,8 @@ import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 const statusSteps = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
 const statusMeta: Record<string, { label: string; color: string; icon: typeof Package }> = {
-  pending: { label: "Order Placed", color: "bg-accent-gold/15 text-accent-gold", icon: Package },
-  processing: { label: "Processing", color: "bg-accent-gold/15 text-accent-gold", icon: PackageSearch },
+  pending: { label: "Order Placed", color: "bg-background-secondary text-text-primary", icon: Package },
+  processing: { label: "Processing", color: "bg-background-secondary text-text-primary", icon: PackageSearch },
   shipped: { label: "Shipped", color: "bg-success/15 text-success", icon: Truck },
   delivered: { label: "Delivered", color: "bg-success/15 text-success", icon: CheckCircle2 },
   cancelled: { label: "Cancelled", color: "bg-sale-badge/15 text-sale-badge", icon: XCircle },
@@ -54,13 +54,13 @@ function TrackResult({ result }: { result: LookedUp }) {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-10 overflow-hidden rounded-xl border border-background-secondary bg-card-background"
+      className="mt-10 overflow-hidden rounded-xl border border-border bg-card-background"
     >
-      <div className="border-b border-background-secondary px-6 py-4">
+      <div className="border-b border-border px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-wider text-text-secondary">Order ID</p>
-            <p className="font-montserrat text-lg font-bold text-accent-gold">{order.orderId}</p>
+            <p className="text-lg font-bold text-text-primary">{order.orderId}</p>
           </div>
           <span className={cn("rounded-full px-3 py-1 text-xs font-bold uppercase", statusMeta[status].color)}>
             {statusMeta[status].label}
@@ -93,7 +93,7 @@ function TrackResult({ result }: { result: LookedUp }) {
                         done
                           ? "bg-success text-white"
                           : current
-                            ? "bg-accent-gold text-black"
+                            ? "bg-text-primary text-white"
                             : "bg-background-secondary text-text-secondary"
                       )}
                     >
@@ -107,7 +107,7 @@ function TrackResult({ result }: { result: LookedUp }) {
                     <p
                       className={cn(
                         "text-sm font-semibold",
-                        current ? "text-accent-gold" : done ? "text-text-primary" : "text-text-secondary"
+                        current ? "text-text-primary" : done ? "text-text-primary" : "text-text-secondary"
                       )}
                     >
                       {statusMeta[s].label}
@@ -120,7 +120,7 @@ function TrackResult({ result }: { result: LookedUp }) {
         )}
       </div>
 
-      <div className="border-t border-background-secondary px-6 py-4">
+      <div className="border-t border-border px-6 py-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-secondary">
           Items ({order.items.length})
         </p>
@@ -136,24 +136,24 @@ function TrackResult({ result }: { result: LookedUp }) {
                   {item.quantity} × {formatPrice(item.price)}
                 </p>
               </div>
-              <span className="font-montserrat text-sm font-bold text-text-primary">
+              <span className="text-sm font-bold text-text-primary">
                 {formatPrice(item.price * item.quantity)}
               </span>
             </div>
           ))}
         </div>
-        <div className="mt-4 flex items-center justify-between border-t border-background-secondary pt-4">
+        <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
           <span className="text-sm text-text-secondary">
             {order.paymentMethod.toUpperCase()} · {order.shipping.city || "—"}
           </span>
-          <span className="font-montserrat text-base font-bold text-text-primary">
+          <span className="text-base font-bold text-text-primary">
             {formatPrice(order.total)}
           </span>
         </div>
       </div>
 
       {!cancelled && status !== "delivered" && (
-        <div className="border-t border-background-secondary bg-background-secondary px-6 py-4 text-sm text-text-secondary">
+        <div className="border-t border-border bg-background-secondary px-6 py-4 text-sm text-text-secondary">
           Estimated delivery: <span className="text-text-primary">3-5 business days</span>
         </div>
       )}
@@ -190,10 +190,10 @@ export default function TrackOrder() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
       <div className="text-center">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-text-primary">
           Track Your Order
         </span>
-        <h1 className="mt-3 font-serif text-3xl font-bold text-text-primary sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-bold text-text-primary sm:text-4xl">
           Where is my order?
         </h1>
         <p className="mt-4 text-sm text-text-secondary">
@@ -210,12 +210,12 @@ export default function TrackOrder() {
           value={orderId}
           onChange={(e) => setOrderId(e.target.value)}
           placeholder="CRYSMA-XXXXXX"
-          className="flex-1 rounded-full border border-background-secondary bg-card-background px-6 py-3.5 text-sm uppercase tracking-wider text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+          className="flex-1 rounded-full border border-border bg-card-background px-6 py-3.5 text-sm uppercase tracking-wider text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
         />
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center justify-center gap-2 rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light disabled:opacity-60"
+          className="flex items-center justify-center gap-2 rounded-full bg-text-primary px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-sale-badge disabled:opacity-60"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
           Track
@@ -241,12 +241,12 @@ export default function TrackOrder() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-10 rounded-xl border border-background-secondary bg-card-background px-6 py-10 text-center"
+            className="mt-10 rounded-xl border border-border bg-card-background px-6 py-10 text-center"
           >
-            <p className="font-serif text-xl text-text-primary">Order not found</p>
+            <p className="text-xl text-text-primary">Order not found</p>
             <p className="mt-2 text-sm text-text-secondary">
               We couldn&apos;t find an order with ID{" "}
-              <span className="text-accent-gold">{orderId.toUpperCase()}</span>. Please double-check
+              <span className="text-text-primary">{orderId.toUpperCase()}</span>. Please double-check
               the ID from your confirmation page.
             </p>
           </motion.div>

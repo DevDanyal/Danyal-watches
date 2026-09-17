@@ -13,7 +13,7 @@ export default function Accordion({
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <div className="divide-y divide-background-secondary rounded-xl border border-background-secondary bg-card-background">
+    <div className="divide-y divide-border rounded-xl border border-border bg-card-background">
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
@@ -28,7 +28,7 @@ export default function Accordion({
               </span>
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 text-accent-gold transition-transform duration-300",
+                  "h-4 w-4 text-text-secondary transition-transform duration-300",
                   isOpen && "rotate-180"
                 )}
               />

@@ -36,16 +36,16 @@ export default function ContactPage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <h2 className="font-serif text-2xl font-bold text-text-primary">
+            <h2 className="text-2xl font-bold text-text-primary">
               Store Locations
             </h2>
             <div className="mt-6 space-y-4">
               {stores.map((store) => (
                 <div
                   key={store.name}
-                  className="flex items-start gap-3 rounded-xl border border-background-secondary bg-card-background p-4"
+                  className="flex items-start gap-3 rounded-xl border border-border bg-card-background p-4"
                 >
-                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-accent-gold" />
+                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-sale-badge" />
                   <div>
                     <p className="text-sm font-semibold text-text-primary">
                       {store.name}
@@ -58,30 +58,30 @@ export default function ContactPage() {
               ))}
             </div>
 
-            <h2 className="mt-10 font-serif text-2xl font-bold text-text-primary">
+            <h2 className="mt-10 text-2xl font-bold text-text-primary">
               Contact Info
             </h2>
             <div className="mt-6 space-y-4 text-sm">
               <a
                 href="mailto:aidevdanyal@gmail.com"
-                className="flex items-center gap-3 text-text-secondary hover:text-accent-gold"
+                className="flex items-center gap-3 text-text-secondary hover:text-sale-badge"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sale-badge">
                   <Mail className="h-4 w-4" />
                 </span>
                 aidevdanyal@gmail.com
               </a>
               <a
                 href="tel:+923464141007"
-                className="flex items-center gap-3 text-text-secondary hover:text-accent-gold"
+                className="flex items-center gap-3 text-text-secondary hover:text-sale-badge"
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sale-badge">
                   <Phone className="h-4 w-4" />
                 </span>
                 +92 346 4141007
               </a>
               <div className="flex items-center gap-3 text-text-secondary">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sale-badge">
                   <Clock className="h-4 w-4" />
                 </span>
                 Mon - Sat: 11:00 AM - 10:00 PM

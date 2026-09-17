@@ -11,6 +11,7 @@ const categories = [
     href: "/collections/men",
     image: "/images/home/images (7).jpg",
     span: "lg:col-span-2 lg:row-span-2",
+    tall: true,
   },
   {
     name: "Women",
@@ -21,13 +22,13 @@ const categories = [
   {
     name: "Couples",
     href: "/collections/couple",
-    image: "/images/home/images (5).jpg",
+    image: "/images/home/images (26).jpg",
     span: "",
   },
   {
     name: "Strap Watches",
     href: "/collections/men-strap",
-    image: "/images/home/images (6).jpg",
+    image: "/images/home/images (15).jpg",
     span: "",
   },
   {
@@ -40,32 +41,44 @@ const categories = [
 
 export default function CategoryCards() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-10 text-center">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
-          Collections
-        </span>
-        <h2 className="mt-3 font-serif text-3xl font-bold text-text-primary sm:text-4xl">
-          Shop by Category
-        </h2>
-        <div className="mx-auto mt-4 h-px w-16 bg-accent-gold" />
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-[0.25em] text-sale-badge">
+            Collections
+          </span>
+          <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
+            Shop by Category
+          </h2>
+        </div>
+        <Link
+          href="/collections/men"
+          className="text-sm font-semibold uppercase tracking-wider text-text-primary underline underline-offset-4 transition-colors hover:text-sale-badge"
+        >
+          View All
+        </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {categories.map((cat, i) => (
           <motion.div
             key={cat.name}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: i * 0.05 }}
-            className={cn(cat.span, i === 0 && "row-span-2")}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.45, delay: i * 0.05 }}
+            className={cn(cat.span)}
           >
             <Link
               href={cat.href}
-              className="group relative block h-full w-full overflow-hidden rounded-xl border border-border"
+              className="group relative block h-full w-full overflow-hidden rounded-lg border border-border bg-background-secondary"
             >
-              <div className={cn("relative overflow-hidden", i === 0 ? "h-full min-h-[320px]" : "aspect-[4/3]")}>
+              <div
+                className={cn(
+                  "relative overflow-hidden h-full",
+                  cat.tall ? "min-h-[340px]" : "aspect-[4/3]"
+                )}
+              >
                 <Image
                   src={cat.image}
                   alt={`${cat.name} watches`}
@@ -73,12 +86,12 @@ export default function CategoryCards() {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 40vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                  <h3 className="font-serif text-xl font-bold text-text-primary sm:text-2xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                  <h3 className="text-lg font-bold text-white sm:text-xl">
                     {cat.name}
                   </h3>
-                  <span className="mt-1 inline-block text-xs font-semibold uppercase tracking-wider text-accent-gold opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <span className="mt-1 inline-block text-xs font-semibold uppercase tracking-wider text-white/0 transition-all duration-300 group-hover:text-white">
                     Explore →
                   </span>
                 </div>

@@ -43,8 +43,8 @@ export default function AccountClient() {
       />
 
       <section className="mx-auto max-w-md px-4 py-14 sm:px-6">
-        <div className="rounded-2xl border border-background-secondary bg-card-background p-6 sm:p-8">
-          <div className="flex rounded-xl border border-background-secondary p-1">
+        <div className="rounded-2xl border border-border bg-card-background p-6 sm:p-8">
+          <div className="flex rounded-xl border border-border p-1">
             {(["login", "register"] as const).map((m) => (
               <button
                 key={m}
@@ -56,7 +56,7 @@ export default function AccountClient() {
                 {mode === m && (
                   <motion.span
                     layoutId="auth-tab"
-                    className="absolute inset-0 rounded-lg bg-accent-gold"
+                    className="absolute inset-0 rounded-lg bg-text-primary"
                   />
                 )}
                 <span className="relative z-10">
@@ -113,7 +113,7 @@ export default function AccountClient() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={mode === "register" ? "Min. 6 characters" : "Your password"}
-                  className="h-12 w-full rounded-xl border border-background-secondary bg-background pl-11 pr-11 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                  className="h-12 w-full rounded-xl border border-border bg-background pl-11 pr-11 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
                 />
                 <button
                   type="button"
@@ -139,7 +139,7 @@ export default function AccountClient() {
             <button
               type="submit"
               disabled={busy}
-              className="w-full rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light disabled:opacity-60"
+              className="w-full rounded-full bg-text-primary py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge disabled:opacity-60"
             >
               {busy ? "Please wait..." : mode === "login" ? "Sign In" : "Create Account"}
             </button>
@@ -148,19 +148,19 @@ export default function AccountClient() {
           {mode === "login" && (
             <p className="mt-5 text-center text-xs text-text-secondary">
               New to CRYSMA?{" "}
-              <button onClick={switchMode} className="font-semibold text-accent-gold hover:underline">
+              <button onClick={switchMode} className="font-semibold text-text-primary hover:underline">
                 Create an account
               </button>
             </p>
           )}
 
-          <p className="mt-6 border-t border-background-secondary pt-5 text-center text-xs leading-relaxed text-text-secondary">
+          <p className="mt-6 border-t border-border pt-5 text-center text-xs leading-relaxed text-text-secondary">
             By continuing you agree to our{" "}
-            <Link href="/terms-and-conditions" className="text-accent-gold hover:underline">
+            <Link href="/terms-and-conditions" className="text-text-primary hover:underline">
               Terms
             </Link>{" "}
             and{" "}
-            <Link href="/privacy-policy" className="text-accent-gold hover:underline">
+            <Link href="/privacy-policy" className="text-text-primary hover:underline">
               Privacy Policy
             </Link>
             .
@@ -203,7 +203,7 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="h-12 w-full rounded-xl border border-background-secondary bg-background pl-11 pr-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+          className="h-12 w-full rounded-xl border border-border bg-background pl-11 pr-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
         />
       </div>
     </div>

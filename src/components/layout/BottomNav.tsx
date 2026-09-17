@@ -18,7 +18,7 @@ export default function BottomNav() {
   const { openCart, count } = useCart();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-background-secondary bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden">
       <div className="grid grid-cols-4">
         {navItems.map(({ name, href, icon: Icon }) => {
           if (name === "Cart") {
@@ -31,12 +31,12 @@ export default function BottomNav() {
                 <span
                   className={cn(
                     "relative flex h-8 w-12 items-center justify-center rounded-full transition-all",
-                    pathname === "/cart" && "bg-accent-gold/15"
+                    pathname === "/cart" && "bg-background-secondary"
                   )}
                 >
                   <Icon className="h-5 w-5 text-text-secondary" />
                   {count > 0 && (
-                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent-gold text-[10px] font-bold text-black">
+                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-sale-badge text-[10px] font-bold text-white">
                       {count}
                     </span>
                   )}
@@ -58,20 +58,20 @@ export default function BottomNav() {
               <span
                 className={cn(
                   "flex h-8 w-12 items-center justify-center rounded-full transition-all",
-                  active && "bg-accent-gold/15"
+                  active && "bg-background-secondary"
                 )}
               >
                 <Icon
                   className={cn(
                     "h-5 w-5 transition-colors",
-                    active ? "text-accent-gold" : "text-text-secondary"
+                    active ? "text-text-primary" : "text-text-secondary"
                   )}
                 />
               </span>
               <span
                 className={cn(
                   "text-[10px] font-medium",
-                  active ? "text-accent-gold" : "text-text-secondary"
+                  active ? "font-bold text-text-primary" : "text-text-secondary"
                 )}
               >
                 {name}

@@ -153,13 +153,13 @@ const seedCustomers: () => CustomerRow[] = () =>
 const seedCategories: () => ManagedCategory[] = () => [
   { id: "cat-men", name: "Men", slug: "men", image: "/images/home/images (7).jpg", active: true },
   { id: "cat-men-luxury", name: "Men's Luxury", slug: "men-luxury", image: "/images/home/images (27).jpg", active: true },
-  { id: "cat-men-strap", name: "Men's Strap", slug: "men-strap", image: "/images/home/images (6).jpg", active: true },
+  { id: "cat-men-strap", name: "Men's Strap", slug: "men-strap", image: "/images/home/images (18).jpg", active: true },
   { id: "cat-men-chain", name: "Men's Chain", slug: "men-chain", image: "/images/home/images (8).jpg", active: true },
   { id: "cat-women", name: "Women", slug: "women", image: "/images/home/images (8).jpg", active: true },
   { id: "cat-women-luxury", name: "Women's Luxury", slug: "women-luxury", image: "/images/home/images (27).jpg", active: true },
-  { id: "cat-women-chain", name: "Women's Chain", slug: "women-chain", image: "/images/home/images (5).jpg", active: true },
-  { id: "cat-couple", name: "Couples", slug: "couple", image: "/images/home/images (5).jpg", active: true },
-  { id: "cat-couple-chain", name: "Couple's Chain", slug: "couple-chain", image: "/images/home/images (5).jpg", active: true },
+  { id: "cat-women-chain", name: "Women's Chain", slug: "women-chain", image: "/images/home/images (26).jpg", active: true },
+  { id: "cat-couple", name: "Couples", slug: "couple", image: "/images/home/images (26).jpg", active: true },
+  { id: "cat-couple-chain", name: "Couple's Chain", slug: "couple-chain", image: "/images/home/images (26).jpg", active: true },
   { id: "cat-sale", name: "Sale", slug: "sale", image: "/images/home/images (1).jpg", active: true },
 ];
 

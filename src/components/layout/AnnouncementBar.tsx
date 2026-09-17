@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Truck, RotateCcw, ShieldCheck, Star } from "lucide-react";
 
 const messages = [
-  "Free Nationwide Shipping",
-  "7-Day Easy Returns",
-  "1 Year Warranty",
-  "UPTO 30% OFF | SALE IS NOW LIVE",
+  { icon: Truck, text: "Free Nationwide Delivery" },
+  { icon: RotateCcw, text: "30 Days Hassle-Free Returns & Easy Exchange" },
+  { icon: ShieldCheck, text: "1 Year International Warranty" },
+  { icon: Star, text: "UPTO 30% OFF | SALE IS NOW LIVE" },
 ];
 
 export default function AnnouncementBar() {
@@ -16,23 +17,28 @@ export default function AnnouncementBar() {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % messages.length);
-    }, 3000);
+    }, 3500);
     return () => clearInterval(timer);
   }, []);
 
+  const { icon: Icon, text } = messages[index];
+
   return (
-    <div className="overflow-hidden border-b border-border bg-background-secondary text-text-primary">
-      <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2">
-        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent-gold" />
-        <motion.p
-          key={index}
-          initial={{ y: 12, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="text-center text-xs font-medium tracking-wide text-accent-gold sm:text-sm"
-        >
-          {messages[index]}
-        </motion.p>
+    <div className="border-b border-border bg-background text-text-primary">
+      <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-1.5">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={index}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="flex items-center gap-2"
+          >
+            <Icon className="h-3.5 w-3.5 text-sale-badge" />
+            <span className="text-xs font-medium tracking-wide">{text}</span>
+          </motion.span>
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -13,47 +13,42 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative overflow-hidden border-t border-border bg-background-secondary">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(50% 100% at 50% 0%, rgba(198,161,91,0.07) 0%, transparent 70%)",
-        }}
-      />
+    <section className="border-t border-border bg-background-secondary">
       <div className="relative mx-auto max-w-2xl px-4 py-16 text-center sm:px-6">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+        <span className="text-xs font-bold uppercase tracking-[0.25em] text-sale-badge">
           Stay Updated
         </span>
-        <h2 className="mt-3 font-serif text-3xl font-bold text-text-primary sm:text-4xl">
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-text-primary sm:text-4xl">
           Join Our Newsletter
         </h2>
         <p className="mt-4 text-text-secondary">
-          Subscribe to receive exclusive offers, new arrivals, and watch care
-          tips. No spam, ever.
+          Subscribe to get special offers, new arrivals, and once-in-a-lifetime
+          deals.
         </p>
 
         {subscribed ? (
-          <div className="mt-8 flex items-center justify-center gap-2 rounded-xl border border-success/40 bg-success/10 px-6 py-4 text-success">
+          <div className="mt-8 flex items-center justify-center gap-2 rounded-lg border border-success/40 bg-success/10 px-6 py-4 text-success">
             <CheckCircle2 className="h-5 w-5" />
             <span className="text-sm font-semibold">
               Thank you for subscribing!
             </span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
+          >
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
-              className="h-12 flex-1 rounded-full border border-background-secondary bg-card-background px-6 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+              className="h-12 flex-1 rounded-lg border border-border bg-card-background px-5 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
             />
             <button
               type="submit"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-accent-gold px-8 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:scale-105 hover:bg-accent-gold-light"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-text-primary px-8 text-sm font-bold uppercase tracking-wider text-white transition-all duration-300 hover:bg-sale-badge"
             >
               <Send className="h-4 w-4" />
               Subscribe

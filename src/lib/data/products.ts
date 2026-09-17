@@ -33,7 +33,7 @@ export const products: Product[] = [
       { name: "Two Tone/White", hex: "#D9D9D9" },
       { name: "Two Tone/Black", hex: "#1A1A1A" },
     ],
-    images: ["/images/products/images.jpg", "/images/products/images (17).jpg"],
+    images: ["/images/products/images (17).jpg", "/images/products/images (11).jpg"],
   },
   {
     id: "2",
@@ -71,7 +71,7 @@ export const products: Product[] = [
       { name: "Brown Gold", hex: "#8B5E3C" },
       { name: "Full Grey", hex: "#808080" },
     ],
-    images: ["/images/products/images (2).jpg", "/images/products/images (19).jpg"],
+    images: ["/images/products/images (2).jpg", "/images/products/images (9).jpg"],
   },
   {
     id: "4",
@@ -271,7 +271,7 @@ export const products: Product[] = [
       { name: "Silver/Blue", hex: "#6C9CD4" },
       { name: "Golden/Black", hex: "#1A1A1A" },
     ],
-    images: ["/images/products/images (13).jpg"],
+    images: ["/images/products/images (16).jpg"],
   },
   {
     id: "15",
@@ -307,7 +307,7 @@ export const products: Product[] = [
       { name: "Golden/Black", hex: "#1A1A1A" },
       { name: "Silver/Grey", hex: "#6E6E6E" },
     ],
-    images: ["/images/products/images (15).jpg"],
+    images: ["/images/products/images (10).jpg"],
   },
   {
     id: "17",

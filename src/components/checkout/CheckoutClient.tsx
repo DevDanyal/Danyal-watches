@@ -4,7 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CreditCard, Banknote, Smartphone, ShieldCheck, Truck } from "lucide-react";
+import {
+  Check,
+  CreditCard,
+  Banknote,
+  Smartphone,
+  Landmark,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/data/products";
 import type { CartItem } from "@/context/CartContext";
@@ -61,11 +69,19 @@ const steps: { id: Step; label: string }[] = [
 ];
 
 const paymentMethods = [
-  { id: "cod", label: "Cash on Delivery", icon: Banknote, desc: "Pay when you receive your order" },
+  { id: "cod", label: "Cash on Delivery", icon: Banknote, desc: "Pay when you receive your order — recommended" },
   { id: "jazzcash", label: "JazzCash", icon: Smartphone, desc: "Pay via JazzCash mobile account" },
   { id: "easypaisa", label: "EasyPaisa", icon: Smartphone, desc: "Pay via EasyPaisa mobile account" },
   { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, UnionPay" },
+  { id: "bank", label: "Bank Transfer", icon: Landmark, desc: "Direct transfer to our bank account" },
 ];
+
+const bankDetails = {
+  bank: "Meezan Bank",
+  title: "CRYSMA Watches",
+  account: "0123 4567 8901 2345",
+  iban: "PK36 MEZA 0001 2345 6789 0123",
+};
 
 function OrderConfirmation({ orderId }: { orderId: string }) {
   return (
@@ -77,18 +93,16 @@ function OrderConfirmation({ orderId }: { orderId: string }) {
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/20">
         <Check className="h-10 w-10 text-success" />
       </div>
-      <h2 className="font-serif text-2xl font-bold text-text-primary sm:text-3xl">
+      <h2 className="text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
         Order Confirmed!
       </h2>
       <p className="mt-3 max-w-md text-text-secondary">
         Thank you for your purchase. You will receive a confirmation on your
         phone and email shortly.
       </p>
-      <div className="mt-6 rounded-xl border border-background-secondary bg-card-background px-8 py-5">
+      <div className="mt-6 rounded-xl border border-border bg-card-background px-8 py-5">
         <p className="text-xs uppercase tracking-wider text-text-secondary">Order ID</p>
-        <p className="mt-1 font-montserrat text-xl font-bold text-accent-gold">
-          {orderId}
-        </p>
+        <p className="mt-1 text-xl font-extrabold text-text-primary">{orderId}</p>
       </div>
       <div className="mt-6 flex items-center gap-2 text-sm text-success">
         <Truck className="h-4 w-4" />
@@ -96,7 +110,7 @@ function OrderConfirmation({ orderId }: { orderId: string }) {
       </div>
       <Link
         href="/"
-        className="mt-8 rounded-full bg-accent-gold px-10 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light"
+        className="mt-8 bg-text-primary px-10 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
       >
         Back to Home
       </Link>
@@ -192,10 +206,10 @@ export default function CheckoutClient() {
   if (items.length === 0 && step !== "confirmation") {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center gap-4 px-4 text-center">
-        <p className="font-serif text-xl text-text-primary">Your cart is empty</p>
+        <p className="text-xl font-bold text-text-primary">Your cart is empty</p>
         <Link
           href="/collections/men"
-          className="mt-2 rounded-full bg-accent-gold px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105"
+          className="mt-2 bg-text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
         >
           Start Shopping
         </Link>
@@ -213,9 +227,11 @@ export default function CheckoutClient() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="mb-8 font-serif text-3xl font-bold text-text-primary">Checkout</h1>
+      <h1 className="mb-8 text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
+        Checkout
+      </h1>
 
-      <div className="mb-10 flex items-center justify-between max-w-lg mx-auto">
+      <div className="mx-auto mb-10 flex max-w-lg items-center justify-between">
         {steps.map((s, i) => {
           const current = s.id === step;
           const done = steps.findIndex((x) => x.id === step) > i;
@@ -228,7 +244,7 @@ export default function CheckoutClient() {
                     done
                       ? "bg-success text-white"
                       : current
-                        ? "bg-accent-gold text-black"
+                        ? "bg-text-primary text-white"
                         : "bg-background-secondary text-text-secondary"
                   )}
                 >
@@ -237,7 +253,7 @@ export default function CheckoutClient() {
                 <span className="mt-1.5 text-xs text-text-secondary">{s.label}</span>
               </div>
               {i < steps.length - 1 && (
-                <div className="mx-2 mb-5 h-px flex-1 bg-background-secondary">
+                <div className="mx-2 mb-5 h-px flex-1 bg-border">
                   <div
                     className={cn(
                       "h-full transition-colors duration-300",
@@ -260,9 +276,9 @@ export default function CheckoutClient() {
                 initial={{ opacity: 0, x: 16 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -16 }}
-                className="rounded-xl border border-background-secondary bg-card-background p-6"
+                className="rounded-xl border border-border bg-card-background p-6"
               >
-                <h2 className="mb-5 font-serif text-xl font-bold text-text-primary">
+                <h2 className="mb-5 text-lg font-bold text-text-primary">
                   Shipping Information
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -314,7 +330,7 @@ export default function CheckoutClient() {
                     <select
                       value={shipping.province}
                       onChange={(e) => updateShipping("province", e.target.value)}
-                      className="h-12 rounded-xl border border-background-secondary bg-background px-4 text-sm text-text-primary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                      className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary focus:border-text-primary focus:outline-none"
                     >
                       <option value="">Select Province</option>
                       <option>Punjab</option>
@@ -335,7 +351,7 @@ export default function CheckoutClient() {
                   onClick={() => {
                     if (validateShipping()) setStep("payment");
                   }}
-                  className="mt-6 w-full rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light"
+                  className="mt-6 w-full bg-text-primary py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
                 >
                   Continue to Payment
                 </button>
@@ -348,9 +364,9 @@ export default function CheckoutClient() {
                 initial={{ opacity: 0, x: 16 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -16 }}
-                className="rounded-xl border border-background-secondary bg-card-background p-6"
+                className="rounded-xl border border-border bg-card-background p-6"
               >
-                <h2 className="mb-5 font-serif text-xl font-bold text-text-primary">
+                <h2 className="mb-5 text-lg font-bold text-text-primary">
                   Payment Method
                 </h2>
                 <div className="space-y-3">
@@ -364,15 +380,15 @@ export default function CheckoutClient() {
                         className={cn(
                           "flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all",
                           active
-                            ? "border-accent-gold bg-accent-gold/10"
-                            : "border-background-secondary bg-card-background hover:border-text-secondary/40"
+                            ? "border-text-primary bg-background-secondary"
+                            : "border-border bg-card-background hover:border-text-secondary/40"
                         )}
                       >
                         <span
                           className={cn(
                             "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors",
                             active
-                              ? "bg-accent-gold text-black"
+                              ? "bg-text-primary text-white"
                               : "bg-background-secondary text-text-secondary"
                           )}
                         >
@@ -386,15 +402,13 @@ export default function CheckoutClient() {
                         </div>
                         <span
                           className={cn(
-                            "h-5 w-5 rounded-full border-2 transition-all",
+                            "flex h-5 w-5 items-center justify-center rounded-full border-2 transition-all",
                             active
-                              ? "border-accent-gold bg-accent-gold"
-                              : "border-background-secondary"
+                              ? "border-text-primary bg-text-primary text-white"
+                              : "border-border"
                           )}
                         >
-                          {active && (
-                            <Check className="h-5 w-5 text-black p-0.5" />
-                          )}
+                          {active && <Check className="h-3 w-3" />}
                         </span>
                       </button>
                     );
@@ -431,16 +445,42 @@ export default function CheckoutClient() {
                   </div>
                 )}
 
+                {paymentMethod === "bank" && (
+                  <div className="mt-5 rounded-xl border border-border bg-background-secondary p-5 text-sm">
+                    <p className="mb-3 font-bold text-text-primary">
+                      Bank Transfer Details
+                    </p>
+                    <div className="space-y-1.5">
+                      <p className="text-text-secondary">
+                        Bank: <span className="font-semibold text-text-primary">{bankDetails.bank}</span>
+                      </p>
+                      <p className="text-text-secondary">
+                        Account Title: <span className="font-semibold text-text-primary">{bankDetails.title}</span>
+                      </p>
+                      <p className="text-text-secondary">
+                        Account No: <span className="font-semibold text-text-primary">{bankDetails.account}</span>
+                      </p>
+                      <p className="text-text-secondary">
+                        IBAN: <span className="font-semibold text-text-primary">{bankDetails.iban}</span>
+                      </p>
+                    </div>
+                    <p className="mt-3 text-xs text-text-secondary">
+                      Send the transfer slip to WhatsApp after payment and we will
+                      confirm your order within 24 hours.
+                    </p>
+                  </div>
+                )}
+
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     onClick={() => setStep("shipping")}
-                    className="rounded-full border border-background-secondary py-4 px-8 text-sm font-bold uppercase tracking-wider text-text-secondary transition-colors hover:border-accent-gold hover:text-accent-gold sm:w-auto"
+                    className="rounded-full border border-border px-8 py-4 text-sm font-bold uppercase tracking-wider text-text-secondary transition-colors hover:border-text-primary hover:text-text-primary sm:w-auto"
                   >
                     Back
                   </button>
                   <button
                     onClick={placeOrder}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light"
+                    className="flex flex-1 items-center justify-center gap-2 bg-text-primary py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
                   >
                     <ShieldCheck className="h-4 w-4" />
                     Place Order — {formatPrice(total)}
@@ -451,15 +491,15 @@ export default function CheckoutClient() {
           </AnimatePresence>
         </div>
 
-        <div className="h-fit rounded-xl border border-background-secondary bg-card-background p-5 lg:sticky lg:top-24">
-          <h2 className="mb-4 font-serif text-lg font-bold text-text-primary">
+        <div className="h-fit rounded-xl border border-border bg-card-background p-5 lg:sticky lg:top-24">
+          <h2 className="mb-4 text-lg font-bold text-text-primary">
             Order Summary
           </h2>
           <div className="max-h-64 space-y-3 overflow-y-auto">
             {items.map((item) => (
               <div
                 key={`${item.id}::${item.color ?? "default"}`}
-                className="flex items-center gap-3 border-b border-background-secondary pb-3 last:border-0 last:pb-0"
+                className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0"
               >
                 <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-background-secondary">
                   <Image
@@ -469,7 +509,7 @@ export default function CheckoutClient() {
                     sizes="48px"
                     className="object-cover"
                   />
-                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent-gold text-[10px] font-bold text-black">
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-text-primary text-[10px] font-bold text-white">
                     {item.quantity}
                   </span>
                 </div>
@@ -481,13 +521,13 @@ export default function CheckoutClient() {
                     <p className="text-[11px] text-text-secondary">{item.color}</p>
                   )}
                 </div>
-                <span className="font-montserrat text-xs font-bold text-text-primary">
+                <span className="text-xs font-bold text-text-primary">
                   {formatPrice(item.price * item.quantity)}
                 </span>
               </div>
             ))}
           </div>
-          <div className="mt-4 space-y-2 border-t border-background-secondary pt-4 text-sm">
+          <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
             <div className="flex justify-between text-text-secondary">
               <span>Subtotal</span>
               <span>{formatPrice(subtotal)}</span>
@@ -498,7 +538,7 @@ export default function CheckoutClient() {
             </div>
             <div className="flex justify-between pt-2 text-base font-bold text-text-primary">
               <span>Total</span>
-              <span className="font-montserrat">{formatPrice(total)}</span>
+              <span>{formatPrice(total)}</span>
             </div>
           </div>
         </div>
@@ -535,7 +575,7 @@ function Input({
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         required={required}
-        className="h-12 rounded-xl border border-background-secondary bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+        className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
       />
     </div>
   );

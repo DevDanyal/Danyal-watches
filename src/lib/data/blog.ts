@@ -45,7 +45,7 @@ export const blogPosts: BlogPost[] = [
     title: "Caring for Your Stainless Steel Watch",
     excerpt:
       "Keep your chain watch looking brand new with these simple cleaning and maintenance tips.",
-    image: "/images/home/images (20).jpg",
+    image: "/images/home/images (24).jpg",
     category: "Watch Care",
     date: "Aug 20, 2026",
     readTime: "4 min read",
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
     title: "Outfit Ideas to Match Your Watch",
     excerpt:
       "Whether it's a golden luxury piece or a sporty strap watch, here's how to style it effortlessly.",
-    image: "/images/home/images (21).jpg",
+    image: "/images/home/images (13).jpg",
     category: "Style Guide",
     date: "Aug 5, 2026",
     readTime: "6 min read",

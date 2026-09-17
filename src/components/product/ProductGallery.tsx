@@ -24,7 +24,7 @@ export default function ProductGallery({
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="relative aspect-square overflow-hidden rounded-xl border border-background-secondary bg-background-secondary"
+        className="relative aspect-square overflow-hidden rounded-xl border border-border bg-background-secondary"
         onMouseEnter={() => setZoom(true)}
         onMouseLeave={() => setZoom(false)}
       >
@@ -54,14 +54,14 @@ export default function ProductGallery({
         <button
           onClick={prev}
           aria-label="Previous image"
-          className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/70 sm:hidden"
+          className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-text-primary shadow-md backdrop-blur-sm transition-all hover:bg-white sm:hidden"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <button
           onClick={next}
           aria-label="Next image"
-          className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/70 sm:hidden"
+          className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-text-primary shadow-md backdrop-blur-sm transition-all hover:bg-white sm:hidden"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -74,14 +74,14 @@ export default function ProductGallery({
               aria-label={`Go to image ${i + 1}`}
               className={cn(
                 "h-1.5 rounded-full transition-all",
-                i === active ? "w-6 bg-accent-gold" : "w-1.5 bg-white/60"
+                i === active ? "w-6 bg-text-primary" : "w-1.5 bg-text-secondary/50"
               )}
             />
           ))}
         </div>
       </div>
 
-      <div className="hidden gap-3 sm:flex">
+      <div className="flex flex-wrap gap-3">
         {images.map((img, i) => (
           <button
             key={i}
@@ -90,7 +90,7 @@ export default function ProductGallery({
             className={cn(
               "relative h-24 w-24 overflow-hidden rounded-lg border-2 transition-all",
               i === active
-                ? "border-accent-gold opacity-100"
+                ? "border-text-primary opacity-100"
                 : "border-transparent opacity-60 hover:opacity-100"
             )}
           >

@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --background-secondary: #141414;
-  --card-background: #1b1b1b;
-  --border: #262626;
-  --accent-gold: #c6a15b;
-  --accent-gold-light: #ddbb77;
-  --accent-gold-soft: #1c1710;
+  --background: #ffffff;
+  --background-secondary: #f6f6f6;
+  --card-background: #ffffff;
+  --border: #e6e6e6;
+  --accent-gold: #111111;
+  --accent-gold-light: #333333;
+  --accent-gold-soft: #f4f4f4;
   --accent-silver: #c0c0c0;
-  --text-primary: #ffffff;
-  --text-secondary: #9a9a9a;
-  --sale-badge: #e55350;
+  --star: #f5a623;
+  --text-primary: #111111;
+  --text-secondary: #6b6b6b;
+  --sale-badge: #e63946;
   --new-badge: #2d6a4f;
   --success: #2d6a4f;
   --error: #e63946;
@@ -26,6 +27,7 @@
   --color-accent-gold-light: var(--accent-gold-light);
   --color-accent-gold-soft: var(--accent-gold-soft);
   --color-accent-silver: var(--accent-silver);
+  --color-star: var(--star);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-sale-badge: var(--sale-badge);
@@ -50,18 +52,18 @@ body {
 }
 
 ::selection {
-  background: var(--accent-gold);
-  color: #0a0a0a;
+  background: #111111;
+  color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-gold);
+  outline: 2px solid #111111;
   outline-offset: 2px;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--accent-gold) transparent;
+  scrollbar-color: #d4d4d4 transparent;
 }
 
 ::-webkit-scrollbar {
@@ -74,7 +76,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-gold);
+  background: #d4d4d4;
   border-radius: 3px;
 }
 

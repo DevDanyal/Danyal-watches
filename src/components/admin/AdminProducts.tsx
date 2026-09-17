@@ -91,7 +91,7 @@ export default function AdminProducts() {
               key={s}
               onClick={() => setFilterStatus(s)}
               className={`px-4 text-xs font-semibold uppercase transition-colors ${
-                filterStatus === s ? "bg-accent-gold text-black" : "text-text-secondary hover:text-text-primary"
+                filterStatus === s ? "bg-accent-gold text-white" : "text-text-secondary hover:text-text-primary"
               }`}
             >
               {s}

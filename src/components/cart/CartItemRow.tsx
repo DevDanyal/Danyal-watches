@@ -28,7 +28,7 @@ export default function CartItemRow({
   const { removeItem, updateQuantity } = useCart();
 
   return (
-    <div className="flex gap-4 border-b border-background-secondary py-4">
+    <div className="flex gap-4 border-b border-border py-4">
       <Link
         href={`/products/${slug}`}
         className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg bg-background-secondary"
@@ -41,7 +41,7 @@ export default function CartItemRow({
           <div className="min-w-0">
             <Link
               href={`/products/${slug}`}
-              className="line-clamp-1 text-sm font-medium text-text-primary hover:text-accent-gold"
+              className="line-clamp-1 text-sm font-semibold text-text-primary hover:text-sale-badge"
             >
               {name}
             </Link>
@@ -60,11 +60,11 @@ export default function CartItemRow({
         </div>
 
         <div className="mt-auto flex items-center justify-between pt-3">
-          <div className="flex items-center rounded-full border border-background-secondary">
+          <div className="flex items-center rounded-md border border-border">
             <button
               onClick={() => updateQuantity(id, color, -1)}
               aria-label="Decrease quantity"
-              className="flex h-8 w-8 items-center justify-center text-text-primary hover:text-accent-gold"
+              className="flex h-8 w-8 items-center justify-center text-text-primary hover:text-sale-badge"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>
@@ -74,12 +74,12 @@ export default function CartItemRow({
             <button
               onClick={() => updateQuantity(id, color, 1)}
               aria-label="Increase quantity"
-              className="flex h-8 w-8 items-center justify-center text-text-primary hover:text-accent-gold"
+              className="flex h-8 w-8 items-center justify-center text-text-primary hover:text-sale-badge"
             >
               <Plus className="h-3.5 w-3.5" />
             </button>
           </div>
-          <span className="font-montserrat text-sm font-bold text-text-primary">
+          <span className="text-sm font-bold text-text-primary">
             {formatPrice(price * quantity)}
           </span>
         </div>

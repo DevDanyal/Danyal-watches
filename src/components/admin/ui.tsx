@@ -139,7 +139,7 @@ export function PrimaryBtn({
     <button
       {...props}
       className={cn(
-        "flex items-center justify-center gap-2 rounded-full bg-accent-gold px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light disabled:opacity-50",
+        "flex items-center justify-center gap-2 rounded-full bg-accent-gold px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02] hover:bg-accent-gold-light disabled:opacity-50",
         className
       )}
     >

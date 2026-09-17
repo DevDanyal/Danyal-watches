@@ -44,10 +44,10 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-sale-badge">
               25+ Years of Excellence
             </span>
-            <h2 className="mt-3 font-serif text-3xl font-bold leading-tight text-text-primary sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold leading-tight text-text-primary sm:text-4xl">
               A Legacy of Precision Since 1998
             </h2>
             <div className="mt-6 space-y-4 leading-relaxed text-text-secondary">
@@ -74,7 +74,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 gap-4">
             <div className="overflow-hidden rounded-xl">
               <Image
-                src="/images/home/images (12).jpg"
+                src="/images/home/images (3).jpg"
                 alt="CRYSMA luxury watch"
                 width={400}
                 height={400}
@@ -94,13 +94,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-background-secondary bg-background-secondary">
+      <section className="border-t border-border bg-background-secondary">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-sale-badge">
               What We Stand For
             </span>
-            <h2 className="mt-3 font-serif text-3xl font-bold text-text-primary">
+            <h2 className="mt-3 text-3xl font-bold text-text-primary">
               Our Values
             </h2>
           </div>
@@ -108,9 +108,9 @@ export default function AboutPage() {
             {values.map(({ icon: Icon, title, text }) => (
               <div
                 key={title}
-                className="rounded-xl border border-background-secondary bg-card-background p-6 transition-all hover:border-accent-gold/40"
+                className="rounded-xl border border-border bg-card-background p-6 transition-all hover:border-text-primary/30"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-background-secondary text-sale-badge">
                   <Icon className="h-6 w-6" />
                 </span>
                 <h3 className="mt-4 text-base font-bold text-text-primary">

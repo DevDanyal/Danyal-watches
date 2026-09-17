@@ -41,33 +41,33 @@ export default function FlashSaleTimer() {
   ];
 
   return (
-    <section className="relative overflow-hidden border-y border-border bg-card-background">
+    <section className="border-y border-border bg-background-secondary">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 hidden"
         style={{
           background:
-            "radial-gradient(60% 120% at 10% 50%, rgba(198,161,91,0.08) 0%, transparent 60%)",
+            "radial-gradient(60% 120% at 10% 50%, rgba(230,57,70,0.05) 0%, transparent 60%)",
         }}
       />
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-12 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-10 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
-          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent-gold">
+          <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-sale-badge">
             <Flame className="h-4 w-4" />
             Limited Time Offer
           </span>
-          <h2 className="font-serif text-2xl font-bold text-text-primary sm:text-3xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
             FLASH SALE — Up to 30% OFF
           </h2>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           {units.map((unit) => (
             <div
               key={unit.label}
-              className="flex h-20 w-16 flex-col items-center justify-center gap-1 rounded-xl border border-border bg-background shadow-lg shadow-black/30 sm:h-24 sm:w-20"
+              className="flex h-16 w-14 flex-col items-center justify-center gap-1 rounded-lg border border-border bg-card-background shadow-sm sm:h-20 sm:w-18"
             >
-              <span className="font-montserrat text-2xl font-bold tabular-nums text-accent-gold sm:text-3xl">
+              <span className="text-2xl font-bold tabular-nums text-sale-badge sm:text-3xl">
                 {pad(unit.value)}
               </span>
               <span className="text-[10px] font-medium uppercase tracking-wider text-text-secondary">
@@ -79,7 +79,7 @@ export default function FlashSaleTimer() {
 
         <Link
           href="/collections/sale"
-          className="inline-flex items-center justify-center rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:bg-accent-gold-light hover:scale-[1.03]"
+          className="inline-flex items-center justify-center bg-text-primary px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-all duration-300 hover:bg-sale-badge"
         >
           Shop Now
         </Link>

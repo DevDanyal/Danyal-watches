@@ -23,8 +23,8 @@ type Tab = "dashboard" | "orders" | "profile";
 
 const statusStyles: Record<string, string> = {
   "Order Placed": "bg-text-secondary/20 text-text-primary",
-  Processing: "bg-accent-gold/20 text-accent-gold",
-  Shipped: "bg-accent-gold/20 text-accent-gold",
+  Processing: "bg-background-secondary text-text-primary",
+  Shipped: "bg-background-secondary text-text-primary",
   Delivered: "bg-success/20 text-success",
 };
 
@@ -74,16 +74,16 @@ export default function AccountDashboard() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-text-primary">
             My Account
           </span>
-          <h1 className="mt-2 font-serif text-3xl font-bold text-text-primary">
+          <h1 className="mt-2 text-3xl font-bold text-text-primary">
             Hello, {user!.name}
           </h1>
         </div>
         <button
           onClick={logout}
-          className="flex items-center gap-2 rounded-full border border-background-secondary px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-error/50 hover:text-error"
+          className="flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-error/50 hover:text-error"
         >
           <LogOut className="h-4 w-4" />
           Logout
@@ -92,7 +92,7 @@ export default function AccountDashboard() {
 
       <div className="grid gap-8 lg:grid-cols-4">
         <aside>
-          <div className="rounded-2xl border border-background-secondary bg-card-background p-2">
+          <div className="rounded-2xl border border-border bg-card-background p-2">
             {(
               [
                 { id: "dashboard", label: "Dashboard", icon: UserIcon },
@@ -106,7 +106,7 @@ export default function AccountDashboard() {
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors",
                   tab === id
-                    ? "bg-accent-gold text-black"
+                    ? "bg-text-primary text-white"
                     : "text-text-secondary hover:bg-background-secondary hover:text-text-primary"
                 )}
               >
@@ -116,24 +116,24 @@ export default function AccountDashboard() {
             ))}
           </div>
 
-          <div className="mt-4 rounded-2xl border border-background-secondary bg-card-background p-5 text-sm">
+          <div className="mt-4 rounded-2xl border border-border bg-card-background p-5 text-sm">
             <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
               Contact
             </p>
             <div className="mt-3 space-y-2 text-text-primary">
               <p className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 text-accent-gold" />
+                <Mail className="h-4 w-4 shrink-0 text-text-primary" />
                 <span className="truncate">{user!.email}</span>
               </p>
               {user!.phone && (
                 <p className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 shrink-0 text-accent-gold" />
+                  <Phone className="h-4 w-4 shrink-0 text-text-primary" />
                   {user!.phone}
                 </p>
               )}
               {user!.city && (
                 <p className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 shrink-0 text-accent-gold" />
+                  <MapPin className="h-4 w-4 shrink-0 text-text-primary" />
                   {user!.city}
                 </p>
               )}
@@ -173,26 +173,26 @@ function Dashboard({ orderCount }: { orderCount: number }) {
       ].map(({ value, label, icon: Icon }) => (
         <div
           key={label}
-          className="rounded-2xl border border-background-secondary bg-card-background p-6"
+          className="rounded-2xl border border-border bg-card-background p-6"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-gold/10 text-accent-gold">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-background-secondary text-text-primary">
             <Icon className="h-5 w-5" />
           </span>
-          <p className="mt-4 font-montserrat text-2xl font-bold text-text-primary">{value}</p>
+          <p className="mt-4 text-2xl font-bold text-text-primary">{value}</p>
           <p className="mt-1 text-sm text-text-secondary">{label}</p>
         </div>
       ))}
 
-      <div className="rounded-2xl border border-background-secondary bg-card-background p-6 sm:col-span-3">
-        <h2 className="font-serif text-lg font-bold text-text-primary">Quick Actions</h2>
+      <div className="rounded-2xl border border-border bg-card-background p-6 sm:col-span-3">
+        <h2 className="text-lg font-bold text-text-primary">Quick Actions</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <Link
             href="/collections/men"
-            className="rounded-xl border border-background-secondary px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-accent-gold/40 hover:text-accent-gold"
+            className="rounded-xl border border-border px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-text-primary"
           >
             Shop Men&apos;s Watches →
           </Link>
-          <Link href="/track-order" className="rounded-xl border border-background-secondary px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-accent-gold/40 hover:text-accent-gold">
+          <Link href="/track-order" className="rounded-xl border border-border px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-text-primary">
             Track an Order →
           </Link>
         </div>
@@ -204,17 +204,17 @@ function Dashboard({ orderCount }: { orderCount: number }) {
 function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => void }) {
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-background-secondary bg-card-background py-20 text-center">
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card-background py-20 text-center">
         <Package className="h-12 w-12 text-text-secondary" />
         <div>
-          <h2 className="font-serif text-xl font-bold text-text-primary">No orders yet</h2>
+          <h2 className="text-xl font-bold text-text-primary">No orders yet</h2>
           <p className="mt-1 text-sm text-text-secondary">
             When you place an order, it will appear here.
           </p>
         </div>
         <Link
           href="/collections/men"
-          className="rounded-full bg-accent-gold px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105"
+          className="rounded-full bg-text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105"
         >
           Start Shopping
         </Link>
@@ -224,16 +224,16 @@ function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => 
 
   return (
     <div className="space-y-4">
-      <h2 className="font-serif text-xl font-bold text-text-primary">My Orders</h2>
+      <h2 className="text-xl font-bold text-text-primary">My Orders</h2>
       {orders.map((order) => (
         <div
           key={order.orderId}
-          className="overflow-hidden rounded-2xl border border-background-secondary bg-card-background"
+          className="overflow-hidden rounded-2xl border border-border bg-card-background"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-background-secondary px-5 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
             <div>
               <p className="text-xs uppercase tracking-wider text-text-secondary">Order</p>
-              <p className="font-montserrat text-sm font-bold text-accent-gold">
+              <p className="text-sm font-bold text-text-primary">
                 {order.orderId}
               </p>
             </div>
@@ -245,7 +245,7 @@ function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => 
                   year: "numeric",
                 })}
               </p>
-              <p className="font-montserrat text-sm font-bold text-text-primary">
+              <p className="text-sm font-bold text-text-primary">
                 {formatPrice(order.total)}
               </p>
             </div>
@@ -284,7 +284,7 @@ function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => 
             ))}
             <button
               onClick={onTrack}
-              className="ml-auto rounded-full border border-background-secondary px-5 py-2 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-accent-gold hover:text-accent-gold"
+              className="ml-auto rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-text-primary hover:text-secondary-secondary"
             >
               Track
             </button>
@@ -320,14 +320,14 @@ function ProfileForm({
         value={form[key]}
         onChange={(e) => setForm({ ...form, [key]: e.target.value })}
         placeholder={placeholder}
-        className="h-12 w-full rounded-xl border border-background-secondary bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+        className="h-12 w-full rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
       />
     </div>
   );
 
   return (
-    <div className="rounded-2xl border border-background-secondary bg-card-background p-6 sm:p-8">
-      <h2 className="font-serif text-xl font-bold text-text-primary">Edit Profile</h2>
+    <div className="rounded-2xl border border-border bg-card-background p-6 sm:p-8">
+      <h2 className="text-xl font-bold text-text-primary">Edit Profile</h2>
       <p className="mt-1 text-sm text-text-secondary">
         Update your personal information and shipping defaults.
       </p>
@@ -341,14 +341,14 @@ function ProfileForm({
       <div className="mt-6 flex gap-3">
         <button
           onClick={onSave}
-          className="flex items-center gap-2 rounded-full bg-accent-gold px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] hover:bg-accent-gold-light"
+          className="flex items-center gap-2 rounded-full bg-text-primary px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-sale-badge"
         >
           <Save className="h-4 w-4" />
           Save Changes
         </button>
         <button
           onClick={() => onSave()}
-          className="rounded-full border border-background-secondary px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-text-secondary transition-colors hover:text-text-primary"
+          className="rounded-full border border-border px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-text-secondary transition-colors hover:text-text-primary"
         >
           Cancel
         </button>

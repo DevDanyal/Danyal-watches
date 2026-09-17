@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { ok, err } from "@/lib/api";
 
-const validMethods = ["cod", "jazzcash", "easypaisa", "card"];
+const validMethods = ["cod", "jazzcash", "easypaisa", "card", "bank"];
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -10,8 +10,22 @@ export async function POST(request: NextRequest) {
   if (!validMethods.includes(method)) return err("Invalid payment method.", 400);
   if (!body.amount || body.amount <= 0) return err("Invalid amount.", 400);
 
+  // Cash on Delivery is the primary, recommended payment method (Sveston-style flow).
   if (method === "cod") {
-    return ok({ method, status: "pending", message: "Cash payment on delivery." });
+    return ok({
+      method,
+      status: "pending",
+      message: "Pay cash when your order arrives at your doorstep. No advance payment required.",
+    });
+  }
+
+  if (method === "bank") {
+    // Bank transfer — the customer pays into the store account and shares the slip via WhatsApp.
+    return ok({
+      method,
+      status: "awaiting_confirmation",
+      message: "Please transfer the total to our bank account and share the slip via WhatsApp for confirmation.",
+    });
   }
 
   if (method === "jazzcash" || method === "easypaisa") {

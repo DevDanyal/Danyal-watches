@@ -238,7 +238,7 @@ function Gate({ children }: { children: React.ReactNode }) {
             )}
             <button
               type="submit"
-              className="mt-5 w-full rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-accent-gold-light"
+              className="mt-5 w-full rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-accent-gold-light"
             >
               Create Admin Account
             </button>
@@ -278,7 +278,7 @@ function Gate({ children }: { children: React.ReactNode }) {
             )}
             <button
               type="submit"
-              className="mt-5 w-full rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-accent-gold-light"
+              className="mt-5 w-full rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-accent-gold-light"
             >
               Enter Dashboard
             </button>
@@ -339,7 +339,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                       "mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                       collapsed ? "lg:justify-center" : "",
                       active
-                        ? "bg-accent-gold text-black"
+                        ? "bg-accent-gold text-white"
                         : "text-text-secondary hover:bg-background hover:text-text-primary"
                     )}
                     title={collapsed ? label : undefined}

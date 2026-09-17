@@ -40,7 +40,7 @@ function loadUserReviews(productId: string): Review[] {
 
 function Stars({ rating, size = "md" }: { rating: number; size?: "md" | "sm" }) {
   return (
-    <span className="flex items-center gap-0.5 text-accent-gold">
+    <span className="flex items-center gap-0.5 text-star">
       {[1, 2, 3, 4, 5].map((s) => (
         <Star
           key={s}
@@ -130,10 +130,10 @@ export default function Reviews({ product }: { product: Product }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+        <span className="text-xs font-bold uppercase tracking-[0.25em] text-sale-badge">
           Customer Feedback
         </span>
-        <h2 className="mt-2 font-serif text-2xl font-bold text-text-primary sm:text-3xl">
+        <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
           Reviews & Ratings
         </h2>
       </div>
@@ -145,9 +145,9 @@ export default function Reviews({ product }: { product: Product }) {
       )}
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <div className="rounded-xl border border-background-secondary bg-card-background p-6 lg:col-span-1">
+        <div className="rounded-xl border border-border bg-card-background p-6 lg:col-span-1">
           <div className="text-center">
-            <span className="font-serif text-5xl font-bold text-text-primary">{avg}</span>
+            <span className="text-5xl font-extrabold text-text-primary">{avg}</span>
             <div className="mt-3 flex justify-center">
               <Stars rating={Math.round(avg)} />
             </div>
@@ -164,7 +164,7 @@ export default function Reviews({ product }: { product: Product }) {
                 </span>
                 <div className="h-2 flex-1 overflow-hidden rounded-full bg-background-secondary">
                   <div
-                    className="h-full rounded-full bg-accent-gold"
+                    className="h-full rounded-full bg-star"
                     style={{ width: `${b.pct}%` }}
                   />
                 </div>
@@ -175,7 +175,7 @@ export default function Reviews({ product }: { product: Product }) {
 
           <button
             onClick={() => setShowForm(true)}
-            className="mt-6 w-full rounded-full bg-accent-gold py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105 hover:bg-accent-gold-light"
+            className="mt-6 w-full bg-text-primary py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
           >
             Write a Review
           </button>
@@ -185,10 +185,10 @@ export default function Reviews({ product }: { product: Product }) {
           {showForm && (
             <form
               onSubmit={submitReview}
-              className="rounded-xl border border-accent-gold/30 bg-card-background p-6"
+              className="rounded-xl border border-border bg-card-background p-6"
             >
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-serif text-lg font-bold text-text-primary">
+                <h3 className="text-lg font-bold text-text-primary">
                   Share your experience
                 </h3>
                 <button
@@ -206,9 +206,9 @@ export default function Reviews({ product }: { product: Product }) {
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Your name"
                   required
-                  className="h-12 rounded-xl border border-background-secondary bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                  className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
                 />
-                <div className="flex items-center gap-3 rounded-xl border border-background-secondary bg-background px-4">
+                <div className="flex items-center gap-3 rounded-xl border border-border bg-background px-4">
                   <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                     Rating
                   </span>
@@ -223,7 +223,7 @@ export default function Reviews({ product }: { product: Product }) {
                         <Star
                           className={cn(
                             "h-5 w-5 transition-colors",
-                            s <= form.rating ? "fill-current text-accent-gold" : "text-text-secondary"
+                            s <= form.rating ? "fill-current text-text-primary" : "text-text-secondary"
                           )}
                         />
                       </button>
@@ -236,12 +236,12 @@ export default function Reviews({ product }: { product: Product }) {
                   placeholder="Tell us about your experience…"
                   required
                   rows={3}
-                  className="w-full rounded-xl border border-background-secondary bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold sm:col-span-2"
+                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none sm:col-span-2"
                 />
               </div>
               <button
                 type="submit"
-                className="mt-4 rounded-full bg-accent-gold px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-accent-gold-light"
+                className="mt-4 bg-text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
               >
                 Submit Review
               </button>
@@ -251,11 +251,11 @@ export default function Reviews({ product }: { product: Product }) {
           {allReviews.map((review) => (
             <div
               key={review.id}
-              className="rounded-xl border border-background-secondary bg-card-background p-6"
+              className="rounded-xl border border-border bg-card-background p-6"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent-gold/15 font-serif text-sm font-bold text-accent-gold">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-background-secondary text-sm font-bold text-text-primary">
                     {review.name.charAt(0)}
                   </span>
                   <div>
@@ -267,7 +267,7 @@ export default function Reviews({ product }: { product: Product }) {
                         </span>
                       )}
                       {!review.verified && (
-                        <span className="rounded bg-accent-gold/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-accent-gold">
+<span className="rounded bg-background-secondary px-1.5 py-0.5 text-[10px] font-bold uppercase text-text-secondary">
                           New
                         </span>
                       )}

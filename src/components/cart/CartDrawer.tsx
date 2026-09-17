@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, X, Truck } from "lucide-react";
+import { ShoppingBag, X, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import CartItemRow from "@/components/cart/CartItemRow";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, products } from "@/lib/data/products";
@@ -13,7 +13,7 @@ export default function CartDrawer() {
   const { items, subtotal, isOpen, closeCart } = useCart();
   const [note, setNote] = useState("");
 
-  const shipping = subtotal > 0 ? 0 : 0; // free shipping on all orders
+  const shipping = 0; // free shipping on all orders
   const total = subtotal + shipping;
 
   const upsell = products.filter((p) => !items.some((i) => i.id === p.id)).slice(0, 2);
@@ -37,18 +37,18 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 32, stiffness: 320 }}
-            className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col border-l border-background-secondary bg-background shadow-2xl shadow-black/50 sm:w-[440px]"
+            className="fixed inset-y-0 right-0 z-[70] flex w-full flex-col border-l border-border bg-background shadow-2xl shadow-black/50 sm:w-[440px]"
             role="dialog"
             aria-label="Shopping cart"
           >
-            <div className="flex items-center justify-between border-b border-background-secondary px-5 py-4">
-              <h2 className="font-serif text-xl font-bold text-text-primary">
+            <div className="flex items-center justify-between border-b border-border px-5 py-4">
+              <h2 className="text-xl font-extrabold tracking-tight text-text-primary">
                 Your Cart
               </h2>
               <button
                 onClick={closeCart}
                 aria-label="Close cart"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-background-secondary text-text-primary transition-colors hover:text-accent-gold"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-background-secondary text-text-primary transition-colors hover:text-sale-badge"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -56,10 +56,10 @@ export default function CartDrawer() {
 
             {items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-background-secondary text-accent-gold">
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-background-secondary text-text-secondary">
                   <ShoppingBag className="h-9 w-9" />
                 </span>
-                <p className="font-serif text-xl text-text-primary">
+                <p className="text-lg font-bold text-text-primary">
                   Your cart is empty
                 </p>
                 <p className="text-sm text-text-secondary">
@@ -68,7 +68,7 @@ export default function CartDrawer() {
                 <Link
                   href="/collections/men"
                   onClick={closeCart}
-                  className="mt-2 rounded-full bg-accent-gold px-8 py-3 text-sm font-bold uppercase tracking-wider text-black transition-all hover:scale-105"
+                  className="mt-2 bg-text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
                 >
                   Start Shopping
                 </Link>
@@ -90,10 +90,24 @@ export default function CartDrawer() {
                     />
                   ))}
 
-                  <div className="py-4">
-                    <div className="flex items-center gap-2 rounded-lg border border-background-secondary bg-background-secondary px-4 py-2.5 text-xs text-text-secondary">
-                      <Truck className="h-4 w-4 shrink-0 text-accent-gold" />
-                      Expected delivery in 3-5 days
+                  <div className="grid grid-cols-3 gap-2 py-4">
+                    <div className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background-secondary px-2 py-2.5 text-center">
+                      <Truck className="h-4 w-4 text-sale-badge" />
+                      <span className="text-[10px] font-medium text-text-primary">
+                        Free Shipping
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background-secondary px-2 py-2.5 text-center">
+                      <RotateCcw className="h-4 w-4 text-sale-badge" />
+                      <span className="text-[10px] font-medium text-text-primary">
+                        30-Day Returns
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 rounded-lg border border-border bg-background-secondary px-2 py-2.5 text-center">
+                      <ShieldCheck className="h-4 w-4 text-sale-badge" />
+                      <span className="text-[10px] font-medium text-text-primary">
+                        1-Yr Warranty
+                      </span>
                     </div>
                   </div>
 
@@ -107,12 +121,12 @@ export default function CartDrawer() {
                       onChange={(e) => setNote(e.target.value)}
                       rows={2}
                       placeholder="Add a note for your order (optional)"
-                      className="w-full resize-none rounded-lg border border-background-secondary bg-card-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent-gold focus:outline-none focus:ring-1 focus:ring-accent-gold"
+                      className="w-full resize-none rounded-lg border border-border bg-card-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
                     />
                   </div>
 
                   {upsell.length > 0 && (
-                    <div className="border-t border-background-secondary py-4">
+                    <div className="border-t border-border py-4">
                       <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-text-secondary">
                         You may also like
                       </h3>
@@ -122,7 +136,7 @@ export default function CartDrawer() {
                             key={p.id}
                             href={`/products/${p.slug}`}
                             onClick={closeCart}
-                            className="group flex items-center gap-3 rounded-lg border border-background-secondary bg-card-background p-2.5 transition-colors hover:border-accent-gold/40"
+                            className="group flex items-center gap-3 rounded-lg border border-border bg-card-background p-2.5 transition-colors hover:border-text-primary/30"
                           >
                             <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-md bg-background-secondary">
                               <Image
@@ -134,10 +148,10 @@ export default function CartDrawer() {
                               />
                             </div>
                             <div className="min-w-0">
-                              <p className="line-clamp-1 text-xs font-medium text-text-primary group-hover:text-accent-gold">
+                              <p className="line-clamp-1 text-xs font-medium text-text-primary group-hover:text-sale-badge">
                                 {p.name}
                               </p>
-                              <p className="mt-0.5 text-xs font-semibold text-accent-gold">
+                              <p className="mt-0.5 text-xs font-bold text-text-primary">
                                 {formatPrice(p.price)}
                               </p>
                             </div>
@@ -148,7 +162,7 @@ export default function CartDrawer() {
                   )}
                 </div>
 
-                <div className="border-t border-background-secondary px-5 py-4">
+                <div className="border-t border-border px-5 py-4">
                   <div className="space-y-1.5 text-sm">
                     <div className="flex justify-between text-text-secondary">
                       <span>Subtotal</span>
@@ -160,13 +174,13 @@ export default function CartDrawer() {
                     </div>
                     <div className="flex justify-between pt-2 text-base font-bold text-text-primary">
                       <span>Total</span>
-                      <span className="font-montserrat">{formatPrice(total)}</span>
+                      <span>{formatPrice(total)}</span>
                     </div>
                   </div>
                   <Link
                     href="/checkout"
                     onClick={closeCart}
-                    className="mt-4 flex w-full items-center justify-center rounded-full bg-accent-gold py-4 text-sm font-bold uppercase tracking-wider text-black transition-all duration-300 hover:scale-[1.02] hover:bg-accent-gold-light"
+                    className="mt-4 flex w-full items-center justify-center bg-text-primary py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors duration-300 hover:bg-sale-badge"
                   >
                     Checkout
                   </Link>

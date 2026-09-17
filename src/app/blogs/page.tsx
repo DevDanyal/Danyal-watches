@@ -26,7 +26,7 @@ export default function BlogsPage() {
             <Link
               key={post.slug}
               href={`/blogs/${post.slug}`}
-              className="group overflow-hidden rounded-xl border border-background-secondary bg-card-background transition-all duration-300 hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-xl hover:shadow-black/50"
+              className="group overflow-hidden rounded-xl border border-border bg-card-background transition-all duration-300 hover:-translate-y-1 hover:border-text-primary/30 hover:shadow-xl hover:shadow-black/50"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
@@ -36,7 +36,7 @@ export default function BlogsPage() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <span className="absolute left-4 top-4 rounded-full bg-accent-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-black">
+                <span className="absolute left-4 top-4 rounded-full bg-text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-black">
                   {post.category}
                 </span>
               </div>
@@ -51,13 +51,13 @@ export default function BlogsPage() {
                     {post.readTime}
                   </span>
                 </div>
-                <h2 className="mt-3 font-serif text-lg font-bold leading-snug text-text-primary group-hover:text-accent-gold">
+                <h2 className="mt-3 text-lg font-bold leading-snug text-text-primary group-hover:text-sale-badge">
                   {post.title}
                 </h2>
                 <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary">
                   {post.excerpt}
                 </p>
-                <span className="mt-4 inline-block text-xs font-semibold uppercase tracking-wider text-accent-gold">
+                <span className="mt-4 inline-block text-xs font-semibold uppercase tracking-wider text-sale-badge">
                   Read More →
                 </span>
               </div>

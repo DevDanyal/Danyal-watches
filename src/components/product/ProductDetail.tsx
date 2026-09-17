@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ShoppingBag,
+  Zap,
   Heart,
   Share2,
   Star,
@@ -16,11 +18,13 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import ProductGallery from "@/components/product/ProductGallery";
-import Accordion from "@/components/product/Accordion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { formatPrice, getProductStock, type Product } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
+
+const tabs = ["About", "Overview & Specs", "Warranty"] as const;
+type Tab = (typeof tabs)[number];
 
 export default function ProductDetail({
   product,
@@ -29,12 +33,15 @@ export default function ProductDetail({
   product: Product;
   related: Product[];
 }) {
+  const router = useRouter();
   const { addItem } = useCart();
   const { isWishlisted, toggle } = useWishlist();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name);
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(isWishlisted(product.id));
   const [added, setAdded] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("About");
+  const [copied, setCopied] = useState(false);
 
   const stock = getProductStock(product);
   const outOfStock = stock === 0;
@@ -62,6 +69,24 @@ export default function ProductDetail({
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const handleBuyNow = () => {
+    if (outOfStock) return;
+    addItem(
+      {
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        subtitle: product.subtitle,
+        price: product.price,
+        regularPrice: product.regularPrice,
+        image: product.images[0],
+        color: selectedColor,
+      },
+      quantity
+    );
+    router.push("/checkout");
+  };
+
   const handleWishlist = () => {
     const next = !wishlisted;
     toggle(product.id);
@@ -80,29 +105,30 @@ export default function ProductDetail({
         setTimeout(() => setCopied(false), 2000);
       }
     } catch {
-      /* ignore share cancellation or errors */
+      /* ignore */
     }
   };
-
-  const [copied, setCopied] = useState(false);
 
   const specs = [
     { name: "Brand", value: "CRYSMA" },
     { name: "Type", value: product.subtitle },
     { name: "Movement", value: "Quartz / Automatic" },
     { name: "Case Material", value: "Stainless Steel" },
+    { name: "Case Size", value: "34-48mm" },
     { name: "Water Resistance", value: "3 ATM" },
     { name: "Warranty", value: "1 Year" },
   ];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <nav className="mb-6 flex items-center gap-2 text-xs text-text-secondary">
-        <Link href="/" className="hover:text-accent-gold">Home</Link>
+      <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-text-secondary">
+        <Link href="/" className="hover:text-text-primary">
+          Home
+        </Link>
         <span>/</span>
         <Link
           href={`/collections/${product.category}`}
-          className="hover:text-accent-gold"
+          className="hover:text-text-primary"
         >
           {product.category === "men" ? "Men" : product.category}
         </Link>
@@ -110,7 +136,7 @@ export default function ProductDetail({
         <span className="text-text-primary">{product.name}</span>
       </nav>
 
-      <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
         <ProductGallery images={product.images} name={product.name} />
 
         <div>
@@ -126,19 +152,19 @@ export default function ProductDetail({
               </span>
             )}
             {product.isBestSeller && (
-              <span className="rounded bg-accent-gold px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-black">
+              <span className="rounded bg-text-primary px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
                 Best Seller
               </span>
             )}
           </div>
 
-          <h1 className="mt-4 font-serif text-2xl font-bold text-text-primary sm:text-3xl">
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
             {product.name}
           </h1>
           <p className="mt-1 text-sm text-text-secondary">{product.subtitle}</p>
 
           <div className="mt-3 flex items-center gap-2">
-            <span className="flex items-center gap-1 text-accent-gold">
+            <span className="flex items-center gap-0.5 text-star">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star
                   key={s}
@@ -151,7 +177,7 @@ export default function ProductDetail({
                 />
               ))}
             </span>
-            <span className="text-sm font-semibold text-text-primary">
+            <span className="text-sm font-bold text-text-primary">
               {product.rating}
             </span>
             <span className="text-sm text-text-secondary">
@@ -159,8 +185,8 @@ export default function ProductDetail({
             </span>
           </div>
 
-          <div className="mt-5 flex items-end gap-3">
-            <span className="font-montserrat text-3xl font-bold text-accent-gold">
+          <div className="mt-5 flex flex-wrap items-end gap-3">
+            <span className="text-3xl font-extrabold text-text-primary">
               {formatPrice(product.price)}
             </span>
             {product.regularPrice > product.price && (
@@ -168,23 +194,29 @@ export default function ProductDetail({
                 {formatPrice(product.regularPrice)}
               </span>
             )}
+            {discount > 0 && (
+              <span className="mb-1.5 rounded bg-sale-badge/10 px-2 py-0.5 text-xs font-bold text-sale-badge">
+                {discount}% OFF
+              </span>
+            )}
           </div>
 
-          <p className="mt-2 text-xs text-success">
-            You save {formatPrice(product.regularPrice - product.price)}
+          <p className="mt-2 text-xs font-medium text-success">
+            You save {formatPrice(product.regularPrice - product.price)} — Cash on
+            Delivery available
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             {outOfStock ? (
-              <span className="rounded-full border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
+              <span className="rounded-md border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
                 Out of Stock
               </span>
             ) : stock <= 5 ? (
-              <span className="rounded-full border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
+              <span className="rounded-md border border-sale-badge/40 bg-sale-badge/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sale-badge">
                 Hurry — only {stock} left
               </span>
             ) : (
-              <span className="rounded-full border border-success/40 bg-success/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-success">
+              <span className="rounded-md border border-success/40 bg-success/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-success">
                 In Stock
               </span>
             )}
@@ -199,7 +231,9 @@ export default function ProductDetail({
                 <h3 className="text-sm font-bold uppercase tracking-wider text-text-primary">
                   Color
                 </h3>
-                <span className="text-sm text-text-secondary">{selectedColor}</span>
+                <span className="text-sm font-semibold text-text-primary">
+                  {selectedColor}
+                </span>
               </div>
               <div className="flex flex-wrap gap-3">
                 {product.colors.map((color) => {
@@ -211,14 +245,14 @@ export default function ProductDetail({
                       title={color.name}
                       aria-label={color.name}
                       className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all",
+                        "flex h-10 w-10 items-center justify-center rounded-full border transition-all",
                         active
-                          ? "border-accent-gold shadow-lg shadow-accent-gold/20"
-                          : "border-background-secondary hover:border-text-secondary/50"
+                          ? "border-text-primary"
+                          : "border-border hover:border-text-secondary/50"
                       )}
                     >
                       <span
-                        className="h-6 w-6 rounded-full border border-black/20"
+                        className="h-6 w-6 rounded-full border border-black/10"
                         style={{ backgroundColor: color.hex }}
                       />
                     </button>
@@ -228,12 +262,12 @@ export default function ProductDetail({
             </div>
           )}
 
-          <div className="mt-7 flex flex-wrap items-center gap-4">
-            <div className="flex items-center rounded-full border border-background-secondary bg-card-background">
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="flex items-center rounded-md border border-border bg-card-background">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
-                className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-accent-gold"
+                className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-sale-badge"
               >
                 <Minus className="h-4 w-4" />
               </button>
@@ -243,44 +277,52 @@ export default function ProductDetail({
               <button
                 onClick={() => setQuantity((q) => Math.min(99, q + 1))}
                 aria-label="Increase quantity"
-                className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-accent-gold"
+                className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-sale-badge"
               >
                 <Plus className="h-4 w-4" />
               </button>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              disabled={outOfStock}
-              className={cn(
-                "flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold uppercase tracking-wider transition-all duration-300 sm:flex-none sm:px-10",
-                added
-                  ? "bg-success text-white"
-                  : "bg-accent-gold text-black hover:scale-105 hover:bg-accent-gold-light",
-                outOfStock && "cursor-not-allowed opacity-50"
-              )}
-            >
-              {added ? (
-                <>
-                  <Check className="h-4 w-4" />
-                  Added to Cart
-                </>
-              ) : (
-                <>
-                  <ShoppingBag className="h-4 w-4" />
-                  Add to Cart
-                </>
-              )}
-            </button>
+            <div className="flex flex-1 gap-3">
+              <button
+                onClick={handleAddToCart}
+                disabled={outOfStock}
+                className={cn(
+                  "flex h-12 flex-1 items-center justify-center gap-2 bg-text-primary px-5 text-sm font-bold uppercase tracking-wider text-white transition-colors duration-300",
+                  added ? "bg-success" : "hover:bg-sale-badge",
+                  outOfStock && "cursor-not-allowed opacity-50"
+                )}
+              >
+                {added ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    Added to Cart
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="h-4 w-4" />
+                    Add to Cart
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleBuyNow}
+                disabled={outOfStock}
+                className="flex h-12 flex-1 items-center justify-center gap-2 border border-text-primary px-5 text-sm font-bold uppercase tracking-wider text-text-primary transition-colors hover:bg-text-primary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Zap className="h-4 w-4" />
+                Buy It Now
+              </button>
+            </div>
 
             <button
               onClick={handleWishlist}
               aria-label="Toggle wishlist"
               className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-full border transition-all",
+                "flex h-12 w-12 items-center justify-center rounded-md border transition-all",
                 wishlisted
                   ? "border-sale-badge bg-sale-badge/10 text-sale-badge"
-                  : "border-background-secondary text-text-primary hover:border-sale-badge hover:text-sale-badge"
+                  : "border-border text-text-primary hover:border-sale-badge hover:text-sale-badge"
               )}
             >
               <Heart className={cn("h-5 w-5", wishlisted && "fill-current")} />
@@ -289,72 +331,109 @@ export default function ProductDetail({
             <button
               onClick={handleShare}
               aria-label="Share product"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-background-secondary text-text-primary transition-all hover:border-accent-gold hover:text-accent-gold"
+              className="flex h-12 w-12 items-center justify-center rounded-md border border-border text-text-primary transition-all hover:border-text-primary"
             >
-              {copied ? <Check className="h-5 w-5 text-success" /> : <Share2 className="h-5 w-5" />}
+              {copied ? (
+                <Check className="h-5 w-5 text-success" />
+              ) : (
+                <Share2 className="h-5 w-5" />
+              )}
             </button>
           </div>
 
-          <div className="mt-8 flex flex-col gap-4">
-            <Accordion
-              items={[
-                {
-                  title: "Description",
-                  content: (
-                    <p>
-                      The {product.name} is a premium {product.subtitle.toLowerCase()}{" "}
-                      from the CRYSMA collection. Featuring a precision quartz
-                      movement, scratch-resistant mineral glass, and a stainless
-                      steel case, it delivers reliable timekeeping with timeless
-                      elegance. Perfect for daily wear and special occasions.
-                    </p>
-                  ),
-                },
-                {
-                  title: "Specifications",
-                  content: (
-                    <table className="w-full">
-                      <tbody>
-                        {specs.map((spec) => (
-                          <tr key={spec.name} className="border-b border-background-secondary last:border-0">
-                            <td className="py-2.5 pr-4 font-medium text-text-primary">
-                              {spec.name}
-                            </td>
-                            <td className="py-2.5 text-text-secondary">
-                              {spec.value}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ),
-                },
-                {
-                  title: "Shipping & Returns",
-                  content: (
-                    <div className="space-y-2">
-                      <p>Free nationwide shipping on all orders.</p>
-                      <p>Expected delivery: 3-5 business days.</p>
-                      <p>7-day hassle-free exchange & return policy.</p>
-                    </div>
-                  ),
-                },
-              ]}
-            />
+          <div className="mt-7 grid grid-cols-3 gap-2.5">
+            <div className="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background-secondary px-2 py-3 text-center">
+              <Truck className="h-5 w-5 text-sale-badge" />
+              <span className="text-[11px] font-medium text-text-primary">
+                Free Shipping
+              </span>
+              <span className="text-[10px] leading-tight text-text-secondary">
+                Nationwide 3-5 days
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background-secondary px-2 py-3 text-center">
+              <RotateCcw className="h-5 w-5 text-sale-badge" />
+              <span className="text-[11px] font-medium text-text-primary">
+                30-Day Returns
+              </span>
+              <span className="text-[10px] leading-tight text-text-secondary">
+                Easy exchange & refund
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background-secondary px-2 py-3 text-center">
+              <ShieldCheck className="h-5 w-5 text-sale-badge" />
+              <span className="text-[11px] font-medium text-text-primary">
+                1-Year Warranty
+              </span>
+              <span className="text-[10px] leading-tight text-text-secondary">
+                International coverage
+              </span>
+            </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <div className="flex flex-col items-center gap-1.5 rounded-xl border border-background-secondary bg-card-background p-3 text-center">
-              <Truck className="h-5 w-5 text-accent-gold" />
-              <span className="text-[11px] text-text-secondary">Free Shipping</span>
+          <div className="mt-8">
+            <div className="flex gap-6 border-b border-border">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={cn(
+                    "border-b-2 pb-3 text-sm font-semibold uppercase tracking-wider transition-colors",
+                    activeTab === tab
+                      ? "border-text-primary text-text-primary"
+                      : "border-transparent text-text-secondary hover:text-text-primary"
+                  )}
+                >
+                  {tab}
+                </button>
+              ))}
             </div>
-            <div className="flex flex-col items-center gap-1.5 rounded-xl border border-background-secondary bg-card-background p-3 text-center">
-              <RotateCcw className="h-5 w-5 text-accent-gold" />
-              <span className="text-[11px] text-text-secondary">7-Day Returns</span>
-            </div>
-            <div className="flex flex-col items-center gap-1.5 rounded-xl border border-background-secondary bg-card-background p-3 text-center">
-              <ShieldCheck className="h-5 w-5 text-accent-gold" />
-              <span className="text-[11px] text-text-secondary">1 Yr Warranty</span>
+
+            <div className="py-5 text-sm leading-relaxed text-text-secondary">
+              {activeTab === "About" && (
+                <p>
+                  The {product.name} is a premium {product.subtitle.toLowerCase()}{" "}
+                  from the CRYSMA collection. Featuring a precision quartz
+                  movement, scratch-resistant mineral glass, and a stainless
+                  steel case, it delivers reliable timekeeping with timeless
+                  elegance. Perfect for daily wear and special occasions —
+                  every piece is quality-checked before it ships.
+                </p>
+              )}
+              {activeTab === "Overview & Specs" && (
+                <table className="w-full">
+                  <tbody>
+                    {specs.map((spec) => (
+                      <tr
+                        key={spec.name}
+                        className="border-b border-border last:border-0"
+                      >
+                        <td className="py-2.5 pr-4 font-medium text-text-primary">
+                          {spec.name}
+                        </td>
+                        <td className="py-2.5">{spec.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              {activeTab === "Warranty" && (
+                <div className="space-y-3">
+                  <p className="font-semibold text-text-primary">
+                    1-Year International Warranty
+                  </p>
+                  <p>
+                    Every CRYSMA timepiece is covered by a full 1-year warranty
+                    from the date of purchase against any defects due to faulty
+                    material or workmanship.
+                  </p>
+                  <ul className="list-disc space-y-1 pl-5">
+                    <li>Free nationwide shipping on all orders</li>
+                    <li>Expected delivery: 3-5 business days</li>
+                    <li>30-day hassle-free exchange & return policy</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -363,14 +442,14 @@ export default function ProductDetail({
       {related.length > 0 && (
         <section className="mt-20">
           <div className="mb-8 text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent-gold">
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-sale-badge">
               You may also like
             </span>
-            <h2 className="mt-2 font-serif text-2xl font-bold text-text-primary sm:text-3xl">
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
               Related Products
             </h2>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 md:gap-6">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 md:gap-5">
             {related.map((p) => (
               <RelatedCard key={p.id} product={p} />
             ))}
@@ -382,10 +461,13 @@ export default function ProductDetail({
 }
 
 function RelatedCard({ product }: { product: Product }) {
+  const discount = Math.round(
+    ((product.regularPrice - product.price) / product.regularPrice) * 100
+  );
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group overflow-hidden rounded-xl border border-background-secondary bg-card-background transition-all duration-300 hover:-translate-y-1 hover:border-accent-gold/40 hover:shadow-xl hover:shadow-black/50"
+      className="group overflow-hidden rounded-lg border border-border bg-card-background transition-all duration-300 hover:border-text-primary/20 hover:shadow-lg hover:shadow-black/5"
     >
       <div className="relative aspect-square overflow-hidden bg-background-secondary">
         <Image
@@ -395,15 +477,27 @@ function RelatedCard({ product }: { product: Product }) {
           sizes="(max-width: 640px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        {discount > 0 && (
+          <span className="absolute left-3 top-3 rounded bg-sale-badge px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white">
+            -{discount}% OFF
+          </span>
+        )}
       </div>
       <div className="p-4">
-        <h3 className="line-clamp-1 text-sm font-medium text-text-primary group-hover:text-accent-gold">
+        <h3 className="line-clamp-1 text-sm font-semibold text-text-primary">
           {product.name}
         </h3>
         <p className="mt-1 text-xs text-text-secondary">{product.subtitle}</p>
-        <p className="mt-2 font-montserrat text-sm font-bold text-text-primary">
-          {formatPrice(product.price)}
-        </p>
+        <div className="mt-2 flex items-center gap-2">
+          <span className="text-sm font-bold text-text-primary">
+            {formatPrice(product.price)}
+          </span>
+          {product.regularPrice > product.price && (
+            <span className="text-xs text-text-secondary line-through">
+              {formatPrice(product.regularPrice)}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

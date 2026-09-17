@@ -30,14 +30,14 @@ export default function StickyAddToCart({
   return (
     <div
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 border-t border-background-secondary bg-background/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-md transition-transform duration-300 lg:hidden",
+        "fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-md transition-transform duration-300 lg:hidden",
         visible ? "translate-y-0" : "translate-y-full"
       )}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
           <span className="text-xs text-text-secondary">{product.name}</span>
-          <span className="font-montserrat text-lg font-bold text-accent-gold">
+          <span className="text-lg font-bold text-text-primary">
             {formatPrice(product.price)}
           </span>
         </div>
@@ -57,7 +57,7 @@ export default function StickyAddToCart({
               quantity
             )
           }
-          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-accent-gold py-3.5 text-sm font-bold uppercase tracking-wider text-black active:scale-95"
+          className="flex flex-1 items-center justify-center gap-2 bg-text-primary py-3.5 text-sm font-bold uppercase tracking-wider text-white active:scale-95"
         >
           <ShoppingBag className="h-4 w-4" />
           Add to Cart

@@ -5,6 +5,7 @@ import ProductCarousel from "@/components/home/ProductCarousel";
 import ProductGrid from "@/components/home/ProductGrid";
 import TrustBadges from "@/components/home/TrustBadges";
 import BrandStory from "@/components/home/BrandStory";
+import Testimonials from "@/components/home/Testimonials";
 import Newsletter from "@/components/home/Newsletter";
 import { products } from "@/lib/data/products";
 
@@ -40,6 +41,7 @@ export default function Home() {
       )}
       <TrustBadges />
       <BrandStory />
+      <Testimonials />
       <Newsletter />
     </>
   );

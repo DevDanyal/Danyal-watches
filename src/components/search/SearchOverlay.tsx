@@ -51,17 +51,17 @@ export default function SearchOverlay() {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[60]"
         >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeSearch} />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeSearch} />
 
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="relative mx-auto mt-0 max-w-2xl border-x border-b border-background-secondary bg-card-background px-4 py-6 shadow-2xl shadow-black/60 sm:rounded-b-2xl sm:px-6"
+            className="relative mx-auto mt-0 max-w-2xl border-x border-b border-border bg-card-background px-4 py-6 shadow-2xl shadow-black/30 sm:rounded-b-2xl sm:px-6"
           >
             <form onSubmit={submit} className="flex items-center gap-3">
-              <Search className="h-5 w-5 shrink-0 text-accent-gold" />
+              <Search className="h-5 w-5 shrink-0 text-text-secondary" />
               <input
                 ref={inputRef}
                 value={query}
@@ -79,7 +79,7 @@ export default function SearchOverlay() {
               </button>
             </form>
 
-            <div className="mt-5 border-t border-background-secondary pt-4">
+            <div className="mt-5 border-t border-border pt-4">
               {query.trim().length < 2 ? (
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
@@ -90,7 +90,7 @@ export default function SearchOverlay() {
                       <button
                         key={t}
                         onClick={() => setQuery(t)}
-                        className="rounded-full border border-background-secondary px-4 py-1.5 text-xs font-medium text-text-primary transition-colors hover:border-accent-gold hover:text-accent-gold"
+                        className="rounded-full border border-border px-4 py-1.5 text-xs font-medium text-text-primary transition-colors hover:border-text-primary"
                       >
                         {t}
                       </button>
@@ -131,7 +131,7 @@ export default function SearchOverlay() {
                         </p>
                         <p className="truncate text-xs text-text-secondary">{p.subtitle}</p>
                       </div>
-                      <span className="shrink-0 font-montserrat text-sm font-bold text-accent-gold">
+                      <span className="shrink-0 text-sm font-bold text-text-primary">
                         {formatPrice(p.price)}
                       </span>
                     </Link>
@@ -144,7 +144,7 @@ export default function SearchOverlay() {
               <button
                 type="button"
                 onClick={submit}
-                className="mt-4 w-full rounded-full bg-accent-gold py-3 text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-accent-gold-light"
+                className="mt-4 w-full bg-text-primary py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-sale-badge"
               >
                 View all results
               </button>
@@ -165,7 +165,7 @@ function PopGrid({ onPick }: { onPick: () => void }) {
           key={p.id}
           href={`/products/${p.slug}`}
           onClick={onPick}
-          className="flex items-center gap-2 rounded-lg border border-background-secondary px-2 py-2 transition-colors hover:border-accent-gold/40"
+          className="flex items-center gap-2 rounded-lg border border-border px-2 py-2 transition-colors hover:border-text-primary/30"
         >
           <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded bg-background-secondary">
             <Image src={p.images[0]} alt={p.name} fill sizes="36px" className="object-cover" />
