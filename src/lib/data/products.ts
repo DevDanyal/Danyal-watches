@@ -1,6 +1,7 @@
 export type Product = {
   id: string;
   slug: string;
+  code: string;
   name: string;
   category: string;
   subtitle: string;
@@ -19,6 +20,7 @@ export const products: Product[] = [
   {
     id: "1",
     slug: "crysma-crl6666-mast",
+    code: "CRL-6666",
     name: "CRYSMA CRL6666 Mast",
     category: "men",
     subtitle: "Men's Chain Watch",
@@ -38,6 +40,7 @@ export const products: Product[] = [
   {
     id: "2",
     slug: "crysma-crl2544-magnet",
+    code: "CRL-2544",
     name: "CRYSMA CRL2544 Magnet",
     category: "men",
     subtitle: "Men's Strap Watch",
@@ -58,6 +61,7 @@ export const products: Product[] = [
   {
     id: "3",
     slug: "crysma-crl6927-horvick",
+    code: "CRL-6927",
     name: "CRYSMA CRL6927 Horvick",
     category: "men",
     subtitle: "Men's Strap Watch",
@@ -76,6 +80,7 @@ export const products: Product[] = [
   {
     id: "4",
     slug: "crysma-crl2127-diastar-lite",
+    code: "CRL-2127",
     name: "CRYSMA CRL2127 Diastar Lite",
     category: "men",
     subtitle: "Men's Luxury Watch",
@@ -96,6 +101,7 @@ export const products: Product[] = [
   {
     id: "5",
     slug: "crysma-crl111945-diastar-automatic",
+    code: "CRL-111945",
     name: "CRYSMA CRL111945 Diastar Automatic",
     category: "men",
     subtitle: "Men's Luxury Automatic",
@@ -114,6 +120,7 @@ export const products: Product[] = [
   {
     id: "6",
     slug: "crysma-crl8173-dream",
+    code: "CRL-8173",
     name: "CRYSMA CRL8173 Dream",
     category: "men",
     subtitle: "Men's Chain Watch",
@@ -133,6 +140,7 @@ export const products: Product[] = [
   {
     id: "7",
     slug: "crysma-crl2537-elaris",
+    code: "CRL-2537",
     name: "CRYSMA CRL2537 Elaris",
     category: "men",
     subtitle: "Men's Chain Watch",
@@ -150,6 +158,7 @@ export const products: Product[] = [
   {
     id: "8",
     slug: "crysma-crl6346c-flow",
+    code: "CRL-6346C",
     name: "CRYSMA CRL6346C Flow",
     category: "men",
     subtitle: "Men's Strap Watch",
@@ -168,6 +177,7 @@ export const products: Product[] = [
   {
     id: "9",
     slug: "crysma-crl685-aspire",
+    code: "CRL-685",
     name: "CRYSMA CRL685 Aspire",
     category: "men",
     subtitle: "Men's Luxury Watch",
@@ -186,6 +196,7 @@ export const products: Product[] = [
   {
     id: "10",
     slug: "crysma-crl6824-kingston",
+    code: "CRL-6824",
     name: "CRYSMA CRL6824 Kingston",
     category: "men",
     subtitle: "Men's Luxury Watch",
@@ -205,6 +216,7 @@ export const products: Product[] = [
   {
     id: "11",
     slug: "crysma-crl2542-strider",
+    code: "CRL-2542",
     name: "CRYSMA CRL2542 Strider",
     category: "men",
     subtitle: "Men's Strap Watch",
@@ -223,6 +235,7 @@ export const products: Product[] = [
   {
     id: "12",
     slug: "crysma-crl0237-unique",
+    code: "CRL-0237",
     name: "CRYSMA CRL0237 Unique",
     category: "men",
     subtitle: "Men's Chain Watch",
@@ -241,6 +254,7 @@ export const products: Product[] = [
   {
     id: "13",
     slug: "crysma-crl3225-datejust",
+    code: "CRL-3225",
     name: "CRYSMA CRL3225 Date-Just",
     category: "men",
     subtitle: "Men's Luxury Watch",
@@ -259,6 +273,7 @@ export const products: Product[] = [
   {
     id: "14",
     slug: "crysma-1027-universal",
+    code: "CRL-1027",
     name: "CRYSMA CRL1027 Universal",
     category: "men",
     subtitle: "Men's Chain Watch",
@@ -276,6 +291,7 @@ export const products: Product[] = [
   {
     id: "15",
     slug: "crysma-crl1030-globe",
+    code: "CRL-1030",
     name: "CRYSMA CRL1030 Globe",
     category: "men",
     subtitle: "Men's Luxury Watch",
@@ -294,6 +310,7 @@ export const products: Product[] = [
   {
     id: "16",
     slug: "crysma-5799-blast",
+    code: "CRL-5799",
     name: "CRYSMA CRL5799 Blast",
     category: "men",
     subtitle: "Men's Strap Watch",
@@ -312,6 +329,7 @@ export const products: Product[] = [
   {
     id: "17",
     slug: "crysma-crl4401-elegance",
+    code: "CRL-4401",
     name: "CRYSMA CRL4401 Elegance",
     category: "women",
     subtitle: "Women's Luxury Watch",
@@ -331,6 +349,7 @@ export const products: Product[] = [
   {
     id: "18",
     slug: "crysma-crl5502-bloom",
+    code: "CRL-5502",
     name: "CRYSMA CRL5502 Bloom",
     category: "women",
     subtitle: "Women's Chain Watch",
@@ -348,6 +367,7 @@ export const products: Product[] = [
   {
     id: "19",
     slug: "crysma-crl6603-lumina",
+    code: "CRL-6603",
     name: "CRYSMA CRL6603 Lumina",
     category: "women",
     subtitle: "Women's Luxury Watch",
@@ -366,6 +386,7 @@ export const products: Product[] = [
   {
     id: "20",
     slug: "crysma-crl7704-meraki",
+    code: "CRL-7704",
     name: "CRYSMA CRL7704 Meraki",
     category: "couple",
     subtitle: "Couple's Matching Set",
@@ -385,6 +406,7 @@ export const products: Product[] = [
   {
     id: "21",
     slug: "crysma-crl8805-duniya",
+    code: "CRL-8805",
     name: "CRYSMA CRL8805 Duniya",
     category: "couple",
     subtitle: "Couple's Chain Set",
@@ -431,7 +453,10 @@ export const formatPrice = (value: number) =>
 export const getProductStock = (product: Pick<Product, "slug">): number =>
   stockBySlug[product.slug] ?? 0;
 
-export const getProductCode = (product: Pick<Product, "slug">): string => {
+export const getProductCode = (
+  product: Pick<Product, "slug"> & { code?: string }
+): string => {
+  if (product.code) return product.code;
   const part = product.slug.split("-")[1] ?? "";
   return part ? part.toUpperCase() : product.slug.toUpperCase();
 };
