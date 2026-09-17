@@ -24,7 +24,7 @@ import { useAuth } from "@/context/AuthContext";
 import {
   formatPrice,
   getProductStock,
-  getProductCode,
+  getVariantCode,
   type Product,
 } from "@/lib/data/products";
 import AuthModal from "@/components/auth/AuthModal";
@@ -52,7 +52,7 @@ export default function ProductDetail({
   const [copied, setCopied] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
 
-  const code = getProductCode(product);
+  const variantCode = getVariantCode(product, selectedColor);
   const stock = getProductStock(product);
   const outOfStock = stock === 0;
 
@@ -66,7 +66,7 @@ export default function ProductDetail({
       {
         id: product.id,
         slug: product.slug,
-        code,
+        code: variantCode,
         name: product.name,
         subtitle: product.subtitle,
         price: product.price,
@@ -86,7 +86,7 @@ export default function ProductDetail({
       {
         id: product.id,
         slug: product.slug,
-        code,
+        code: variantCode,
         name: product.name,
         subtitle: product.subtitle,
         price: product.price,
@@ -242,7 +242,7 @@ export default function ProductDetail({
               </span>
             )}
             <span className="text-xs text-text-secondary">
-              Product Code: {code}
+              Product Code: <span className="font-bold text-text-primary">{variantCode}</span>
             </span>
           </div>
 

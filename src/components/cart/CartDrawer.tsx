@@ -82,6 +82,7 @@ export default function CartDrawer() {
                       id={item.id}
                       slug={item.slug}
                       color={item.color}
+                      code={item.code}
                       image={item.image}
                       name={item.name}
                       subtitle={item.subtitle}

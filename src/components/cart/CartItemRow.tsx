@@ -10,6 +10,7 @@ export default function CartItemRow({
   id,
   slug,
   color,
+  code,
   image,
   name,
   subtitle,
@@ -19,6 +20,7 @@ export default function CartItemRow({
   id: string;
   slug: string;
   color?: string;
+  code?: string;
   image: string;
   name: string;
   subtitle: string;
@@ -48,6 +50,11 @@ export default function CartItemRow({
             <p className="mt-0.5 text-xs text-text-secondary">{subtitle}</p>
             {color && (
               <p className="mt-0.5 text-xs text-text-secondary">{color}</p>
+            )}
+            {code && (
+              <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-text-primary">
+                {code}
+              </p>
             )}
           </div>
           <button

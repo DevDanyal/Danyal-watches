@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { formatPrice, getProductCode, type Product } from "@/lib/data/products";
+import { formatPrice, getVariantCode, type Product } from "@/lib/data/products";
 import { cn } from "@/lib/utils";
 
 export default function StickyAddToCart({
@@ -47,7 +47,7 @@ export default function StickyAddToCart({
               {
                 id: product.id,
                 slug: product.slug,
-                code: getProductCode(product),
+                code: getVariantCode(product, color),
                 name: product.name,
                 subtitle: product.subtitle,
                 price: product.price,

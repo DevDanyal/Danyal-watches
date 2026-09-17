@@ -461,6 +461,66 @@ export const getProductCode = (
   return part ? part.toUpperCase() : product.slug.toUpperCase();
 };
 
+const COLOR_CODES: Record<string, string> = {};
+
+const registerColor = (name: string, code: string) => {
+  COLOR_CODES[name.trim().toLowerCase()] = code;
+};
+
+registerColor("Two Tone/Golden", "2T-GD");
+registerColor("Two Tone/Grey", "2T-GY");
+registerColor("Two Tone/White", "2T-WH");
+registerColor("Two Tone/Black", "2T-BK");
+registerColor("Two Tone Golden", "2T-GD");
+registerColor("Full Black", "FBK");
+registerColor("Black/White", "BK-WH");
+registerColor("Full Blue", "FBL");
+registerColor("Tiffany", "TF");
+registerColor("Brown Gold", "BR-GD");
+registerColor("Full Grey", "FGY");
+registerColor("Full Golden", "FGD");
+registerColor("Silver/Black", "SV-BK");
+registerColor("Silver Black", "SV-BK");
+registerColor("Golden/White", "GD-WH");
+registerColor("Golden/Black", "GD-BK");
+registerColor("Golden/Golden/Black", "GG-BK");
+registerColor("Black/Black/Black", "BBB");
+registerColor("Black/Silver/Black", "BK-SV");
+registerColor("Black/Rose Gold/Black", "BK-RG");
+registerColor("Silver Blue", "SV-BL");
+registerColor("Gun Metal/Black", "GM-BK");
+registerColor("Full Red", "FRD");
+registerColor("Silver/Green", "SV-GN");
+registerColor("Black/Blue", "BK-BL");
+registerColor("Silver/Grey", "SV-GY");
+registerColor("Rose Gold", "RG");
+registerColor("Golden", "GD");
+registerColor("Grey", "GY");
+registerColor("Black/Gold", "BK-GD");
+registerColor("Silver", "SV");
+
+const fallbackColorCode = (raw: string): string => {
+  const cleaned = raw
+    .replace(/[^a-z0-9\s]/gi, " ")
+    .trim()
+    .toUpperCase();
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  return parts.length >= 2
+    ? parts.map((p) => p[0]).join("")
+    : cleaned.slice(0, 4);
+};
+
+export const getVariantCode = (
+  product: Pick<Product, "slug"> & { code?: string },
+  color?: string
+): string => {
+  const base = getProductCode(product);
+  if (!color) return base;
+  const key = color.trim().toLowerCase();
+  const suffix = COLOR_CODES[key] ?? fallbackColorCode(key);
+  return `${base}-${suffix}`;
+};
+
 export const getDiscountPercent = (product: Product) =>
   Math.round(((product.regularPrice - product.price) / product.regularPrice) * 100);
 
