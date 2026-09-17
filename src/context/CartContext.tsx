@@ -12,6 +12,7 @@ import {
 export type CartItem = {
   id: string;
   slug: string;
+  code: string;
   name: string;
   subtitle: string;
   price: number;

@@ -8,6 +8,7 @@ import {
   formatPrice,
   getDiscountPercent,
   getProductStock,
+  getProductCode,
   type Product,
 } from "@/lib/data/products";
 import { useCart } from "@/context/CartContext";
@@ -28,6 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
     addItem({
       id: product.id,
       slug: product.slug,
+      code: getProductCode(product),
       name: product.name,
       subtitle: product.subtitle,
       price: product.price,

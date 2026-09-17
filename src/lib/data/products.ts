@@ -431,6 +431,11 @@ export const formatPrice = (value: number) =>
 export const getProductStock = (product: Pick<Product, "slug">): number =>
   stockBySlug[product.slug] ?? 0;
 
+export const getProductCode = (product: Pick<Product, "slug">): string => {
+  const part = product.slug.split("-")[1] ?? "";
+  return part ? part.toUpperCase() : product.slug.toUpperCase();
+};
+
 export const getDiscountPercent = (product: Product) =>
   Math.round(((product.regularPrice - product.price) / product.regularPrice) * 100);
 

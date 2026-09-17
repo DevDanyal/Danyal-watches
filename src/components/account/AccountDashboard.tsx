@@ -12,6 +12,7 @@ import {
   Package,
   Phone,
   Save,
+  Tag,
   User as UserIcon,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -19,7 +20,7 @@ import { formatPrice } from "@/lib/data/products";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 import { cn } from "@/lib/utils";
 
-type Tab = "dashboard" | "orders" | "profile";
+type Tab = "dashboard" | "products" | "orders" | "profile";
 
 const statusStyles: Record<string, string> = {
   "Order Placed": "bg-text-secondary/20 text-text-primary",
@@ -96,6 +97,7 @@ export default function AccountDashboard() {
             {(
               [
                 { id: "dashboard", label: "Dashboard", icon: UserIcon },
+                { id: "products", label: "My Product Codes", icon: Tag },
                 { id: "orders", label: "My Orders", icon: Package },
                 { id: "profile", label: "Edit Profile", icon: Boxes },
               ] as { id: Tab; label: string; icon: typeof UserIcon }[]
@@ -150,7 +152,17 @@ export default function AccountDashboard() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
-              {tab === "dashboard" && <Dashboard orderCount={orders.length} />}
+              {tab === "dashboard" && (
+                <Dashboard
+                  orderCount={orders.length}
+                  productCount={orders.reduce(
+                    (n, o) => n + o.items.reduce((n2, i) => n2 + i.quantity, 0),
+                    0
+                  )}
+                  onGoToProducts={() => setTab("products")}
+                />
+              )}
+              {tab === "products" && <ProductCodes orders={orders} />}
               {tab === "orders" && <OrdersList orders={orders} onTrack={() => {}} />}
               {tab === "profile" && (
                 <ProfileForm form={form} setForm={setForm} onSave={handleSaveProfile} />
@@ -163,13 +175,21 @@ export default function AccountDashboard() {
   );
 }
 
-function Dashboard({ orderCount }: { orderCount: number }) {
+function Dashboard({
+  orderCount,
+  productCount,
+  onGoToProducts,
+}: {
+  orderCount: number;
+  productCount: number;
+  onGoToProducts: () => void;
+}) {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {[
         { value: orderCount, label: "Total Orders", icon: Package },
+        { value: productCount, label: "Watches Bought", icon: Tag },
         { value: "1 Year", label: "Warranty", icon: Boxes },
-        { value: "7 Days", label: "Returns", icon: Mail },
       ].map(({ value, label, icon: Icon }) => (
         <div
           key={label}
@@ -186,6 +206,12 @@ function Dashboard({ orderCount }: { orderCount: number }) {
       <div className="rounded-2xl border border-border bg-card-background p-6 sm:col-span-3">
         <h2 className="text-lg font-bold text-text-primary">Quick Actions</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <button
+            onClick={onGoToProducts}
+            className="rounded-xl border border-border px-5 py-4 text-left text-sm font-semibold text-text-primary transition-colors hover:border-text-primary"
+          >
+            My Product Codes →
+          </button>
           <Link
             href="/collections/men"
             className="rounded-xl border border-border px-5 py-4 text-sm font-semibold text-text-primary transition-colors hover:border-text-primary"
@@ -196,6 +222,112 @@ function Dashboard({ orderCount }: { orderCount: number }) {
             Track an Order →
           </Link>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductCodes({ orders }: { orders: SavedOrder[] }) {
+  const codes: {
+    code: string;
+    name: string;
+    color?: string;
+    qty: number;
+    date: string;
+    id: string;
+  }[] = [];
+
+  for (const order of orders) {
+    for (const item of order.items) {
+      codes.push({
+        code: item.code ?? item.slug?.replace(/^crysma-/, "").split("-")[0]?.toUpperCase() ?? item.slug,
+        name: item.name,
+        color: item.color,
+        qty: item.quantity,
+        date: order.date,
+        id: `${order.orderId}::${item.id}::${item.color ?? "default"}`,
+      });
+    }
+  }
+
+  if (codes.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card-background py-20 text-center">
+        <Tag className="h-12 w-12 text-text-secondary" />
+        <div>
+          <h2 className="text-xl font-bold text-text-primary">No product codes yet</h2>
+          <p className="mt-1 text-sm text-text-secondary">
+            When you buy a watch, its unique product code will appear here for warranty and support.
+          </p>
+        </div>
+        <Link
+          href="/collections/men"
+          className="rounded-full bg-text-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-all hover:scale-105"
+        >
+          Start Shopping
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-text-primary">My Product Codes</h2>
+          <p className="mt-1 text-sm text-text-secondary">
+            Keep these codes safe — they are used for order support and warranty claims.
+          </p>
+        </div>
+        <span className="rounded-full bg-text-primary/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-text-primary">
+          {codes.length} {codes.length === 1 ? "watch" : "watches"}
+        </span>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {codes.map((code) => (
+          <div
+            key={code.id}
+            className="rounded-2xl border border-border bg-card-background p-5"
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-text-primary text-black">
+                <Tag className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs uppercase tracking-wider text-text-secondary">
+                  Product Code
+                </p>
+                <p className="truncate text-lg font-extrabold tracking-tight text-text-primary">
+                  {code.code}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 space-y-1 border-t border-border pt-3 text-sm">
+              <p className="truncate font-semibold text-text-primary">{code.name}</p>
+              {code.color && <p className="text-xs text-text-secondary">Color: {code.color}</p>}
+              <p className="text-xs text-text-secondary">
+                Qty {code.qty} ·{" "}
+                {new Date(code.date).toLocaleDateString("en-PK", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="rounded-md bg-success/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-success">
+                Warranty Active
+              </span>
+              <Link
+                href="/track-order"
+                className="rounded-md border border-border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-text-primary transition-colors hover:border-text-primary"
+              >
+                Track Order
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

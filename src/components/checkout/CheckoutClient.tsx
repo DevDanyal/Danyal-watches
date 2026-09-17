@@ -14,6 +14,7 @@ import {
   Truck,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/data/products";
 import type { CartItem } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
@@ -120,11 +121,12 @@ function OrderConfirmation({ orderId }: { orderId: string }) {
 
 export default function CheckoutClient() {
   const { items, subtotal, clearCart } = useCart();
+  const { user } = useAuth();
   const [step, setStep] = useState<Step>("shipping");
   const [shipping, setShipping] = useState({
     firstName: "",
     lastName: "",
-    email: "",
+    email: user?.email ?? "",
     phone: "",
     address: "",
     city: "",

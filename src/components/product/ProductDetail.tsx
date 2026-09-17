@@ -20,7 +20,14 @@ import {
 import ProductGallery from "@/components/product/ProductGallery";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { formatPrice, getProductStock, type Product } from "@/lib/data/products";
+import { useAuth } from "@/context/AuthContext";
+import {
+  formatPrice,
+  getProductStock,
+  getProductCode,
+  type Product,
+} from "@/lib/data/products";
+import AuthModal from "@/components/auth/AuthModal";
 import { cn } from "@/lib/utils";
 
 const tabs = ["About", "Overview & Specs", "Warranty"] as const;
@@ -36,13 +43,16 @@ export default function ProductDetail({
   const router = useRouter();
   const { addItem } = useCart();
   const { isWishlisted, toggle } = useWishlist();
+  const { user } = useAuth();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name);
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(isWishlisted(product.id));
   const [added, setAdded] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("About");
   const [copied, setCopied] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
+  const code = getProductCode(product);
   const stock = getProductStock(product);
   const outOfStock = stock === 0;
 
@@ -56,6 +66,7 @@ export default function ProductDetail({
       {
         id: product.id,
         slug: product.slug,
+        code,
         name: product.name,
         subtitle: product.subtitle,
         price: product.price,
@@ -69,12 +80,13 @@ export default function ProductDetail({
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const handleBuyNow = () => {
+  const proceedToCheckout = () => {
     if (outOfStock) return;
     addItem(
       {
         id: product.id,
         slug: product.slug,
+        code,
         name: product.name,
         subtitle: product.subtitle,
         price: product.price,
@@ -85,6 +97,15 @@ export default function ProductDetail({
       quantity
     );
     router.push("/checkout");
+  };
+
+  const handleBuyNow = () => {
+    if (outOfStock) return;
+    if (!user) {
+      setAuthOpen(true);
+      return;
+    }
+    proceedToCheckout();
   };
 
   const handleWishlist = () => {
@@ -221,7 +242,7 @@ export default function ProductDetail({
               </span>
             )}
             <span className="text-xs text-text-secondary">
-              SKU: {product.slug.toUpperCase()}
+              Product Code: {code}
             </span>
           </div>
 
@@ -456,6 +477,14 @@ export default function ProductDetail({
           </div>
         </section>
       )}
+
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        title={`Buy ${product.name}`}
+        subtitle="Sign in to continue. Your purchased product code will be saved to your profile."
+        onSuccess={proceedToCheckout}
+      />
     </div>
   );
 }
