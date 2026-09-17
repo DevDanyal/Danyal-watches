@@ -9,13 +9,13 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 const slides = [
   {
     id: 1,
-    kicker: "New Season Collection",
+    kicker: "Men Collection",
     title: "Timeless Luxury, Crafted for You",
     subtitle:
       "Precision timepieces for men, women & couples. Swiss-inspired design. Exceptional value.",
     cta: "Shop Men",
     href: "/collections/men",
-    image: "/images/home/images (8).jpg",
+    image: "/images/home/sveston-men.jpg",
     alt: "CRYSMA men's luxury watch",
   },
   {
@@ -26,7 +26,7 @@ const slides = [
       "Limited time offer on premium timepieces. Free nationwide shipping on all orders.",
     cta: "Shop Sale",
     href: "/collections/sale",
-    image: "/images/home/images (1).jpg",
+    image: "/images/home/sveston-hero-3.jpg",
     alt: "CRYSMA watch on sale",
   },
   {
@@ -37,7 +37,7 @@ const slides = [
       "Refined women's luxury watches — bracelets, chains and statement pieces.",
     cta: "Shop Women",
     href: "/collections/women",
-    image: "/images/home/images (18).jpg",
+    image: "/images/home/sveston-hero-1.jpg",
     alt: "CRYSMA women's luxury watch",
   },
 ];

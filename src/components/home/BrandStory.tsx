@@ -24,10 +24,10 @@ export default function BrandStory() {
         <div className="relative">
           <div className="overflow-hidden rounded-xl border border-border">
             <Image
-              src="/images/products/images (8).jpg"
+              src="/images/home/sveston-hero-2.jpg"
               alt="CRYSMA luxury watch"
-              width={1074}
-              height={1354}
+              width={600}
+              height={800}
               className="aspect-[4/5] w-full object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
