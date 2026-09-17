@@ -24,7 +24,7 @@ export default function BrandStory() {
         <div className="relative">
           <div className="overflow-hidden rounded-xl border border-border">
             <Image
-              src="/images/home/sveston-hero-2.jpg"
+              src="/images/home/crysma-bloom.jpg"
               alt="CRYSMA luxury watch"
               width={600}
               height={800}

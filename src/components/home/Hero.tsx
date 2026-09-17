@@ -15,7 +15,7 @@ const slides = [
       "Precision timepieces for men, women & couples. Swiss-inspired design. Exceptional value.",
     cta: "Shop Men",
     href: "/collections/men",
-    image: "/images/home/sveston-men.jpg",
+    image: "/images/home/crysma-amore.jpg",
     alt: "CRYSMA men's luxury watch",
   },
   {
@@ -26,7 +26,7 @@ const slides = [
       "Limited time offer on premium timepieces. Free nationwide shipping on all orders.",
     cta: "Shop Sale",
     href: "/collections/sale",
-    image: "/images/home/sveston-hero-3.jpg",
+    image: "/images/home/crysma-bloom.jpg",
     alt: "CRYSMA watch on sale",
   },
   {
@@ -37,7 +37,7 @@ const slides = [
       "Refined women's luxury watches — bracelets, chains and statement pieces.",
     cta: "Shop Women",
     href: "/collections/women",
-    image: "/images/home/sveston-hero-1.jpg",
+    image: "/images/home/crysma-samurai.jpg",
     alt: "CRYSMA women's luxury watch",
   },
 ];

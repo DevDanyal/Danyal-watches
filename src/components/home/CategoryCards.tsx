@@ -9,32 +9,32 @@ const categories = [
   {
     name: "Men",
     href: "/collections/men",
-    image: "/images/home/sveston-men.jpg",
+    image: "/images/home/crysma-london.jpg",
     span: "lg:col-span-2 lg:row-span-2",
     tall: true,
   },
   {
     name: "Women",
     href: "/collections/women",
-    image: "/images/home/sveston-women.jpg",
+    image: "/images/home/crysma-valen.jpg",
     span: "",
   },
   {
     name: "Couples",
     href: "/collections/couple",
-    image: "/images/home/sveston-couple.jpg",
+    image: "/images/home/crysma-aurex.jpg",
     span: "",
   },
   {
     name: "Strap Watches",
     href: "/collections/men-strap",
-    image: "/images/home/sveston-bracelet.jpg",
+    image: "/images/home/crysma-devotion.jpg",
     span: "",
   },
   {
     name: "Luxury Series",
     href: "/collections/men-luxury",
-    image: "/images/home/sveston-luxury.jpg",
+    image: "/images/home/brandstory-maverick.jpg",
     span: "lg:col-span-2",
   },
 ];
