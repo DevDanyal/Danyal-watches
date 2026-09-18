@@ -3,8 +3,8 @@ import Link from "next/link";
 import WishlistClient from "@/components/wishlist/WishlistClient";
 
 export const metadata: Metadata = {
-  title: "Wishlist | CRYSMA Watches",
-  description: "Your saved CRYSMA watches. Add your favourites and check out anytime.",
+  title: "Wishlist | Danyal Watches",
+  description: "Your saved Danyal watches. Add your favourites and check out anytime.",
 };
 
 export default function WishlistPage() {

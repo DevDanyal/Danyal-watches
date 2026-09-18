@@ -9,26 +9,26 @@ const categories = [
   {
     name: "Men",
     href: "/collections/men",
-    image: "/images/home/crysma-london.jpg",
+    image: "/images/home/danyal-london.jpg",
     span: "lg:col-span-2 lg:row-span-2",
     tall: true,
   },
   {
     name: "Women",
     href: "/collections/women",
-    image: "/images/home/crysma-valen.jpg",
+    image: "/images/home/danyal-valen.jpg",
     span: "",
   },
   {
     name: "Couples",
     href: "/collections/couple",
-    image: "/images/home/crysma-aurex.jpg",
+    image: "/images/home/danyal-aurex.jpg",
     span: "",
   },
   {
     name: "Strap Watches",
     href: "/collections/men-strap",
-    image: "/images/home/crysma-devotion.jpg",
+    image: "/images/home/danyal-devotion.jpg",
     span: "",
   },
   {

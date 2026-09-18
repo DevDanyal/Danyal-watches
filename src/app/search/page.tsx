@@ -3,8 +3,8 @@ import { Suspense } from "react";
 import SearchResults from "@/components/search/SearchResults";
 
 export const metadata: Metadata = {
-  title: "Search | CRYSMA Watches",
-  description: "Search for watches across the CRYSMA catalogue.",
+  title: "Search | Danyal Watches",
+  description: "Search for watches across the Danyal catalogue.",
 };
 
 export default function SearchPage() {

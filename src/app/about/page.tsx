@@ -4,9 +4,9 @@ import { Award, Gem, Handshake, ShieldCheck } from "lucide-react";
 import PageHeader from "@/components/shared/PageHeader";
 
 export const metadata: Metadata = {
-  title: "About Us | CRYSMA Watches",
+  title: "About Us | Danyal Watches",
   description:
-    "Learn about CRYSMA's 25+ years of craftsmanship in precision watchmaking.",
+    "Learn about Danyal's 25+ years of craftsmanship in precision watchmaking.",
 };
 
 const values = [
@@ -37,7 +37,7 @@ export default function AboutPage() {
     <>
       <PageHeader
         kicker="Our Story"
-        title="About CRYSMA Watches"
+        title="About Danyal Watches"
         subtitle="Precision-crafted timepieces combining Swiss-inspired design with exceptional value — for over two decades."
       />
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
             </h2>
             <div className="mt-6 space-y-4 leading-relaxed text-text-secondary">
               <p>
-                CRYSMA Watches began with a simple belief: that a watch is more
+                Danyal Watches began with a simple belief: that a watch is more
                 than a timekeeper — it is a statement of who you are. From our
                 first collection to our newest releases, we have stayed true to
                 that vision.
@@ -64,7 +64,7 @@ export default function AboutPage() {
                 that never go out of style.
               </p>
               <p>
-                Every CRYSMA watch is a testament to quality — a promise of
+                Every Danyal watch is a testament to quality — a promise of
                 durability, elegance, and value that lives up to the legacy of
                 the name it carries.
               </p>
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <div className="overflow-hidden rounded-xl">
               <Image
                 src="/images/home/images (3).jpg"
-                alt="CRYSMA luxury watch"
+                alt="Danyal luxury watch"
                 width={400}
                 height={400}
                 className="aspect-square object-cover"
@@ -84,7 +84,7 @@ export default function AboutPage() {
             <div className="mt-8 overflow-hidden rounded-xl">
               <Image
                 src="/images/home/images (22).jpg"
-                alt="CRYSMA craftsmanship"
+                alt="Danyal craftsmanship"
                 width={400}
                 height={400}
                 className="aspect-square object-cover"

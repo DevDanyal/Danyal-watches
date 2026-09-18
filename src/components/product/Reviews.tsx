@@ -31,7 +31,7 @@ function hashId(product: Product): number {
 
 function loadUserReviews(productId: string): Review[] {
   try {
-    const raw = window.localStorage.getItem(`crysma_reviews_${productId}`);
+    const raw = window.localStorage.getItem(`danyal_reviews_${productId}`);
     return raw ? (JSON.parse(raw) as Review[]) : [];
   } catch {
     return [];
@@ -117,7 +117,7 @@ export default function Reviews({ product }: { product: Product }) {
     const updated = [next, ...userReviews];
     setUserReviews(updated);
     try {
-      window.localStorage.setItem(`crysma_reviews_${product.id}`, JSON.stringify(updated));
+      window.localStorage.setItem(`danyal_reviews_${product.id}`, JSON.stringify(updated));
     } catch {
       /* ignore */
     }

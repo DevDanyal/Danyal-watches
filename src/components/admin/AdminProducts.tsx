@@ -124,7 +124,7 @@ export default function AdminProducts() {
                 <Input
                   label="Product Name"
                   required
-                  placeholder="e.g. CRYSMA CRL6666"
+                  placeholder="e.g. Danyal CRL6666"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />

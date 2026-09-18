@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import CartPageContent from "@/components/cart/CartPageContent";
 
 export const metadata: Metadata = {
-  title: "Cart | CRYSMA Watches",
+  title: "Cart | Danyal Watches",
   description: "Review your selected watches and proceed to checkout.",
 };
 

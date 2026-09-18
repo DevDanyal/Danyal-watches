@@ -147,7 +147,7 @@ export default function AccountClient() {
 
           {mode === "login" && (
             <p className="mt-5 text-center text-xs text-text-secondary">
-              New to CRYSMA?{" "}
+              New to Danyal?{" "}
               <button onClick={switchMode} className="font-semibold text-text-primary hover:underline">
                 Create an account
               </button>

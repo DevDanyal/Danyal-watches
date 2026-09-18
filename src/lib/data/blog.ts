@@ -20,7 +20,7 @@ export const blogPosts: BlogPost[] = [
     category: "Buying Guide",
     date: "Sep 2, 2026",
     readTime: "5 min read",
-    author: "CRYSMA Team",
+    author: "Danyal Team",
     content: [
       {
         heading: "Start with the Case Size",
@@ -49,7 +49,7 @@ export const blogPosts: BlogPost[] = [
     category: "Watch Care",
     date: "Aug 20, 2026",
     readTime: "4 min read",
-    author: "CRYSMA Team",
+    author: "Danyal Team",
     content: [
       {
         heading: "Daily Cleaning",
@@ -78,7 +78,7 @@ export const blogPosts: BlogPost[] = [
     category: "Style Guide",
     date: "Aug 5, 2026",
     readTime: "6 min read",
-    author: "CRYSMA Team",
+    author: "Danyal Team",
     content: [
       {
         heading: "The Formal Look",

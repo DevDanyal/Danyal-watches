@@ -104,7 +104,7 @@ type AdminStore = {
 
 const AdminContext = createContext<AdminStore | null>(null);
 
-const STORAGE_PREFIX = "crysma_admin_";
+const STORAGE_PREFIX = "danyal_admin_";
 
 const load = <T,>(key: string, fallback: T): T => {
   if (typeof window === "undefined") return fallback;
@@ -131,12 +131,12 @@ const seedOrders = (): AdminOrder[] => {
     }));
   }
   return [
-    { id: "CRYSMA-8K2F9P", customer: "Ahmed Raza", email: "ahmed@example.com", total: 16600, items: 1, date: new Date(Date.now() - 1 * 86400000).toISOString(), status: "processing", payment: "cod" },
-    { id: "CRYSMA-3M7Q1Z", customer: "Sara Khan", email: "sara@example.com", total: 24200, items: 2, date: new Date(Date.now() - 2 * 86400000).toISOString(), status: "pending", payment: "jazzcash" },
-    { id: "CRYSMA-9N4X8B", customer: "Bilal Hussain", email: "bilal@example.com", total: 6800, items: 1, date: new Date(Date.now() - 4 * 86400000).toISOString(), status: "shipped", payment: "easypaisa" },
-    { id: "CRYSMA-5T2W6D", customer: "Ayesha Malik", email: "ayesha@example.com", total: 8900, items: 1, date: new Date(Date.now() - 6 * 86400000).toISOString(), status: "delivered", payment: "card" },
-    { id: "CRYSMA-7K1V3C", customer: "Hassan Ali", email: "hassan@example.com", total: 31200, items: 3, date: new Date(Date.now() - 9 * 86400000).toISOString(), status: "delivered", payment: "cod" },
-    { id: "CRYSMA-2S8E5G", customer: "Mariam Fatima", email: "mariam@example.com", total: 13200, items: 1, date: new Date(Date.now() - 12 * 86400000).toISOString(), status: "cancelled", payment: "cod" },
+    { id: "Danyal-8K2F9P", customer: "Ahmed Raza", email: "ahmed@example.com", total: 16600, items: 1, date: new Date(Date.now() - 1 * 86400000).toISOString(), status: "processing", payment: "cod" },
+    { id: "Danyal-3M7Q1Z", customer: "Sara Khan", email: "sara@example.com", total: 24200, items: 2, date: new Date(Date.now() - 2 * 86400000).toISOString(), status: "pending", payment: "jazzcash" },
+    { id: "Danyal-9N4X8B", customer: "Bilal Hussain", email: "bilal@example.com", total: 6800, items: 1, date: new Date(Date.now() - 4 * 86400000).toISOString(), status: "shipped", payment: "easypaisa" },
+    { id: "Danyal-5T2W6D", customer: "Ayesha Malik", email: "ayesha@example.com", total: 8900, items: 1, date: new Date(Date.now() - 6 * 86400000).toISOString(), status: "delivered", payment: "card" },
+    { id: "Danyal-7K1V3C", customer: "Hassan Ali", email: "hassan@example.com", total: 31200, items: 3, date: new Date(Date.now() - 9 * 86400000).toISOString(), status: "delivered", payment: "cod" },
+    { id: "Danyal-2S8E5G", customer: "Mariam Fatima", email: "mariam@example.com", total: 13200, items: 1, date: new Date(Date.now() - 12 * 86400000).toISOString(), status: "cancelled", payment: "cod" },
   ];
 };
 
@@ -185,7 +185,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   );
   const [coupons, setCoupons] = useState<Coupon[]>(() =>
     load<Coupon[]>("coupons", [
-      { code: "CRYSMA10", type: "percentage", value: 10, minOrder: 5000, expires: "Dec 31, 2026", limit: 100, used: 12, active: true },
+      { code: "Danyal10", type: "percentage", value: 10, minOrder: 5000, expires: "Dec 31, 2026", limit: 100, used: 12, active: true },
       { code: "FLAT500", type: "flat", value: 500, minOrder: 3000, expires: "Nov 30, 2026", limit: 50, used: 3, active: true },
     ])
   );
@@ -200,7 +200,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   );
   const [settings, setSettings] = useState<Settings>(() =>
     load<Settings>("settings", {
-      storeName: "CRYSMA Watches",
+      storeName: "Danyal Watches",
       announcement: "Free Shipping on orders over Rs.10,000 | 1 Year Warranty on all watches",
       shippingFreeThreshold: 10000,
       email: "aidevdanyal@gmail.com",

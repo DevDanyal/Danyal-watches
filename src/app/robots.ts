@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin"],
       },
     ],
-    sitemap: "https://crysmawatches.com/sitemap.xml",
+    sitemap: "https://danyalwatches.com/sitemap.xml",
   };
 }

@@ -45,7 +45,7 @@ export default function AdminBlogs() {
     if (editSlug) {
       setPosts((prev) => prev.map((p) => p.slug === editSlug ? { ...p, ...form, slug, content } : p));
     } else {
-      setPosts((prev) => [{ slug, title: form.title, excerpt: form.excerpt, category: form.category, date: form.date, readTime: form.readTime, image: form.image, author: "CRYSMA Team", content }, ...prev]);
+      setPosts((prev) => [{ slug, title: form.title, excerpt: form.excerpt, category: form.category, date: form.date, readTime: form.readTime, image: form.image, author: "Danyal Team", content }, ...prev]);
     }
     setShowForm(false);
   };

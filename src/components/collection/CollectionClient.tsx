@@ -314,7 +314,7 @@ export default function CollectionClient({ slug }: { slug: string }) {
         </h2>
         <div className="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
           <p>
-            {collection?.description} Explore the full CRYSMA range of premium
+            {collection?.description} Explore the full Danyal range of premium
             timepieces for men, women and couples — all at affordable prices in
             Pakistan. Every watch is covered by a 1-year international warranty
             and delivered free anywhere in the country.

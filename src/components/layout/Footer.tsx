@@ -83,7 +83,7 @@ export default function Footer() {
 
           <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-text-primary">
-              Shop CRYSMA
+              Shop Danyal
             </h4>
             <ul className="space-y-2.5">
               {shopLinks.map((link) => (
@@ -165,7 +165,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-xs text-text-secondary">
-            © {new Date().getFullYear()} CRYSMA Watches. All rights reserved.
+            © {new Date().getFullYear()} Danyal Watches. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-text-secondary">
             <span className="flex items-center gap-1.5">

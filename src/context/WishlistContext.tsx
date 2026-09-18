@@ -19,7 +19,7 @@ type WishlistContextType = {
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
-const WISHLIST_KEY = "crysma_wishlist";
+const WISHLIST_KEY = "danyal_wishlist";
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [ids, setIds] = useState<string[]>(() => {

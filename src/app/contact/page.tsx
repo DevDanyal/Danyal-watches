@@ -4,9 +4,9 @@ import PageHeader from "@/components/shared/PageHeader";
 import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact Us | CRYSMA Watches",
+  title: "Contact Us | Danyal Watches",
   description:
-    "Get in touch with CRYSMA Watches. Visit our stores in Lahore or contact us via phone, email, or WhatsApp.",
+    "Get in touch with Danyal Watches. Visit our stores in Lahore or contact us via phone, email, or WhatsApp.",
 };
 
 const stores = [

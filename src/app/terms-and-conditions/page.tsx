@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import PolicyLayout from "@/components/shared/PolicyLayout";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | CRYSMA Watches",
+  title: "Terms & Conditions | Danyal Watches",
   description:
-    "The terms and conditions governing the use of the CRYSMA Watches website and purchases.",
+    "The terms and conditions governing the use of the Danyal Watches website and purchases.",
 };
 
 const sections = [
   {
     heading: "Acceptance of Terms",
     body: [
-      "By accessing or using the CRYSMA Watches website, you agree to be bound by these Terms & Conditions. If you do not agree, please do not use our website or services.",
+      "By accessing or using the Danyal Watches website, you agree to be bound by these Terms & Conditions. If you do not agree, please do not use our website or services.",
     ],
   },
   {
@@ -44,13 +44,13 @@ const sections = [
   {
     heading: "Limitation of Liability",
     body: [
-      "CRYSMA Watches shall not be liable for any indirect, incidental, or consequential damages arising out of the use of our website or products, to the maximum extent permitted by law.",
+      "Danyal Watches shall not be liable for any indirect, incidental, or consequential damages arising out of the use of our website or products, to the maximum extent permitted by law.",
     ],
   },
   {
     heading: "Intellectual Property",
     body: [
-      "All content on this website — including logos, images, text, and designs — is the property of CRYSMA Watches and is protected by applicable intellectual property laws. Unauthorized use is prohibited.",
+      "All content on this website — including logos, images, text, and designs — is the property of Danyal Watches and is protected by applicable intellectual property laws. Unauthorized use is prohibited.",
     ],
   },
   {

@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import PolicyLayout from "@/components/shared/PolicyLayout";
 
 export const metadata: Metadata = {
-  title: "Exchange & Return Policy | CRYSMA Watches",
+  title: "Exchange & Return Policy | Danyal Watches",
   description:
-    "CRYSMA's 7-day exchange and return policy. Learn how to return or exchange your watch.",
+    "Danyal's 7-day exchange and return policy. Learn how to return or exchange your watch.",
 };
 
 const sections = [
   {
     heading: "7-Day Easy Returns",
     body: [
-      "We want you to be completely satisfied with your CRYSMA watch. If for any reason you are not happy with your purchase, you can return it within 7 days of delivery for a full refund or exchange.",
+      "We want you to be completely satisfied with your Danyal watch. If for any reason you are not happy with your purchase, you can return it within 7 days of delivery for a full refund or exchange.",
       "To be eligible for a return, the watch must be unused, in its original packaging, with all tags and accessories intact, and accompanied by the original invoice.",
     ],
   },
@@ -47,7 +47,7 @@ const sections = [
   {
     heading: "Warranty Coverage",
     body: [
-      "All CRYSMA watches come with a 1-year international warranty covering manufacturing defects in the movement, case, and assembly.",
+      "All Danyal watches come with a 1-year international warranty covering manufacturing defects in the movement, case, and assembly.",
       "Warranty does not cover damage caused by accidents, misuse, water damage beyond rated resistance, or normal wear such as strap and battery replacement.",
     ],
   },

@@ -45,7 +45,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window === "undefined") return [];
     try {
-      const saved = localStorage.getItem("crysma-cart");
+      const saved = localStorage.getItem("danyal-cart");
       return saved ? (JSON.parse(saved) as CartItem[]) : [];
     } catch {
       return [];
@@ -55,7 +55,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("crysma-cart", JSON.stringify(items));
+      localStorage.setItem("danyal-cart", JSON.stringify(items));
     } catch {
       /* ignore */
     }

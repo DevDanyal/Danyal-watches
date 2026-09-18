@@ -5,7 +5,7 @@ import { Save, KeyRound } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { SectionTitle, Card, Input, PrimaryBtn } from "@/components/admin/ui";
 
-const ACCOUNT_KEY = "crysma_admin_account";
+const ACCOUNT_KEY = "danyal_admin_account";
 
 export default function AdminSettings() {
   const { settings, saveSettings } = useAdmin();

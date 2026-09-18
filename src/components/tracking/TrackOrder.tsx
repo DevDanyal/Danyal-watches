@@ -33,7 +33,7 @@ type LookedUp = {
 
 function readLocalOrders(): LookedUp[] {
   try {
-    const raw = window.localStorage.getItem("crysma_orders") ?? "[]";
+    const raw = window.localStorage.getItem("danyal_orders") ?? "[]";
     const orders = JSON.parse(raw) as SavedOrder[];
     return orders.map((o, i) => ({
       order: o,
@@ -209,7 +209,7 @@ export default function TrackOrder() {
         <input
           value={orderId}
           onChange={(e) => setOrderId(e.target.value)}
-          placeholder="CRYSMA-XXXXXX"
+          placeholder="Danyal-XXXXXX"
           className="flex-1 rounded-full border border-border bg-card-background px-6 py-3.5 text-sm uppercase tracking-wider text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
         />
         <button

@@ -5,7 +5,7 @@ import { BadgeCheck, ShieldCheck, Truck } from "lucide-react";
 const highlights = [
   {
     icon: BadgeCheck,
-    text: "Authentic CRYSMA timepieces",
+    text: "Authentic Danyal timepieces",
   },
   {
     icon: ShieldCheck,
@@ -24,8 +24,8 @@ export default function BrandStory() {
         <div className="relative">
           <div className="overflow-hidden rounded-xl border border-border">
             <Image
-              src="/images/home/crysma-bloom.jpg"
-              alt="CRYSMA luxury watch"
+              src="/images/home/danyal-bloom.jpg"
+              alt="Danyal luxury watch"
               width={600}
               height={800}
               className="aspect-[4/5] w-full object-cover"
@@ -48,7 +48,7 @@ export default function BrandStory() {
             Crafting Timeless Pieces Since 1998
           </h2>
           <p className="mt-6 leading-relaxed text-text-secondary">
-            At CRYSMA, we believe a watch is more than a timekeeper — it is a
+            At Danyal, we believe a watch is more than a timekeeper — it is a
             statement. For over two decades, we have combined Swiss-inspired
             design with exceptional value, delivering precision-crafted
             timepieces for men, women, and couples across Pakistan.

@@ -27,12 +27,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const collection = getCollection(slug);
-  if (!collection) return { title: "Collection | CRYSMA" };
+  if (!collection) return { title: "Collection | Danyal" };
   return {
-    title: `${collection.name} | CRYSMA Watches`,
+    title: `${collection.name} | Danyal Watches`,
     description: collection.description,
     openGraph: {
-      title: `${collection.name} | CRYSMA Watches`,
+      title: `${collection.name} | Danyal Watches`,
       description: collection.description,
       type: "website",
       images: ["/images/home/images (8).jpg"],

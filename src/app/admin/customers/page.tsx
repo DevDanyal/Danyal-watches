@@ -1,4 +1,4 @@
 import type { Metadata } from "next";
 import AdminCustomers from "@/components/admin/AdminCustomers";
-export const metadata: Metadata = { title: "Customers | CRYSMA Admin" };
+export const metadata: Metadata = { title: "Customers | Danyal Admin" };
 export default function AdminCustomersPage() { return <AdminCustomers />; }

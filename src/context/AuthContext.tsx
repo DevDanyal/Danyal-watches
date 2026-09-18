@@ -30,8 +30,8 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const USERS_KEY = "crysma_users";
-const SESSION_KEY = "crysma_session";
+const USERS_KEY = "danyal_users";
+const SESSION_KEY = "danyal_session";
 
 const readUsers = (): StoredUser[] => {
   if (typeof window === "undefined") return [];

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import PolicyLayout from "@/components/shared/PolicyLayout";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | CRYSMA Watches",
+  title: "Privacy Policy | Danyal Watches",
   description:
-    "How CRYSMA Watches collects, uses, and protects your personal information.",
+    "How Danyal Watches collects, uses, and protects your personal information.",
 };
 
 const sections = [

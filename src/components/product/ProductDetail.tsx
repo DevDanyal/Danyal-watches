@@ -116,7 +116,7 @@ export default function ProductDetail({
 
   const handleShare = async () => {
     const url = window.location.href;
-    const data = { title: `${product.name} | CRYSMA`, text: product.name, url };
+    const data = { title: `${product.name} | Danyal`, text: product.name, url };
     try {
       if (navigator.share) {
         await navigator.share(data);
@@ -131,7 +131,7 @@ export default function ProductDetail({
   };
 
   const specs = [
-    { name: "Brand", value: "CRYSMA" },
+    { name: "Brand", value: "Danyal" },
     { name: "Type", value: product.subtitle },
     { name: "Movement", value: "Quartz / Automatic" },
     { name: "Case Material", value: "Stainless Steel" },
@@ -414,7 +414,7 @@ export default function ProductDetail({
               {activeTab === "About" && (
                 <p>
                   The {product.name} is a premium {product.subtitle.toLowerCase()}{" "}
-                  from the CRYSMA collection. Featuring a precision quartz
+                  from the Danyal collection. Featuring a precision quartz
                   movement, scratch-resistant mineral glass, and a stainless
                   steel case, it delivers reliable timekeeping with timeless
                   elegance. Perfect for daily wear and special occasions —
@@ -444,7 +444,7 @@ export default function ProductDetail({
                     1-Year International Warranty
                   </p>
                   <p>
-                    Every CRYSMA timepiece is covered by a full 1-year warranty
+                    Every Danyal timepiece is covered by a full 1-year warranty
                     from the date of purchase against any defects due to faulty
                     material or workmanship.
                   </p>

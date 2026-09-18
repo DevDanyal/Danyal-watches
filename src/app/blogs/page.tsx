@@ -6,9 +6,9 @@ import { blogPosts } from "@/lib/data/blog";
 import PageHeader from "@/components/shared/PageHeader";
 
 export const metadata: Metadata = {
-  title: "Blog | CRYSMA Watches",
+  title: "Blog | Danyal Watches",
   description:
-    "Watch buying guides, care tips, and style inspiration from the CRYSMA team.",
+    "Watch buying guides, care tips, and style inspiration from the Danyal team.",
 };
 
 export default function BlogsPage() {
@@ -16,7 +16,7 @@ export default function BlogsPage() {
     <>
       <PageHeader
         kicker="Journal"
-        title="The CRYSMA Blog"
+        title="The Danyal Blog"
         subtitle="Buying guides, watch care tips, and style inspiration."
       />
 

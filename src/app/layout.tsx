@@ -28,13 +28,13 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "CRYSMA Watches - Premium Timepieces",
+    default: "Danyal Watches - Premium Timepieces",
     template: "%s",
   },
   description:
     "Discover premium watches for men, women, and couples. Free nationwide shipping, 7-day easy returns, 1-year warranty.",
   keywords: [
-    "CRYSMA",
+    "Danyal",
     "watches",
     "men's watches",
     "women's watches",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "quartz watches",
   ],
   openGraph: {
-    title: "CRYSMA Watches - Premium Timepieces",
+    title: "Danyal Watches - Premium Timepieces",
     description:
       "Discover premium watches for men, women, and couples. Free nationwide shipping, 7-day easy returns, 1-year warranty.",
     type: "website",

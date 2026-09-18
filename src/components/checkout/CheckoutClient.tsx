@@ -29,7 +29,7 @@ export type SavedOrder = {
 };
 
 export async function saveOrder(order: SavedOrder) {
-  const key = "crysma_orders";
+  const key = "danyal_orders";
   try {
     const existing = JSON.parse(window.localStorage.getItem(key) ?? "[]") as SavedOrder[];
     window.localStorage.setItem(key, JSON.stringify([order, ...existing]));
@@ -79,7 +79,7 @@ const paymentMethods = [
 
 const bankDetails = {
   bank: "Meezan Bank",
-  title: "CRYSMA Watches",
+  title: "Danyal Watches",
   account: "0123 4567 8901 2345",
   iban: "PK36 MEZA 0001 2345 6789 0123",
 };
@@ -136,7 +136,7 @@ export default function CheckoutClient() {
   const [card, setCard] = useState({ number: "", expiry: "", cvv: "", name: "" });
   const [formError, setFormError] = useState("");
   const [orderId] = useState(() =>
-    `CRYSMA-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+    `Danyal-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
   );
 
   const shippingCost = subtotal > 0 ? 0 : 0;

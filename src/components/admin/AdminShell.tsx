@@ -38,8 +38,8 @@ const nav = [
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
-const ADMIN_ACCOUNT_KEY = "crysma_admin_account";
-const ADMIN_SESSION_KEY = "crysma_admin_session";
+const ADMIN_ACCOUNT_KEY = "danyal_admin_account";
+const ADMIN_SESSION_KEY = "danyal_admin_session";
 const SETUP_KEY = process.env.NEXT_PUBLIC_ADMIN_SETUP_KEY ?? "";
 
 type AdminAccount = { email: string; password: string };
@@ -174,7 +174,7 @@ function Gate({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
         <Link href="/" className="mb-8 font-serif text-2xl font-bold tracking-wider text-accent-gold">
-          CRYSMA
+          Danyal
         </Link>
         {showSetup ? (
           <form
@@ -297,7 +297,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [collapsed, setCollapsed] = useState(false);
 
   const logout = () => {
-    window.localStorage.removeItem("crysma_admin_session");
+    window.localStorage.removeItem("danyal_admin_session");
     window.location.reload();
   };
 
@@ -315,7 +315,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <div className={cn("flex h-16 items-center border-b border-background-secondary px-4", collapsed ? "lg:justify-center" : "lg:justify-between")}>
               <Link href="/admin" className="shrink-0">
                 <span className="font-serif text-lg font-bold tracking-wider text-accent-gold">
-                  {collapsed ? "C" : "CRYSMA Admin"}
+                  {collapsed ? "C" : "Danyal Admin"}
                 </span>
               </Link>
               <button

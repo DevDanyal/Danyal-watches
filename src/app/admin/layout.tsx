@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AdminShell from "@/components/admin/AdminShell";
 
 export const metadata: Metadata = {
-  title: "Admin | CRYSMA Watches",
+  title: "Admin | Danyal Watches",
   robots: { index: false, follow: false },
 };
 

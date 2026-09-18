@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   if (!body?.items?.length) return err("Order has no items.");
   if (!body?.email) return err("Email is required.");
 
-  const orderId = body.orderId ?? `CRYSMA-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+  const orderId = body.orderId ?? `Danyal-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
   try {
     const order = await OrderModel.create({

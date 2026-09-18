@@ -20,12 +20,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
-  if (!product) return { title: "Product | CRYSMA" };
+  if (!product) return { title: "Product | Danyal" };
   return {
-    title: `${product.name} | CRYSMA Watches`,
+    title: `${product.name} | Danyal Watches`,
     description: `${product.name} - ${product.subtitle}. ${product.price} PKR. Free shipping, 7-day returns, 1-year warranty.`,
     openGraph: {
-      title: `${product.name} | CRYSMA Watches`,
+      title: `${product.name} | Danyal Watches`,
       description: `${product.name} - ${product.subtitle}`,
       type: "website",
       images: [{ url: product.images[0] }],

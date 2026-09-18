@@ -35,7 +35,7 @@ export default function AccountDashboard() {
   const [orders, setOrders] = useState<SavedOrder[]>(() => {
     if (typeof window === "undefined") return [];
     try {
-      const stored = JSON.parse(window.localStorage.getItem("crysma_orders") ?? "[]");
+      const stored = JSON.parse(window.localStorage.getItem("danyal_orders") ?? "[]");
       return stored.filter((o: SavedOrder) => o.shipping.email === user?.email);
     } catch {
       return [];
@@ -53,7 +53,7 @@ export default function AccountDashboard() {
     let cancelled = false;
     const timer = window.setTimeout(() => {
       try {
-        const stored = JSON.parse(window.localStorage.getItem("crysma_orders") ?? "[]");
+        const stored = JSON.parse(window.localStorage.getItem("danyal_orders") ?? "[]");
         const filtered = stored.filter((o: SavedOrder) => o.shipping.email === user?.email);
         if (!cancelled) setOrders(filtered);
       } catch {
@@ -240,7 +240,7 @@ function ProductCodes({ orders }: { orders: SavedOrder[] }) {
   for (const order of orders) {
     for (const item of order.items) {
       codes.push({
-        code: item.code ?? item.slug?.replace(/^crysma-/, "").split("-")[0]?.toUpperCase() ?? item.slug,
+        code: item.code ?? item.slug?.replace(/^danyal-/, "").split("-")[0]?.toUpperCase() ?? item.slug,
         name: item.name,
         color: item.color,
         qty: item.quantity,
