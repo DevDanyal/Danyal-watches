@@ -71,7 +71,7 @@ export default function Navbar() {
 
         <Link href="/" className="shrink-0">
           <span className="text-2xl font-extrabold tracking-wide text-text-primary sm:text-[1.7rem]">
-            CRYS<span className="text-sale-badge">MA</span>
+            Danyal
           </span>
         </Link>
 

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   if (!validMethods.includes(method)) return err("Invalid payment method.", 400);
   if (!body.amount || body.amount <= 0) return err("Invalid amount.", 400);
 
-  // Cash on Delivery is the primary, recommended payment method (Sveston-style flow).
+  // Cash on Delivery is the primary, recommended payment method.
   if (method === "cod") {
     return ok({
       method,
