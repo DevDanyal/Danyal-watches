@@ -36,9 +36,11 @@ type Tab = (typeof tabs)[number];
 export default function ProductDetail({
   product,
   related,
+  onSelectionChange,
 }: {
   product: Product;
   related: Product[];
+  onSelectionChange?: (color: string | undefined, quantity: number) => void;
 }) {
   const router = useRouter();
   const { addItem } = useCart();
@@ -59,6 +61,16 @@ export default function ProductDetail({
   const discount = Math.round(
     ((product.regularPrice - product.price) / product.regularPrice) * 100
   );
+
+  const selectColor = (name: string) => {
+    setSelectedColor(name);
+    onSelectionChange?.(name, quantity);
+  };
+
+  const changeQuantity = (next: number) => {
+    setQuantity(next);
+    onSelectionChange?.(selectedColor, next);
+  };
 
   const handleAddToCart = () => {
     if (outOfStock) return;
@@ -262,7 +274,7 @@ export default function ProductDetail({
                   return (
                     <button
                       key={color.name}
-                      onClick={() => setSelectedColor(color.name)}
+                      onClick={() => selectColor(color.name)}
                       title={color.name}
                       aria-label={color.name}
                       className={cn(
@@ -286,7 +298,7 @@ export default function ProductDetail({
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <div className="flex items-center rounded-md border border-border bg-card-background">
               <button
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                onClick={() => changeQuantity(Math.max(1, quantity - 1))}
                 aria-label="Decrease quantity"
                 className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-sale-badge"
               >
@@ -296,7 +308,7 @@ export default function ProductDetail({
                 {quantity}
               </span>
               <button
-                onClick={() => setQuantity((q) => Math.min(99, q + 1))}
+                onClick={() => changeQuantity(Math.min(99, quantity + 1))}
                 aria-label="Increase quantity"
                 className="flex h-12 w-12 items-center justify-center text-text-primary transition-colors hover:text-sale-badge"
               >

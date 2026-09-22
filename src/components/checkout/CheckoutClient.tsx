@@ -26,7 +26,13 @@ export type SavedOrder = {
   shipping: Record<string, string>;
   paymentMethod: string;
   date: string;
+  note?: string;
+  status?: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 };
+
+export function generateOrderId(): string {
+  return `Danyal-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+}
 
 export async function saveOrder(order: SavedOrder) {
   const key = "danyal_orders";
@@ -54,6 +60,8 @@ export async function saveOrder(order: SavedOrder) {
         subtotal: order.total,
         total: order.total,
         paymentMethod: order.paymentMethod,
+        note: order.note ?? "",
+        status: order.status ?? "pending",
       }),
     });
   } catch {
@@ -120,7 +128,7 @@ function OrderConfirmation({ orderId }: { orderId: string }) {
 }
 
 export default function CheckoutClient() {
-  const { items, subtotal, clearCart } = useCart();
+  const { items, subtotal, clearCart, note } = useCart();
   const { user } = useAuth();
   const [step, setStep] = useState<Step>("shipping");
   const [shipping, setShipping] = useState({
@@ -135,11 +143,9 @@ export default function CheckoutClient() {
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [card, setCard] = useState({ number: "", expiry: "", cvv: "", name: "" });
   const [formError, setFormError] = useState("");
-  const [orderId] = useState(() =>
-    `Danyal-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
-  );
+  const [orderId, setOrderId] = useState<string | null>(null);
 
-  const shippingCost = subtotal > 0 ? 0 : 0;
+  const shippingCost = 0; // free shipping on all orders
   const total = subtotal + shippingCost;
 
   const updateShipping = (field: string, value: string) => {
@@ -193,13 +199,17 @@ export default function CheckoutClient() {
 
   const placeOrder = () => {
     if (!validatePayment()) return;
+    const id = generateOrderId();
+    setOrderId(id);
     saveOrder({
-      orderId,
+      orderId: id,
       items,
       total,
       shipping,
       paymentMethod,
       date: new Date().toISOString(),
+      note,
+      status: "pending",
     });
     clearCart();
     setStep("confirmation");
@@ -222,7 +232,7 @@ export default function CheckoutClient() {
   if (step === "confirmation") {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <OrderConfirmation orderId={orderId} />
+        <OrderConfirmation orderId={orderId ?? ""} />
       </div>
     );
   }

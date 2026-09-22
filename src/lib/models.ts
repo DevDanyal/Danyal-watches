@@ -83,6 +83,7 @@ export interface DbOrder extends Document {
   city: string;
   province: string;
   items: DbOrderItem[];
+  note?: string;
   subtotal: number;
   shipping: number;
   total: number;
@@ -114,6 +115,7 @@ const OrderSchema = new Schema<DbOrder>(
     subtotal: Number,
     shipping: { type: Number, default: 0 },
     total: Number,
+    note: String,
     paymentMethod: String,
     status: {
       type: String,
@@ -196,6 +198,25 @@ const SettingsSchema = new Schema<DbSettings>({
   value: Schema.Types.Mixed,
 });
 
+export interface DbContactMessage extends Document {
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+}
+
+const ContactMessageSchema = new Schema<DbContactMessage>(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: String,
+    subject: String,
+    message: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
 export function getModel<T>(name: string, schema: Schema): Model<T> {
   return (models[name] as Model<T>) ?? model<T>(name, schema);
 }
@@ -207,3 +228,7 @@ export const CouponModel = getModel<DbCoupon>("Coupon", CouponSchema);
 export const BannerModel = getModel<DbBanner>("Banner", BannerSchema);
 export const BlogModel = getModel<DbBlog>("Blog", BlogSchema);
 export const SettingsModel = getModel<DbSettings>("Settings", SettingsSchema);
+export const ContactMessageModel = getModel<DbContactMessage>(
+  "ContactMessage",
+  ContactMessageSchema
+);

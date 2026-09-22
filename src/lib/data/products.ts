@@ -56,7 +56,7 @@ export const products: Product[] = [
       { name: "Full Blue", hex: "#1B3C6B" },
       { name: "Tiffany", hex: "#6BC5B8" },
     ],
-    images: ["/images/products/images (1).jpg", "/images/products/images (18).jpg"],
+    images: ["/images/products/images (1).jpg", "/images/products/images (6).jpg"],
   },
   {
     id: "3",
@@ -115,7 +115,7 @@ export const products: Product[] = [
       { name: "Golden/White", hex: "#F2E6CE" },
       { name: "Golden/Black", hex: "#1A1A1A" },
     ],
-    images: ["/images/products/images (4).jpg"],
+    images: ["/images/products/images (4).jpg", "/images/products/images (10).jpg"],
   },
   {
     id: "6",
@@ -125,7 +125,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Chain Watch",
     price: 13800,
-    regularPrice: 16250,
+    regularPrice: 13800,
     rating: 5.0,
     reviews: 19,
     badge: "bestseller",
@@ -135,7 +135,7 @@ export const products: Product[] = [
       { name: "Tiffany", hex: "#6BC5B8" },
       { name: "Golden/Golden/Black", hex: "#D4AF37" },
     ],
-    images: ["/images/products/images (5).jpg"],
+    images: ["/images/products/images (5).jpg", "/images/products/images (14).jpg"],
   },
   {
     id: "7",
@@ -145,7 +145,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Chain Watch",
     price: 10000,
-    regularPrice: 11825,
+    regularPrice: 10000,
     rating: 4.6,
     reviews: 24,
     colors: [
@@ -153,7 +153,7 @@ export const products: Product[] = [
       { name: "Black/Silver/Black", hex: "#3F3F46" },
       { name: "Black/Rose Gold/Black", hex: "#B76E79" },
     ],
-    images: ["/images/products/images (6).jpg"],
+    images: ["/images/products/images (6).jpg", "/images/products/images (1).jpg"],
   },
   {
     id: "8",
@@ -172,7 +172,7 @@ export const products: Product[] = [
       { name: "Full Black", hex: "#0A0A0A" },
       { name: "Silver Blue", hex: "#6C9CD4" },
     ],
-    images: ["/images/products/images (7).jpg"],
+    images: ["/images/products/images (7).jpg", "/images/products/images (2).jpg"],
   },
   {
     id: "9",
@@ -182,7 +182,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Luxury Watch",
     price: 17800,
-    regularPrice: 21000,
+    regularPrice: 17800,
     rating: 4.5,
     reviews: 17,
     isBestSeller: true,
@@ -191,7 +191,7 @@ export const products: Product[] = [
       { name: "Golden/Black", hex: "#1A1A1A" },
       { name: "Two Tone/Black", hex: "#1A1A1A" },
     ],
-    images: ["/images/products/images (8).jpg"],
+    images: ["/images/products/images (8).jpg", "/images/products/images (7).jpg"],
   },
   {
     id: "10",
@@ -211,7 +211,7 @@ export const products: Product[] = [
       { name: "Silver Black", hex: "#6E6E6E" },
       { name: "Gun Metal/Black", hex: "#2B2B33" },
     ],
-    images: ["/images/products/images (9).jpg"],
+    images: ["/images/products/images (9).jpg", "/images/products/images (3).jpg"],
   },
   {
     id: "11",
@@ -221,7 +221,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Strap Watch",
     price: 6600,
-    regularPrice: 8250,
+    regularPrice: 6600,
     rating: 5.0,
     reviews: 28,
     isNew: true,
@@ -230,7 +230,7 @@ export const products: Product[] = [
       { name: "Full Red", hex: "#8B1E2D" },
       { name: "Full Grey", hex: "#808080" },
     ],
-    images: ["/images/products/images (10).jpg"],
+    images: ["/images/products/images (10).jpg", "/images/products/images (2).jpg"],
   },
   {
     id: "12",
@@ -249,7 +249,7 @@ export const products: Product[] = [
       { name: "Full Black", hex: "#0A0A0A" },
       { name: "Full Golden", hex: "#D4AF37" },
     ],
-    images: ["/images/products/images (11).jpg"],
+    images: ["/images/products/images (11).jpg", "/images/products/images (6).jpg"],
   },
   {
     id: "13",
@@ -259,7 +259,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Luxury Watch",
     price: 12700,
-    regularPrice: 15000,
+    regularPrice: 12700,
     rating: 5.0,
     reviews: 33,
     isBestSeller: true,
@@ -268,7 +268,7 @@ export const products: Product[] = [
       { name: "Golden/Golden", hex: "#D4AF37" },
       { name: "Silver/Black", hex: "#3F3F46" },
     ],
-    images: ["/images/products/images (12).jpg"],
+    images: ["/images/products/images (12).jpg", "/images/products/images (4).jpg"],
   },
   {
     id: "14",
@@ -278,7 +278,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Chain Watch",
     price: 7000,
-    regularPrice: 8800,
+    regularPrice: 7000,
     rating: 4.0,
     reviews: 11,
     colors: [
@@ -286,7 +286,7 @@ export const products: Product[] = [
       { name: "Silver/Blue", hex: "#6C9CD4" },
       { name: "Golden/Black", hex: "#1A1A1A" },
     ],
-    images: ["/images/products/images (16).jpg"],
+    images: ["/images/products/images (16).jpg", "/images/products/images (8).jpg"],
   },
   {
     id: "15",
@@ -305,7 +305,7 @@ export const products: Product[] = [
       { name: "Full Blue", hex: "#1B3C6B" },
       { name: "Black/Blue", hex: "#1B3C6B" },
     ],
-    images: ["/images/products/images (14).jpg"],
+    images: ["/images/products/images (14).jpg", "/images/products/images (12).jpg"],
   },
   {
     id: "16",
@@ -315,7 +315,7 @@ export const products: Product[] = [
     category: "men",
     subtitle: "Men's Strap Watch",
     price: 6800,
-    regularPrice: 8525,
+    regularPrice: 6800,
     rating: 5.0,
     reviews: 25,
     isNew: true,
@@ -324,7 +324,7 @@ export const products: Product[] = [
       { name: "Golden/Black", hex: "#1A1A1A" },
       { name: "Silver/Grey", hex: "#6E6E6E" },
     ],
-    images: ["/images/products/images (10).jpg"],
+    images: ["/images/products/images (13).jpg", "/images/products/images (10).jpg"],
   },
   {
     id: "17",
@@ -334,7 +334,7 @@ export const products: Product[] = [
     category: "women",
     subtitle: "Women's Luxury Watch",
     price: 12500,
-    regularPrice: 14700,
+    regularPrice: 12500,
     rating: 4.8,
     reviews: 21,
     badge: "bestseller",
@@ -344,7 +344,7 @@ export const products: Product[] = [
       { name: "Rose Gold", hex: "#B76E79" },
       { name: "Silver", hex: "#C0C0C0" },
     ],
-    images: ["/images/products/images (12).jpg", "/images/products/images (8).jpg"],
+    images: ["/images/products/images (15).jpg", "/images/products/images (8).jpg"],
   },
   {
     id: "18",
@@ -354,7 +354,7 @@ export const products: Product[] = [
     category: "women",
     subtitle: "Women's Chain Watch",
     price: 8200,
-    regularPrice: 9950,
+    regularPrice: 8200,
     rating: 4.6,
     reviews: 16,
     colors: [
@@ -362,7 +362,7 @@ export const products: Product[] = [
       { name: "Golden", hex: "#D4AF37" },
       { name: "Silver", hex: "#C0C0C0" },
     ],
-    images: ["/images/products/images (10).jpg", "/images/products/images (5).jpg"],
+    images: ["/images/products/images (19).jpg", "/images/products/images (5).jpg"],
   },
   {
     id: "19",
@@ -372,7 +372,7 @@ export const products: Product[] = [
     category: "women",
     subtitle: "Women's Luxury Watch",
     price: 16800,
-    regularPrice: 21000,
+    regularPrice: 16800,
     rating: 4.9,
     reviews: 13,
     isNew: true,
@@ -381,7 +381,7 @@ export const products: Product[] = [
       { name: "Golden/White", hex: "#F2E6CE" },
       { name: "Full Black", hex: "#0A0A0A" },
     ],
-    images: ["/images/products/images (4).jpg", "/images/products/images (7).jpg"],
+    images: ["/images/products/images (18).jpg", "/images/products/images (7).jpg"],
   },
   {
     id: "20",
@@ -401,7 +401,7 @@ export const products: Product[] = [
       { name: "Black/Gold", hex: "#1A1A1A" },
       { name: "Silver", hex: "#C0C0C0" },
     ],
-    images: ["/images/products/images (3).jpg", "/images/products/images (6).jpg"],
+    images: ["/images/products/images.jpg", "/images/products/images (13).jpg"],
   },
   {
     id: "21",
@@ -411,7 +411,7 @@ export const products: Product[] = [
     category: "couple",
     subtitle: "Couple's Chain Set",
     price: 18000,
-    regularPrice: 21200,
+    regularPrice: 18000,
     rating: 4.7,
     reviews: 7,
     isNew: true,
@@ -419,7 +419,7 @@ export const products: Product[] = [
       { name: "Golden", hex: "#D4AF37" },
       { name: "Grey", hex: "#808080" },
     ],
-    images: ["/images/products/images (9).jpg", "/images/products/images (14).jpg"],
+    images: ["/images/products/images (19).jpg", "/images/products/images (15).jpg"],
   },
 ];
 
@@ -450,8 +450,9 @@ const stockBySlug: Record<string, number> = {
 export const formatPrice = (value: number) =>
   `Rs.${value.toLocaleString("en-PK")}`;
 
-export const getProductStock = (product: Pick<Product, "slug">): number =>
-  stockBySlug[product.slug] ?? 0;
+export const getProductStock = (
+  product: Pick<Product, "slug"> & { stock?: number }
+): number => product.stock ?? stockBySlug[product.slug] ?? 0;
 
 export const getProductCode = (
   product: Pick<Product, "slug"> & { code?: string }
@@ -524,12 +525,12 @@ export const getVariantCode = (
 export const getDiscountPercent = (product: Product) =>
   Math.round(((product.regularPrice - product.price) / product.regularPrice) * 100);
 
-export const searchProducts = (query: string): Product[] => {
+export const searchProducts = (query: string, list: Product[] = products): Product[] => {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   const matches: Product[] = [];
   const seen = new Set<string>();
-  for (const p of products) {
+  for (const p of list) {
     const haystack = `${p.name} ${p.subtitle} ${p.category}`.toLowerCase();
     const normalized = haystack.includes(q) || aliasWordsMatch(haystack, q);
     if (normalized && !seen.has(p.id)) {

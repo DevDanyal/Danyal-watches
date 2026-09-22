@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { connectToDb } from "@/lib/db";
 import { OrderModel } from "@/lib/models";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, getSession } from "@/lib/auth";
 import { ok, err } from "@/lib/api";
 
 export async function GET(
@@ -10,9 +10,18 @@ export async function GET(
 ) {
   const conn = await connectToDb();
   if (!conn) return err("Database not configured.", 503);
+
+  const session = await getSession();
+  if (!session) return err("Unauthorized: sign in required.", 401);
+
   const { id } = await params;
   const order = await OrderModel.findOne({ orderId: id }).lean();
   if (!order) return err("Order not found.", 404);
+
+  if (session.role !== "admin" && order.email !== session.email) {
+    return err("Forbidden.", 403);
+  }
+
   return ok(order);
 }
 

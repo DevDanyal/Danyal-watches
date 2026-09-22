@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { useSearch } from "@/context/SearchContext";
 import { searchProducts, formatPrice } from "@/lib/data/products";
-import { products } from "@/lib/data/products";
+import { useCatalogProducts } from "@/lib/catalog";
 
 const hotSearches = ["Luxury", "Chain", "Strap", "Silver", "Couple"];
 
@@ -16,6 +16,7 @@ export default function SearchOverlay() {
   const { searchOpen, closeSearch, query, setQuery } = useSearch();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const catalogProducts = useCatalogProducts();
 
   useEffect(() => {
     if (searchOpen) setTimeout(() => inputRef.current?.focus(), 100);
@@ -31,8 +32,8 @@ export default function SearchOverlay() {
 
   const debounced = useMemo(() => {
     const q = query.trim();
-    return q.length >= 2 ? searchProducts(q) : [];
-  }, [query]);
+    return q.length >= 2 ? searchProducts(q, catalogProducts) : [];
+  }, [query, catalogProducts]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +158,7 @@ export default function SearchOverlay() {
 }
 
 function PopGrid({ onPick }: { onPick: () => void }) {
-  const popular = [...products].slice(0, 4);
+  const popular = [...useCatalogProducts()].slice(0, 4);
   return (
     <div className="mt-3 grid grid-cols-2 gap-2">
       {popular.map((p) => (

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ShoppingBag, Truck, ShieldCheck, RotateCcw } from "lucide-react";
@@ -9,8 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/data/products";
 
 export default function CartPage() {
-  const { items, subtotal, count } = useCart();
-  const [note, setNote] = useState("");
+  const { items, subtotal, count, note, setNote } = useCart();
 
   const total = subtotal;
 

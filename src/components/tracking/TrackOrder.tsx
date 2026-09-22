@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   PackageSearch,
@@ -35,9 +35,9 @@ function readLocalOrders(): LookedUp[] {
   try {
     const raw = window.localStorage.getItem("danyal_orders") ?? "[]";
     const orders = JSON.parse(raw) as SavedOrder[];
-    return orders.map((o, i) => ({
+    return orders.map((o) => ({
       order: o,
-      status: (i === 0 ? "processing" : "pending") as LookedUp["status"],
+      status: (o.status ?? "pending") as LookedUp["status"],
     }));
   } catch {
     return [];
@@ -161,22 +161,25 @@ function TrackResult({ result }: { result: LookedUp }) {
   );
 }
 
-export default function TrackOrder() {
-  const [orderId, setOrderId] = useState("");
+export default function TrackOrder({
+  initialOrderId = "",
+}: {
+  initialOrderId?: string;
+}) {
+  const [orderId, setOrderId] = useState(initialOrderId);
   const [result, setResult] = useState<LookedUp[] | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = orderId.trim().toUpperCase();
-    if (!q) return;
+  const search = (q: string) => {
+    const query = q.trim().toUpperCase();
+    if (!query) return;
     setLoading(true);
     setNotFound(false);
     setResult(null);
     window.setTimeout(() => {
       const matches = readLocalOrders().filter(
-        (r) => r.order.orderId.toUpperCase() === q
+        (r) => r.order.orderId.toUpperCase() === query
       );
       if (matches.length > 0) {
         setResult(matches);
@@ -185,6 +188,18 @@ export default function TrackOrder() {
       }
       setLoading(false);
     }, 450);
+  };
+
+  useEffect(() => {
+    if (!initialOrderId.trim()) return;
+    const timer = window.setTimeout(() => search(initialOrderId), 0);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    search(orderId);
   };
 
   return (

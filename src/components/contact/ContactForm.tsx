@@ -6,15 +6,77 @@ import { CheckCircle2, Send } from "lucide-react";
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "General Inquiry",
+    message: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
     setSending(true);
-    setTimeout(() => {
+
+    if (!form.name.trim() || !form.message.trim()) {
+      setError("Please fill in your name and message.");
       setSending(false);
-      setSubmitted(true);
-    }, 800);
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
+      setSending(false);
+      return;
+    }
+
+    try {
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      }).catch(() => {
+        /* offline — the message is saved locally below */
+      });
+    } catch {
+      /* offline */
+    }
+
+    try {
+      const key = "danyal_contact_messages";
+      const existing = JSON.parse(window.localStorage.getItem(key) ?? "[]");
+      existing.push({ ...form, date: new Date().toISOString() });
+      window.localStorage.setItem(key, JSON.stringify(existing));
+    } catch {
+      /* ignore */
+    }
+
+    setSending(false);
+    setSubmitted(true);
   };
+
+  const field = (
+    label: string,
+    key: keyof typeof form,
+    placeholder: string,
+    type = "text",
+    className = ""
+  ) => (
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      <label className="text-xs font-semibold uppercase tracking-wider text-text-primary">
+        {label}
+      </label>
+      <input
+        type={type}
+        required={key === "name" || key === "email" || key === "message"}
+        placeholder={placeholder}
+        value={form[key]}
+        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+        className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
+      />
+    </div>
+  );
 
   if (submitted) {
     return (
@@ -24,8 +86,8 @@ export default function ContactForm() {
           Message Sent!
         </h2>
         <p className="max-w-sm text-sm text-text-secondary">
-          Thank you for reaching out. Our team will get back to you within 24
-          hours.
+          Thank you for reaching out, {form.name.trim() || "friend"}. Our team
+          will get back to you within 24 hours.
         </p>
       </div>
     );
@@ -44,16 +106,7 @@ export default function ContactForm() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-text-primary">
-            Name
-          </label>
-          <input
-            required
-            placeholder="Your full name"
-            className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
-          />
-        </div>
+        {field("Name", "name", "Your full name")}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-semibold uppercase tracking-wider text-text-primary">
             Email
@@ -62,24 +115,21 @@ export default function ContactForm() {
             type="email"
             required
             placeholder="you@example.com"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
           />
         </div>
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label className="text-xs font-semibold uppercase tracking-wider text-text-primary">
-            Phone
-          </label>
-          <input
-            type="tel"
-            placeholder="+92 3XX XXXXXXX"
-            className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
-          />
-        </div>
+        {field("Phone", "phone", "+92 3XX XXXXXXX", "tel", "sm:col-span-2")}
         <div className="flex flex-col gap-1.5 sm:col-span-2">
           <label className="text-xs font-semibold uppercase tracking-wider text-text-primary">
             Subject
           </label>
-          <select className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary focus:border-text-primary focus:outline-none">
+          <select
+            value={form.subject}
+            onChange={(e) => setForm({ ...form, subject: e.target.value })}
+            className="h-12 rounded-xl border border-border bg-background px-4 text-sm text-text-primary focus:border-text-primary focus:outline-none"
+          >
             <option>General Inquiry</option>
             <option>Order Support</option>
             <option>Product Question</option>
@@ -95,10 +145,18 @@ export default function ContactForm() {
             required
             rows={5}
             placeholder="How can we help you?"
+            value={form.message}
+            onChange={(e) => setForm({ ...form, message: e.target.value })}
             className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm text-text-primary placeholder:text-text-secondary focus:border-text-primary focus:outline-none"
           />
         </div>
       </div>
+
+      {error && (
+        <p className="mt-4 rounded-lg border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+          {error}
+        </p>
+      )}
 
       <button
         type="submit"

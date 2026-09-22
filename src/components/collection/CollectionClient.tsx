@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, ChevronDown, X } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
-import { products, getProductStock, type Product } from "@/lib/data/products";
+import { getProductStock, type Product } from "@/lib/data/products";
 import { getCollection } from "@/lib/data/collections";
+import { useCatalogProducts } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 type SortOption =
@@ -34,9 +35,10 @@ const priceRanges = [
 
 export default function CollectionClient({ slug }: { slug: string }) {
   const collection = getCollection(slug);
+  const catalogProducts = useCatalogProducts();
 
   const baseProducts = useMemo(() => {
-    let list = [...products];
+    let list = [...catalogProducts];
 
     switch (slug) {
       case "sale":
@@ -47,11 +49,11 @@ export default function CollectionClient({ slug }: { slug: string }) {
         break;
       case "best-sellers":
         list = list.filter((p) => p.isBestSeller);
-        if (!list.length) list = products.slice(0, 8);
+        if (!list.length) list = catalogProducts.slice(0, 8);
         break;
       case "new-arrivals":
         list = list.filter((p) => p.isNew);
-        if (!list.length) list = products.slice(0, 8);
+        if (!list.length) list = catalogProducts.slice(0, 8);
         break;
       default:
         break;
@@ -70,7 +72,7 @@ export default function CollectionClient({ slug }: { slug: string }) {
     }
 
     return list;
-  }, [slug, collection]);
+  }, [slug, collection, catalogProducts]);
 
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{ min: number; max: number } | null>(null);

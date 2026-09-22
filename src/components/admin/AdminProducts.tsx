@@ -7,6 +7,7 @@ import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useAdmin, type ManagedProduct } from "@/context/AdminContext";
 import { formatPrice } from "@/lib/data/products";
 import { SectionTitle, Card, Badge, Input, Select, PrimaryBtn } from "@/components/admin/ui";
+import ImagePicker from "./ImagePicker";
 
 type Form = Omit<ManagedProduct, "id">;
 
@@ -17,16 +18,19 @@ const blank: Form = {
   sku: "",
   stock: 0,
   status: "draft",
-  image: "/images/home/images (23).jpg",
+  image: "/images/products/images (17).jpg",
 };
 
 const categories = [
   "Men's Chain Watch",
   "Men's Strap Watch",
   "Men's Luxury Watch",
+  "Men's Luxury Automatic",
   "Women's Luxury Watch",
   "Women's Chain Watch",
   "Couple's Chain Watch",
+  "Couple's Chain Set",
+  "Couple's Matching Set",
   "Sport Watch",
 ];
 
@@ -167,12 +171,15 @@ export default function AdminProducts() {
                   <option value="published">Published</option>
                   <option value="draft">Draft</option>
                 </Select>
-                <Input
-                  label="Image URL"
-                  className="sm:col-span-2"
-                  value={form.image}
-                  onChange={(e) => setForm({ ...form, image: e.target.value })}
-                />
+                <div className="sm:col-span-2">
+                  <label className="mb-1.5 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-text-primary">
+                    Product Image
+                  </label>
+                  <ImagePicker
+                    value={form.image}
+                    onChange={(img) => setForm({ ...form, image: img.value })}
+                  />
+                </div>
                 <div className="flex gap-3 sm:col-span-2">
                   <PrimaryBtn type="submit">{editingId ? "Update Product" : "Add Product"}</PrimaryBtn>
                   <button

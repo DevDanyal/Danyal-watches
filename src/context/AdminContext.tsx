@@ -6,9 +6,11 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
   ReactNode,
 } from "react";
-import { products as seedProducts, getProductStock } from "@/lib/data/products";
+import { products as seedProducts, getProductStock, getProductCode, type Product } from "@/lib/data/products";
+import { writeCatalog, type CatalogEntry } from "@/lib/catalog";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 
 export type ManagedProduct = {
@@ -116,8 +118,107 @@ const load = <T,>(key: string, fallback: T): T => {
   }
 };
 
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+const categoryOf = (subtitle: string): Product["category"] => {
+  const t = subtitle.toLowerCase();
+  if (t.includes("woman")) return "women";
+  if (t.includes("couple")) return "couple";
+  return "men";
+};
+
+const initialManagedProducts = (): ManagedProduct[] =>
+  load<ManagedProduct[] | null>("products", null) ??
+  seedProducts.map((p) => ({
+    id: p.id,
+    name: p.name,
+    category: p.subtitle,
+    price: p.price,
+    sku: p.code,
+    stock: getProductStock(p),
+    status: "published",
+    image: p.images[0],
+  }));
+
+const asCatalogEntry = (m: ManagedProduct): CatalogEntry => {
+  const seed = seedProducts.find((p) => p.id === m.id);
+  if (seed) {
+    const images = m.image
+      ? [m.image, ...seed.images.filter((i) => i !== m.image)].slice(0, 2)
+      : seed.images;
+    return {
+      ...seed,
+      name: m.name,
+      subtitle: m.category,
+      code: m.sku,
+      price: m.price,
+      images,
+      stock: m.stock,
+      status: m.status,
+    };
+  }
+  const slug = slugify(m.name);
+  return {
+    id: m.id,
+    slug,
+    code: m.sku || getProductCode({ slug }),
+    name: m.name,
+    category: categoryOf(m.category),
+    subtitle: m.category,
+    price: m.price,
+    regularPrice: m.price,
+    rating: 0,
+    reviews: 0,
+    isNew: true,
+    isBestSeller: false,
+    colors: [
+      { name: "Full Black", hex: "#0A0A0A" },
+      { name: "Golden", hex: "#C9A96E" },
+    ],
+    images: [m.image || "/images/products/images (17).jpg"],
+    stock: m.stock,
+    status: m.status,
+  };
+};
+
+const publishCatalog = (managed: ManagedProduct[]) =>
+  writeCatalog(managed.map(asCatalogEntry));
+
+const syncCheckoutOrderStatus = (id: string, status: AdminOrder["status"]) => {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = window.localStorage.getItem("danyal_orders");
+    if (!raw) return;
+    const orders = JSON.parse(raw) as SavedOrder[];
+    const next = orders.map((o) => (o.orderId === id ? { ...o, status } : o));
+    window.localStorage.setItem("danyal_orders", JSON.stringify(next));
+  } catch {
+    // ignore
+  }
+};
+
 const seedOrders = (): AdminOrder[] => {
-  const saved = load<SavedOrder[]>("orders", []);
+  const saved = load<SavedOrder[]>("orders", []) ?? [];
+  if (typeof window !== "undefined" && window.localStorage.getItem("danyal_orders")) {
+    try {
+      const checkout = JSON.parse(window.localStorage.getItem("danyal_orders") ?? "[]") as SavedOrder[];
+      if (checkout.length > 0) {
+        return checkout.map((o, i) => ({
+          id: o.orderId,
+          customer: o.shipping.firstName + " " + o.shipping.lastName,
+          email: o.shipping.email,
+          total: o.total,
+          items: o.items.reduce((a, it) => a + it.quantity, 0),
+          date: o.date,
+          status: i === 0 ? "processing" : "pending",
+          payment: o.paymentMethod,
+        }));
+      }
+    } catch {
+      // fall through to seed
+    }
+  }
   if (saved.length > 0) {
     return saved.slice(0, 20).map((o, i) => ({
       id: o.orderId,
@@ -165,17 +266,7 @@ const seedCategories: () => ManagedCategory[] = () => [
 
 export function AdminProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<ManagedProduct[]>(() =>
-    load<ManagedProduct[] | null>("products", null) ??
-      seedProducts.map((p, i) => ({
-        id: p.id,
-        name: p.name,
-        category: p.subtitle,
-        price: p.price,
-        sku: `CRL-${1000 + i}`,
-        stock: getProductStock(p),
-        status: "published",
-        image: p.images[0],
-      }))
+    initialManagedProducts()
   );
   const [orders, setOrders] = useState<AdminOrder[]>(() =>
     load<AdminOrder[]>("all_orders", seedOrders())
@@ -214,11 +305,16 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       window.localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
   }, []);
 
+  useEffect(() => {
+    publishCatalog(initialManagedProducts());
+  }, []);
+
   const addProduct = useCallback(
     (p: Omit<ManagedProduct, "id">) =>
       setProducts((prev) => {
         const next = [{ id: String(Date.now()), ...p }, ...prev];
         persist("products", next);
+        publishCatalog(next);
         return next;
       }),
     [persist]
@@ -229,6 +325,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setProducts((prev) => {
         const next = prev.map((x) => (x.id === id ? { ...x, ...p } : x));
         persist("products", next);
+        publishCatalog(next);
         return next;
       }),
     [persist]
@@ -239,6 +336,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setProducts((prev) => {
         const next = prev.filter((x) => x.id !== id);
         persist("products", next);
+        publishCatalog(next);
         return next;
       }),
     [persist]
@@ -249,6 +347,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setOrders((prev) => {
         const next = prev.map((o) => (o.id === id ? { ...o, status } : o));
         persist("all_orders", next);
+        syncCheckoutOrderStatus(id, status);
         return next;
       }),
     [persist]

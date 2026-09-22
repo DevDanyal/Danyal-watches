@@ -30,6 +30,7 @@ function hashId(product: Product): number {
 }
 
 function loadUserReviews(productId: string): Review[] {
+  if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(`danyal_reviews_${productId}`);
     return raw ? (JSON.parse(raw) as Review[]) : [];

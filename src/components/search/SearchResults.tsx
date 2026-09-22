@@ -3,14 +3,16 @@
 import { useSearchParams } from "next/navigation";
 import { Search, SearchX } from "lucide-react";
 import { searchProducts } from "@/lib/data/products";
+import { useCatalogProducts } from "@/lib/catalog";
 import ProductCard from "@/components/product/ProductCard";
 import PageHeader from "@/components/shared/PageHeader";
 
 export default function SearchResults() {
   const params = useSearchParams();
   const q = params.get("q")?.trim() ?? "";
+  const catalogProducts = useCatalogProducts();
 
-  const results = q ? searchProducts(q) : [];
+  const results = q ? searchProducts(q, catalogProducts) : [];
 
   return (
     <>

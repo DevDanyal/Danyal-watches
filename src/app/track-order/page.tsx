@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   description: "Track your Danyal order status by entering your order ID.",
 };
 
-export default function TrackOrderPage() {
-  return <TrackOrder />;
+export default async function TrackOrderPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ order?: string }>;
+}) {
+  const { order } = await searchParams;
+  return <TrackOrder initialOrderId={order ?? ""} />;
 }

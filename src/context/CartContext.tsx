@@ -27,6 +27,8 @@ type CartContextType = {
   count: number;
   subtotal: number;
   isOpen: boolean;
+  note: string;
+  setNote: (note: string) => void;
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeItem: (id: string, color?: string) => void;
   updateQuantity: (id: string, color: string | undefined, delta: number) => void;
@@ -52,6 +54,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     try {
@@ -99,7 +102,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    setItems([]);
+    setNote("");
+  }, []);
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
@@ -115,6 +121,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       count,
       subtotal,
       isOpen,
+      note,
+      setNote,
       addItem,
       removeItem,
       updateQuantity,
@@ -122,7 +130,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       openCart,
       closeCart,
     }),
-    [items, count, subtotal, isOpen, addItem, removeItem, updateQuantity, clearCart, openCart, closeCart]
+    [items, count, subtotal, isOpen, note, setNote, addItem, removeItem, updateQuantity, clearCart, openCart, closeCart]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

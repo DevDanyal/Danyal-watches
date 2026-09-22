@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Boxes,
@@ -27,9 +28,26 @@ const statusStyles: Record<string, string> = {
   Processing: "bg-background-secondary text-text-primary",
   Shipped: "bg-background-secondary text-text-primary",
   Delivered: "bg-success/20 text-success",
+  Cancelled: "bg-sale-badge/20 text-sale-badge",
 };
 
+export function orderStatusLabel(status?: string): string {
+  switch (status) {
+    case "processing":
+      return "Processing";
+    case "shipped":
+      return "Shipped";
+    case "delivered":
+      return "Delivered";
+    case "cancelled":
+      return "Cancelled";
+    default:
+      return "Order Placed";
+  }
+}
+
 export default function AccountDashboard() {
+  const router = useRouter();
   const { user, logout, updateProfile } = useAuth();
   const [tab, setTab] = useState<Tab>("dashboard");
   const [orders, setOrders] = useState<SavedOrder[]>(() => {
@@ -163,9 +181,29 @@ export default function AccountDashboard() {
                 />
               )}
               {tab === "products" && <ProductCodes orders={orders} />}
-              {tab === "orders" && <OrdersList orders={orders} onTrack={() => {}} />}
+              {tab === "orders" && (
+                <OrdersList
+                  orders={orders}
+                  onTrack={(id) =>
+                    router.push(`/track-order?order=${encodeURIComponent(id)}`)
+                  }
+                />
+              )}
               {tab === "profile" && (
-                <ProfileForm form={form} setForm={setForm} onSave={handleSaveProfile} />
+                <ProfileForm
+                  form={form}
+                  setForm={setForm}
+                  onSave={handleSaveProfile}
+                  onCancel={() =>
+                    setForm({
+                      name: user?.name ?? form.name,
+                      email: user?.email ?? form.email,
+                      phone: user?.phone ?? form.phone,
+                      city: user?.city ?? form.city,
+                      address: user?.address ?? form.address,
+                    })
+                  }
+                />
               )}
             </motion.div>
           </AnimatePresence>
@@ -333,7 +371,7 @@ function ProductCodes({ orders }: { orders: SavedOrder[] }) {
   );
 }
 
-function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => void }) {
+function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: (orderId: string) => void }) {
   if (orders.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card-background py-20 text-center">
@@ -384,10 +422,10 @@ function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => 
             <span
               className={cn(
                 "rounded-full px-3 py-1 text-xs font-bold uppercase",
-                statusStyles["Order Placed"] ?? ""
+                statusStyles[orderStatusLabel(order.status)] ?? ""
               )}
             >
-              Order Placed
+              {orderStatusLabel(order.status)}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-4 px-5 py-4">
@@ -415,8 +453,8 @@ function OrdersList({ orders, onTrack }: { orders: SavedOrder[]; onTrack: () => 
               </Link>
             ))}
             <button
-              onClick={onTrack}
-              className="ml-auto rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-text-primary hover:text-secondary-secondary"
+              onClick={() => onTrack(order.orderId)}
+              className="ml-auto rounded-full border border-border px-5 py-2 text-xs font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:border-text-primary hover:text-text-primary"
             >
               Track
             </button>
@@ -431,10 +469,12 @@ function ProfileForm({
   form,
   setForm,
   onSave,
+  onCancel,
 }: {
   form: { name: string; email: string; phone: string; city: string; address: string } | null;
   setForm: (f: { name: string; email: string; phone: string; city: string; address: string }) => void;
   onSave: () => void;
+  onCancel: () => void;
 }) {
   if (!form) return null;
   const field = (
@@ -479,7 +519,7 @@ function ProfileForm({
           Save Changes
         </button>
         <button
-          onClick={() => onSave()}
+          onClick={onCancel}
           className="rounded-full border border-border px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-text-secondary transition-colors hover:text-text-primary"
         >
           Cancel

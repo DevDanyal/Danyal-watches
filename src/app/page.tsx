@@ -1,8 +1,7 @@
 import Hero from "@/components/home/Hero";
 import CategoryCards from "@/components/home/CategoryCards";
 import FlashSaleTimer from "@/components/home/FlashSaleTimer";
-import ProductCarousel from "@/components/home/ProductCarousel";
-import ProductGrid from "@/components/home/ProductGrid";
+import CatalogSection from "@/components/home/CatalogSection";
 import TrustBadges from "@/components/home/TrustBadges";
 import BrandStory from "@/components/home/BrandStory";
 import Testimonials from "@/components/home/Testimonials";
@@ -19,24 +18,30 @@ export default function Home() {
       <Hero />
       <CategoryCards />
       <FlashSaleTimer />
-      <ProductCarousel
+      <CatalogSection
+        type="featured"
+        layout="carousel"
+        seed={featured}
         title="Featured Products"
         kicker="Handpicked for you"
         viewAllHref="/collections/featured"
-        products={featured}
       />
-      <ProductGrid
+      <CatalogSection
+        type="best"
+        layout="grid"
+        seed={bestSellers.length ? bestSellers : products.slice(0, 8)}
         title="Best Sellers"
         kicker="Most loved"
         viewAllHref="/collections/best-sellers"
-        products={bestSellers.length ? bestSellers : products.slice(0, 8)}
       />
       {newArrivals.length > 0 && (
-        <ProductCarousel
+        <CatalogSection
+          type="new"
+          layout="carousel"
+          seed={newArrivals}
           title="New Arrivals"
           kicker="Just landed"
           viewAllHref="/collections/new-arrivals"
-          products={newArrivals}
         />
       )}
       <TrustBadges />

@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       shipping: body.shipping ?? 0,
       total: body.total ?? body.subtotal ?? 0,
       paymentMethod: body.paymentMethod ?? "cod",
+      note: body.note ?? "",
       status: "pending",
     });
     return ok({ orderId: order.orderId }, 201);
