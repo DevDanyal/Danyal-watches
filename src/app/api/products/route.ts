@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { connectToDb } from "@/lib/db";
 import { ProductModel } from "@/lib/models";
 import { requireAdmin } from "@/lib/auth";
+import { toStoreProduct } from "@/lib/data/serverProducts";
 import { ok, err } from "@/lib/api";
 
 export async function GET(request: NextRequest) {
@@ -18,8 +19,8 @@ export async function GET(request: NextRequest) {
     filter.name = { $regex: q, $options: "i" };
   }
 
-  const products = await ProductModel.find(filter).sort({ createdAt: -1 }).lean();
-  return ok(products);
+  const docs = await ProductModel.find(filter).sort({ _id: 1 }).lean();
+  return ok(docs.map((d) => toStoreProduct(d)));
 }
 
 export async function POST(request: NextRequest) {

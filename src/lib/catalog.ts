@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   products as seedProducts,
   getProductStock,
@@ -14,6 +14,9 @@ export type CatalogEntry = Product & {
 
 export const CATALOG_KEY = "danyal_catalog";
 export const CATALOG_EVENT = "danyal:catalog";
+export const REFRESH_EVENT = "danyal:refresh-products";
+
+type Source = "seed" | "demo" | "db";
 
 const safeGet = (key: string): string | null => {
   try {
@@ -66,27 +69,86 @@ export function catalogProducts(catalog: CatalogEntry[] | null): Product[] {
   return (catalog ?? seedCatalog()).filter((e) => e.status !== "draft");
 }
 
-export function useCatalog(): { products: Product[]; loaded: boolean } {
-  const [catalog, setCatalog] = useState<CatalogEntry[] | null>(null);
+// --- Server (MongoDB) catalog probe -------------------------------------
+
+let serverCache: CatalogEntry[] | null = null;
+let serverLoading: Promise<void> | null = null;
+let serverSource: Source = "seed";
+
+async function probeServer(): Promise<void> {
+  try {
+    const res = await fetch("/api/products?published=true", {
+      cache: "no-store",
+    });
+    const json = await res.json().catch(() => null);
+    if (res.ok && json && Array.isArray(json.data) && json.data.length > 0) {
+      serverCache = json.data as CatalogEntry[];
+      serverSource = "db";
+    } else {
+      serverCache = null;
+      serverSource = "seed";
+    }
+  } catch {
+    serverCache = null;
+    serverSource = "seed";
+  }
+  notifyCatalogChange();
+}
+
+function ensureProbeStarted(): Promise<void> {
+  if (!serverLoading) {
+    serverLoading = probeServer().finally(() => {
+      serverLoading = null;
+    });
+  }
+  return serverLoading;
+}
+
+/** Re-fetch the server catalog now (e.g. after an admin write in DB mode). */
+export function refreshServerCatalog() {
+  if (typeof window === "undefined") return;
+  serverCache = null;
+  void ensureProbeStarted();
+}
+
+export function useCatalog(): {
+  products: Product[];
+  source: Source;
+  loaded: boolean;
+} {
+  const [state, setState] = useState<{
+    products: Product[];
+    source: Source;
+    loaded: boolean;
+  }>(() => ({ products: catalogProducts(null), source: "seed", loaded: false }));
 
   useEffect(() => {
-    const apply = () => setCatalog(readCatalog());
+    let mounted = true;
+    const apply = () => {
+      const cache = serverCache ?? readCatalog();
+      setState({
+        products: catalogProducts(cache),
+        source: serverCache ? serverSource : cache ? "demo" : "seed",
+        loaded: true,
+      });
+    };
     const onStorage = (e: StorageEvent) => {
       if (e.key === CATALOG_KEY) apply();
     };
     apply();
     window.addEventListener("storage", onStorage);
     window.addEventListener(CATALOG_EVENT, apply);
+    void ensureProbeStarted().then(() => {
+      if (mounted) apply();
+    });
     return () => {
+      mounted = false;
       window.removeEventListener("storage", onStorage);
       window.removeEventListener(CATALOG_EVENT, apply);
     };
   }, []);
 
-  return useMemo(
-    () => ({ products: catalogProducts(catalog), loaded: catalog !== null }),
-    [catalog]
-  );
+  return state;
 }
 
 export function useCatalogProducts(): Product[] {

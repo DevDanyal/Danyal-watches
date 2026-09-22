@@ -161,13 +161,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                 Welcome back, <span className="font-semibold text-text-primary">Admin</span>
               </span>
             </div>
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent-gold hover:text-accent-gold-light"
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-              View Store
-            </Link>
+            <div className="flex items-center gap-3">
+              <DbBadge />
+              <Link
+                href="/"
+                className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent-gold hover:text-accent-gold-light"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                View Store
+              </Link>
+            </div>
           </header>
 
           <main className="flex-1 p-4 sm:p-6">
@@ -186,5 +189,46 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         </div>
       </div>
     </AdminProvider>
+  );
+}
+
+function DbBadge() {
+  const [state, setState] = useState<"loading" | "connected" | "demo" | "error">(
+    "loading"
+  );
+  useEffect(() => {
+    let active = true;
+    fetch("/api/health", { cache: "no-store" })
+      .then((r) => r.json().catch(() => null))
+      .then((json) => {
+        if (!active) return;
+        setState(json?.data?.status === "connected" ? "connected" : "demo");
+      })
+      .catch(() => {
+        if (active) setState("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+  const label =
+    state === "connected" ? "MongoDB" : state === "loading" ? "..." : "Demo";
+  return (
+    <span
+      className={cn(
+        "hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider sm:flex",
+        state === "connected"
+          ? "border-success/40 text-success"
+          : "border-border text-text-secondary"
+      )}
+    >
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          state === "connected" ? "bg-success" : "bg-text-secondary"
+        )}
+      />
+      {label}
+    </span>
   );
 }

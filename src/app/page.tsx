@@ -6,9 +6,12 @@ import TrustBadges from "@/components/home/TrustBadges";
 import BrandStory from "@/components/home/BrandStory";
 import Testimonials from "@/components/home/Testimonials";
 import Newsletter from "@/components/home/Newsletter";
-import { products } from "@/lib/data/products";
+import { getPublishedProducts } from "@/lib/data/serverProducts";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const products = await getPublishedProducts();
   const featured = products.slice(0, 8);
   const bestSellers = products.filter((p) => p.isBestSeller);
   const newArrivals = products.filter((p) => p.isNew);

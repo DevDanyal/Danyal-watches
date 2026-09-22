@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice } from "@/lib/data/products";
+import { dbOrderToSavedOrder } from "@/lib/orderMap";
 import { cn } from "@/lib/utils";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 
@@ -171,12 +172,29 @@ export default function TrackOrder({
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const search = (q: string) => {
+  const search = async (q: string) => {
     const query = q.trim().toUpperCase();
     if (!query) return;
     setLoading(true);
     setNotFound(false);
     setResult(null);
+
+    try {
+      const res = await fetch(`/api/orders/${encodeURIComponent(query)}`, {
+        cache: "no-store",
+      });
+      const json = await res.json().catch(() => null);
+      if (res.ok && json?.data) {
+        setResult([
+          { order: dbOrderToSavedOrder(json.data), status: json.data.status ?? "pending" },
+        ]);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      // fall through to local orders
+    }
+
     window.setTimeout(() => {
       const matches = readLocalOrders().filter(
         (r) => r.order.orderId.toUpperCase() === query

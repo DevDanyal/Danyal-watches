@@ -1,10 +1,15 @@
 import type { MetadataRoute } from "next";
 import { products } from "@/lib/data/products";
 import { collections } from "@/lib/data/collections";
+import { getPublishedProducts } from "@/lib/data/serverProducts";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://danyal.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const dbProducts = await getPublishedProducts();
+  const listedProducts = dbProducts.length
+    ? dbProducts
+    : products;
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.5 },
@@ -27,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
+  const productRoutes: MetadataRoute.Sitemap = listedProducts.map((p) => ({
     url: `${SITE_URL}/products/${p.slug}`,
     changeFrequency: "weekly",
     priority: 0.9,

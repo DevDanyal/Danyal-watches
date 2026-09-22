@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/data/products";
+import { dbOrderToSavedOrder, type DbOrderJson } from "@/lib/orderMap";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
 import { cn } from "@/lib/utils";
 
@@ -81,6 +82,27 @@ export default function AccountDashboard() {
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
+    };
+  }, [user?.email]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/orders", { cache: "no-store" });
+        const json = await res.json().catch(() => null);
+        if (!cancelled && res.ok && json && Array.isArray(json.data)) {
+          const fromDb = (json.data as DbOrderJson[])
+            .filter((o) => !user?.email || (o.email ?? "").toLowerCase() === user.email.toLowerCase())
+            .map(dbOrderToSavedOrder);
+          if (fromDb.length) setOrders(fromDb);
+        }
+      } catch {
+        /* demo mode */
+      }
+    })();
+    return () => {
+      cancelled = true;
     };
   }, [user?.email]);
 

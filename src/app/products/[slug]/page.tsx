@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import ProductView from "@/components/product/ProductView";
+import {
+  getStoreProductBySlug,
+  getPublishedProducts,
+} from "@/lib/data/serverProducts";
 import { products, getProductStock } from "@/lib/data/products";
 
 export const dynamicParams = true;
+export const revalidate = 60;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -16,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getStoreProductBySlug(slug);
   if (!product) return { title: "Product | Danyal" };
   return {
     title: `${product.name} | Danyal Watches`,
@@ -36,10 +41,12 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getStoreProductBySlug(slug);
 
   const related = product
-    ? products
+    ? (
+        await getPublishedProducts()
+      )
         .filter((p) => p.category === product.category && p.id !== product.id)
         .slice(0, 4)
     : [];

@@ -10,8 +10,14 @@ import {
   ReactNode,
 } from "react";
 import { products as seedProducts, getProductStock, getProductCode, type Product } from "@/lib/data/products";
-import { writeCatalog, type CatalogEntry } from "@/lib/catalog";
+import { writeCatalog, refreshServerCatalog, type CatalogEntry } from "@/lib/catalog";
 import type { SavedOrder } from "@/components/checkout/CheckoutClient";
+
+const DEFAULT_IMAGE = "/images/products/images (17).jpg";
+const DEFAULT_COLORS = [
+  { name: "Full Black", hex: "#0A0A0A" },
+  { name: "Golden", hex: "#C9A96E" },
+];
 
 export type ManagedProduct = {
   id: string;
@@ -22,6 +28,8 @@ export type ManagedProduct = {
   stock: number;
   status: "published" | "draft";
   image: string;
+  slug?: string;
+  images?: string[];
 };
 
 export type AdminOrder = {
@@ -82,11 +90,11 @@ export type Settings = {
 
 type AdminStore = {
   products: ManagedProduct[];
-  addProduct: (p: Omit<ManagedProduct, "id">) => void;
-  updateProduct: (id: string, p: Partial<ManagedProduct>) => void;
-  deleteProduct: (id: string) => void;
+  addProduct: (p: Omit<ManagedProduct, "id">) => void | Promise<void>;
+  updateProduct: (id: string, p: Partial<ManagedProduct>) => void | Promise<void>;
+  deleteProduct: (id: string) => void | Promise<void>;
   orders: AdminOrder[];
-  setOrderStatus: (id: string, status: AdminOrder["status"]) => void;
+  setOrderStatus: (id: string, status: AdminOrder["status"]) => void | Promise<void>;
   customers: CustomerRow[];
   coupons: Coupon[];
   addCoupon: (c: Omit<Coupon, "used">) => void;
@@ -102,6 +110,7 @@ type AdminStore = {
   deleteCategory: (id: string) => void;
   settings: Settings;
   saveSettings: (s: Partial<Settings>) => void;
+  dbMode: boolean;
 };
 
 const AdminContext = createContext<AdminStore | null>(null);
@@ -126,6 +135,79 @@ const categoryOf = (subtitle: string): Product["category"] => {
   if (t.includes("woman")) return "women";
   if (t.includes("couple")) return "couple";
   return "men";
+};
+
+const isObjectId = (id: string) => /^[a-f0-9]{24}$/i.test(id);
+
+type DbProductJson = {
+  _id?: string;
+  id?: string;
+  slug?: string;
+  code?: string;
+  name: string;
+  subtitle?: string;
+  price: number;
+  stock?: number;
+  status?: "published" | "draft";
+  images?: string[];
+};
+
+const toManagedProduct = (doc: DbProductJson): ManagedProduct => {
+  const id = doc._id || doc.id || String(Date.now());
+  return {
+    id,
+    name: doc.name,
+    category: doc.subtitle ?? "",
+    price: doc.price,
+    sku: doc.code ?? "",
+    stock: doc.stock ?? 0,
+    status: (doc.status ?? "draft") as ManagedProduct["status"],
+    image: doc.images?.[0] ?? DEFAULT_IMAGE,
+    slug: doc.slug,
+    images: doc.images,
+  };
+};
+
+type DbOrderJson = {
+  orderId: string;
+  customerName?: string;
+  email?: string;
+  total?: number;
+  items?: { quantity?: number }[];
+  createdAt?: string;
+  paymentMethod?: string;
+  status?: AdminOrder["status"];
+};
+
+const toAdminOrder = (doc: DbOrderJson): AdminOrder => ({
+  id: doc.orderId,
+  customer: doc.customerName ?? "Guest",
+  email: doc.email ?? "",
+  total: doc.total ?? 0,
+  items: (doc.items ?? []).reduce((a, it) => a + (it.quantity ?? 1), 0),
+  date: doc.createdAt ?? new Date().toISOString(),
+  status: (doc.status ?? "pending") as AdminOrder["status"],
+  payment: doc.paymentMethod ?? "cod",
+});
+
+const apiJson = async (res: Response) => {
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+};
+
+const notifyStorefrontRefresh = () => {
+  if (typeof window === "undefined") return;
+  refreshServerCatalog();
+  fetch("/api/admin/revalidate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  }).catch(() => {
+    // demo mode — revalidation is a no-op
+  });
 };
 
 const initialManagedProducts = (): ManagedProduct[] =>
@@ -299,6 +381,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     })
   );
   const [ready] = useState(true);
+const [dbMode, setDbMode] = useState(false);
 
   const persist = useCallback((key: string, value: unknown) => {
     if (typeof window !== "undefined")
@@ -309,48 +392,158 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     publishCatalog(initialManagedProducts());
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/products?published=false", {
+          cache: "no-store",
+        });
+        const json = await apiJson(res);
+        if (active && res.ok && json && Array.isArray(json.data)) {
+          setDbMode(true);
+          setProducts(json.data.map(toManagedProduct));
+        }
+      } catch {
+        // demo mode
+      }
+      try {
+        const res = await fetch("/api/orders", { cache: "no-store" });
+        const json = await apiJson(res);
+        if (active && res.ok && json && Array.isArray(json.data)) {
+          setOrders(json.data.slice(0, 20).map(toAdminOrder));
+        }
+      } catch {
+        // demo mode
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const addProduct = useCallback(
-    (p: Omit<ManagedProduct, "id">) =>
+    async (p: Omit<ManagedProduct, "id">) => {
+      if (dbMode) {
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: p.name,
+            subtitle: p.category,
+            category: categoryOf(p.category),
+            price: p.price,
+            sku: p.sku || getProductCode({ slug: slugify(p.name) }),
+            stock: p.stock,
+            status: p.status,
+            images: [p.image || DEFAULT_IMAGE],
+            colors: DEFAULT_COLORS,
+            rating: 0,
+            reviews: 0,
+            description: "",
+          }),
+        });
+        const json = await apiJson(res);
+        if (res.ok && json?.data) {
+          setProducts((prev) => [toManagedProduct(json.data), ...prev]);
+          notifyStorefrontRefresh();
+          return;
+        }
+      }
       setProducts((prev) => {
         const next = [{ id: String(Date.now()), ...p }, ...prev];
         persist("products", next);
         publishCatalog(next);
         return next;
-      }),
-    [persist]
+      });
+    },
+    [dbMode, persist]
   );
 
   const updateProduct = useCallback(
-    (id: string, p: Partial<ManagedProduct>) =>
+    async (id: string, p: Partial<ManagedProduct>) => {
+      if (dbMode && isObjectId(id)) {
+        const existing = products.find((x) => x.id === id);
+        const patch: Record<string, unknown> = {
+          name: p.name,
+          sku: p.sku,
+          stock: p.stock,
+          status: p.status,
+          price: p.price,
+          subtitle: p.category,
+          category: categoryOf(p.category ?? existing?.category ?? "men"),
+        };
+        if (p.image) {
+          const others = (existing?.images ?? []).filter((i) => i !== p.image);
+          patch.images = [p.image, ...others].slice(0, 2);
+        }
+        const res = await fetch(`/api/products/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(patch),
+        });
+        const json = await apiJson(res);
+        if (res.ok && json?.data) {
+          setProducts((prev) =>
+            prev.map((x) => (x.id === id ? toManagedProduct(json.data) : x))
+          );
+          notifyStorefrontRefresh();
+          return;
+        }
+      }
       setProducts((prev) => {
         const next = prev.map((x) => (x.id === id ? { ...x, ...p } : x));
         persist("products", next);
         publishCatalog(next);
         return next;
-      }),
-    [persist]
+      });
+    },
+    [dbMode, products, persist]
   );
 
   const deleteProduct = useCallback(
-    (id: string) =>
+    async (id: string) => {
+      if (dbMode && isObjectId(id)) {
+        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+        if (res.ok) {
+          setProducts((prev) => prev.filter((x) => x.id !== id));
+          notifyStorefrontRefresh();
+          return;
+        }
+      }
       setProducts((prev) => {
         const next = prev.filter((x) => x.id !== id);
         persist("products", next);
         publishCatalog(next);
         return next;
-      }),
-    [persist]
+      });
+    },
+    [dbMode, persist]
   );
 
   const setOrderStatus = useCallback(
-    (id: string, status: AdminOrder["status"]) =>
+    async (id: string, status: AdminOrder["status"]) => {
+      if (dbMode) {
+        const res = await fetch(`/api/orders/${encodeURIComponent(id)}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        });
+        if (res.ok) {
+          setOrders((prev) =>
+            prev.map((o) => (o.id === id ? { ...o, status } : o))
+          );
+          notifyStorefrontRefresh();
+        }
+      }
       setOrders((prev) => {
         const next = prev.map((o) => (o.id === id ? { ...o, status } : o));
         persist("all_orders", next);
         syncCheckoutOrderStatus(id, status);
         return next;
-      }),
-    [persist]
+      });
+    },
+    [dbMode, persist]
   );
 
   const addCoupon = useCallback(
@@ -478,8 +671,9 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       settings,
       saveSettings,
       ready,
+      dbMode,
     }),
-    [products, addProduct, updateProduct, deleteProduct, orders, setOrderStatus, customers, coupons, addCoupon, toggleCoupon, deleteCoupon, banners, addBanner, toggleBanner, deleteBanner, categories, addCategory, updateCategory, deleteCategory, settings, saveSettings, ready]
+    [products, addProduct, updateProduct, deleteProduct, orders, setOrderStatus, customers, coupons, addCoupon, toggleCoupon, deleteCoupon, banners, addBanner, toggleBanner, deleteBanner, categories, addCategory, updateCategory, deleteCategory, settings, saveSettings, ready, dbMode]
   );
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
